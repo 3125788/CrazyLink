@@ -23,7 +23,7 @@ import android.graphics.Bitmap.Config;
 import android.opengl.GLUtils;
 import elong.CrazyLink.CrazyLinkConstent;
 import elong.CrazyLink.Control.CtlSingleScore;
-import elong.CrazyLink.Control.CtlTip1;
+import elong.CrazyLink.Interface.IControl;
 
 public class DrawSingleScore {
 	
@@ -36,7 +36,7 @@ public class DrawSingleScore {
 	
 	private IntBuffer   mVertexBuffer;		//顶点坐标数据缓冲
     private FloatBuffer   mTextureBuffer;	//顶点纹理数据缓冲
-    public CtlSingleScore control;
+    public IControl control;
     
     int vCount=0;							//顶点数量     
     int textureId;							//纹理索引
@@ -55,8 +55,10 @@ public class DrawSingleScore {
     {
     	if (col == 0) col = 1;
     	
+    	CtlSingleScore ctl = (CtlSingleScore)control;
+    	
         vCount=6;//顶点的数量，一个正方形用两个三角形表示，共需要6个顶点
-        float y = control.getY()/30.0f;
+        float y = ctl.getY()/30.0f;
         float deltaX = ((col-3)*64*CrazyLinkConstent.UNIT_SIZE);
         float deltaY = (((float)row-3 + y)*64*CrazyLinkConstent.UNIT_SIZE);
         int vertices[]=new int[]//顶点坐标数据数组

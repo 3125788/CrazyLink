@@ -13,8 +13,6 @@ package elong.CrazyLink.Core;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 import javax.microedition.khronos.opengles.GL10;
 
@@ -27,7 +25,9 @@ import android.os.Handler;
 import android.os.Message;
 import elong.CrazyLink.CrazyLinkConstent;
 import elong.CrazyLink.R;
+import elong.CrazyLink.Control.CtlTip1;
 import elong.CrazyLink.Draw.DrawAnimal;
+import elong.CrazyLink.Draw.DrawAutoTip;
 import elong.CrazyLink.Draw.DrawSingleScore;
 import elong.CrazyLink.Draw.DrawTip1;
 import elong.CrazyLink.Draw.DrawDisappear;
@@ -44,18 +44,23 @@ public class ControlCenter {
 	Context mContext;
 	
 	static int mPic[][];				//对应格子显示的图片，调用DrawAnimal渲染
+	static int mPicBak[][];				//mPic的副本，用于autotip计算
+	
 	static int mStatus[][];		//0：不显示；1：显示动物；2:显示交换特效；3:跌落特效；4:消除特效
 	
 	static int mSingleScoreW = 0;	//显示当次奖励的位置
 	static int mSingleScoreH = 0;
 	
     int animalTextureId;				//动物素材纹理id
-    static int[] loadingTextureId = new int[10];			//加载动画素材纹理id
+    int[] loadingTextureId = new int[10];			//加载动画素材纹理id
     int gridTextureId;				//网格素材纹理id
     int scoreTextureId;
     int congratulationTextureId;
+    int fireTextureId;
     
-	static DrawAnimal drawAnimal;
+    static int mAutoTipTimer = 0;			//自动提示计时器
+    
+	static public DrawAnimal drawAnimal;
 	static public DrawLoading drawLoading;
 	static public DrawGrid drawGrid;
 	static public DrawExchange drawExchange;
@@ -64,20 +69,31 @@ public class ControlCenter {
 	static public DrawScore drawScore;
 	static public DrawSingleScore drawSingleScore;
 	static public DrawTip1 drawTip1;
+	static public DrawAutoTip drawAutoTip;
 
 	
-	static Score score;
+	static Score mScore;	//计算分数
 	
 	
-	public static boolean mIsLoading = false;
+	public static boolean mIsLoading = false;	//显示正在加载
+	public static boolean mIsAutoTip = false;	//处于自动提示状态
 	
-	ArrayList<IControl> mControlList = new ArrayList<IControl>(); 
+	ArrayList<IControl> mControlList = new ArrayList<IControl>();	//渲染类的控制列表
+	
+	static final int EFT_NONE  = 0;			//空白
+	static final int EFT_NORMAL  = 1;		//正常，无特殊效果
+	static final int EFT_EXCHANGE  = 2;		//交换效果
+	static final int EFT_FILL  = 3;			//跌落效果
+	static final int EFT_DISAPPEAR  = 4;		//消除效果
+	static final int EFT_AUTOTIP  = 5;		//自动提示效果
+
 
 	public ControlCenter(Context context)
 	{
 		mContext = context;
-		score = new Score();
+		mScore = new Score();
 	    mPic = new int[(int) CrazyLinkConstent.GRID_NUM][(int) CrazyLinkConstent.GRID_NUM];
+	    mPicBak = new int[(int) CrazyLinkConstent.GRID_NUM][(int) CrazyLinkConstent.GRID_NUM];
 	    mStatus = new int[(int) CrazyLinkConstent.GRID_NUM][(int) CrazyLinkConstent.GRID_NUM];
 		init();
 	}
@@ -90,11 +106,11 @@ public class ControlCenter {
 			for(int j = 0; j < (int)CrazyLinkConstent.GRID_NUM; j++) 
 			{
 				mPic[i][j] = getRandom();
-				while (isInLine(i,j))
+				while (isInLine(mPic, i,j))
 				{
 					mPic[i][j] = getRandom();	
 				}
-				mStatus[i][j] = 1;
+				mStatus[i][j] = EFT_NORMAL;
 			}
 		}
 		
@@ -107,44 +123,45 @@ public class ControlCenter {
 		return (data % 7) + 1;
 	}
 	
-	static boolean isInLineX(int col, int row)
+	//指定坐标(col,row)在X方向是否已经成行
+	static boolean isInLineX(int pic[][], int col, int row)
 	{
-		int picId = mPic[col][row];
+		int picId = pic[col][row];
 		if(0 == col)
 		{
-			if(picId == mPic[col+1][row] && picId == mPic[col+2][row])
+			if(picId == pic[col+1][row] && picId == pic[col+2][row])
 			{
 				return true;
 			}
 		}
 		else if(1 == col)
 		{
-			if((picId == mPic[col-1][row] && picId == mPic[col+1][row])
-					|| (picId == mPic[col+1][row] && picId == mPic[col+2][row]))
+			if((picId == pic[col-1][row] && picId == pic[col+1][row])
+					|| (picId == pic[col+1][row] && picId == pic[col+2][row]))
 			{
 				return true;
 			}
 		}
 		else if(col > 1 && col < 5)
 		{
-			if((picId == mPic[col-2][row] && picId == mPic[col-1][row])
-					|| (picId == mPic[col-1][row] && picId == mPic[col+1][row])
-					|| (picId == mPic[col+1][row] && picId == mPic[col+2][row]))
+			if((picId == pic[col-2][row] && picId == pic[col-1][row])
+					|| (picId == pic[col-1][row] && picId == pic[col+1][row])
+					|| (picId == pic[col+1][row] && picId == pic[col+2][row]))
 			{
 				return true;
 			}
 		}
 		else if(5 == col)
 		{
-			if((picId == mPic[col-2][row] && picId == mPic[col-1][row])
-					|| (picId == mPic[col-1][row] && picId == mPic[col+1][row]))
+			if((picId == pic[col-2][row] && picId == pic[col-1][row])
+					|| (picId == pic[col-1][row] && picId == pic[col+1][row]))
 			{
 				return true;
 			}
 		}
 		else if(6 == col)
 		{
-			if(picId == mPic[col-1][row] && picId == mPic[col-2][row])
+			if(picId == pic[col-1][row] && picId == pic[col-2][row])
 			{
 				return true;
 			}
@@ -152,44 +169,45 @@ public class ControlCenter {
 		return false;
 	}
 	
-	static boolean isInLineY(int col, int row)
+	//指定坐标(col,row)在Y方向是否已经成行
+	static boolean isInLineY(int pic[][], int col, int row)
 	{
-		int picId = mPic[col][row];
+		int picId = pic[col][row];
 		if(0 == row)
 		{
-			if(picId == mPic[col][row+1] && picId == mPic[col][row+2])
+			if(picId == pic[col][row+1] && picId == pic[col][row+2])
 			{
 				return true;
 			}
 		}
 		else if(1 == row)
 		{
-			if((picId == mPic[col][row-1] && picId == mPic[col][row+1])
-					|| (picId == mPic[col][row+1] && picId == mPic[col][row+2]))
+			if((picId == pic[col][row-1] && picId == pic[col][row+1])
+					|| (picId == pic[col][row+1] && picId == pic[col][row+2]))
 			{
 				return true;
 			}
 		}
 		else if(row > 1 && row < 5)
 		{
-			if((picId == mPic[col][row-2] && picId == mPic[col][row-1])
-					|| (picId == mPic[col][row-1] && picId == mPic[col][row+1])
-					|| (picId == mPic[col][row+1] && picId == mPic[col][row+2]))
+			if((picId == pic[col][row-2] && picId == pic[col][row-1])
+					|| (picId == pic[col][row-1] && picId == pic[col][row+1])
+					|| (picId == pic[col][row+1] && picId == pic[col][row+2]))
 			{
 				return true;
 			}
 		}
 		else if(5 == row)
 		{
-			if((picId == mPic[col][row-2] && picId == mPic[col][row-1])
-					|| (picId == mPic[col][row-1] && picId == mPic[col][row+1]))
+			if((picId == pic[col][row-2] && picId == pic[col][row-1])
+					|| (picId == pic[col][row-1] && picId == pic[col][row+1]))
 			{
 				return true;
 			}
 		}
 		else if(6 == row)
 		{
-			if(picId == mPic[col][row-1] && picId == mPic[col][row-2])
+			if(picId == pic[col][row-1] && picId == pic[col][row-2])
 			{
 				return true;
 			}
@@ -197,10 +215,10 @@ public class ControlCenter {
 		return false;
 	}
 
-	//消除检测算法
-	static boolean isInLine(int col, int row)
+	//消除检测算法，只要X或Y方向有一个方向成行，就认为满足消除条件
+	static boolean isInLine(int pic[][], int col, int row)
 	{
-		return isInLineX(col, row) || isInLineY(col, row);
+		return isInLineX(pic, col, row) || isInLineY(pic, col, row);
 	}
 
 	//将成行的动物标记出来
@@ -211,9 +229,9 @@ public class ControlCenter {
 		{
 			for(int j = 0; j < (int)CrazyLinkConstent.GRID_NUM; j++) 
 			{
-				if (isInLine(i, j))	
+				if (isInLine(mPic, i, j))	
 				{
-					mStatus[i][j] = 4;
+					mStatus[i][j] = EFT_DISAPPEAR;
 					markCount++;
 				}
 			}
@@ -221,12 +239,12 @@ public class ControlCenter {
 		if (markCount > 0)
 		{
 			drawDisappear.control.start();
-			score.increase();
-			score.increase(markCount);			
+			mScore.increase();
+			mScore.increase(markCount);			
 		}
 		else
 		{
-			score.reset();
+			mScore.reset();
 		}
 	}
 	
@@ -237,7 +255,7 @@ public class ControlCenter {
 		{
 			for(int j = 0; j < (int)CrazyLinkConstent.GRID_NUM; j++) 
 			{
-				mStatus[i][j] = 1;
+				mStatus[i][j] = EFT_NORMAL;
 			}
 		}				
 	}
@@ -250,7 +268,7 @@ public class ControlCenter {
 		{
 			for(int j = 0; j < (int)CrazyLinkConstent.GRID_NUM; j++) 
 			{
-				if (4 == mStatus[i][j]) 
+				if (EFT_DISAPPEAR == mStatus[i][j]) 
 				{
 					mPic[i][j] = 0;
 					clearCount++;
@@ -267,7 +285,7 @@ public class ControlCenter {
 		{
 			for(int j = 0; j < (int)CrazyLinkConstent.GRID_NUM; j++) 
 			{
-				if (isInLine(i,j))
+				if (isInLine(mPic, i,j))
 				{
 					return true;
 				}
@@ -283,7 +301,7 @@ public class ControlCenter {
 		{
 			for(int i = row; i < (int)CrazyLinkConstent.GRID_NUM; i++)
 			{
-				mStatus[col][i] = 3;
+				mStatus[col][i] = EFT_FILL;
 			}
 		}
 	}
@@ -295,7 +313,7 @@ public class ControlCenter {
 		{
 			for(int j = 0; j < (int)CrazyLinkConstent.GRID_NUM; j++) 
 			{
-				mStatus[i][j] = 1;
+				mStatus[i][j] = EFT_NORMAL;
 			}
 		}						
 		for(int i = 0; i < (int)CrazyLinkConstent.GRID_NUM; i++)
@@ -305,7 +323,7 @@ public class ControlCenter {
 				fillGrid(i,j);
 			}
 		}				
-		fillPic();
+		fillMethod();
 		drawFill.control.start();
 	}
 	
@@ -326,7 +344,7 @@ public class ControlCenter {
 	}
 	
 	//跌落算法
-	static void fillPic()
+	static void fillMethod()
 	{
 		for(int i = 0; i < (int)CrazyLinkConstent.GRID_NUM; i++)
 		{
@@ -350,16 +368,119 @@ public class ControlCenter {
 		}				
 			
 	}
-
 	
+	static void exchange(int pic[][], int col1, int row1, int col2, int row2)
+	{
+		int picId = pic[col1][row1];
+		pic[col1][row1] = pic[col2][row2];
+		pic[col2][row2] = picId;
+	}
+
+    static void setSingleScorePosition(int col, int row)
+    {
+    	if(drawSingleScore.control.isRun()) return;
+    	mSingleScoreW = col;
+    	mSingleScoreH = row;
+    }
+    
+    //注册渲染类的控制对象到控制中心的控制列表
+    void controlRegister(IControl control)
+    {
+    	if(control != null)	mControlList.add(control);
+    }
+    
+    //自动提示识别算法
+    //只需要交换一步就能成行的，认为满足自动提示条件
+    boolean autoTipMethod(int col, int row)
+    {
+		for(int i = 1; i < (int)CrazyLinkConstent.GRID_NUM - 1; i++)
+		{
+			for(int j = 1; j < (int)CrazyLinkConstent.GRID_NUM - 1; j++) 
+			{
+				exchange(mPicBak, i, j, i-1, j);
+				if(isInLine(mPicBak, i, j)) return true;
+				exchange(mPicBak, i-1, j, i, j);
+
+				exchange(mPicBak, i, j, i+1, j);
+				if(isInLine(mPicBak, i, j)) return true;
+				exchange(mPicBak, i+1, j, i, j);
+
+				exchange(mPicBak, i, j, i, j-1);
+				if(isInLine(mPicBak, i, j)) return true;
+				exchange(mPicBak, i, j-1, i, j);
+
+				exchange(mPicBak, i, j, i, j+1);
+				if(isInLine(mPicBak, i, j)) return true;
+				exchange(mPicBak, i, j+1, i, j);
+			}
+		}
+    	return false;
+    }
+    
+    void autoTip()
+    {	
+		for(int i = 0; i < (int)CrazyLinkConstent.GRID_NUM; i++)
+		{
+			for(int j = 0; j < (int)CrazyLinkConstent.GRID_NUM; j++) 
+			{
+				mPicBak[i][j] = mPic[i][j];
+			}
+		}
+
+		for(int i = 1; i < (int)CrazyLinkConstent.GRID_NUM - 1; i++)
+		{
+			for(int j = 1; j < (int)CrazyLinkConstent.GRID_NUM - 1; j++) 
+			{
+				if(autoTipMethod(i, j))
+				{
+					markAutoTip();
+					return;
+				}
+			}
+		}
+    }
+    
+	//将可以自动提示的动物标识出来
+	static void markAutoTip()
+	{
+		for(int i = 0; i < (int)CrazyLinkConstent.GRID_NUM; i++)
+		{
+			for(int j = 0; j < (int)CrazyLinkConstent.GRID_NUM; j++) 
+			{
+				if (isInLine(mPicBak, i, j))	
+				{
+					mStatus[i][j] = EFT_AUTOTIP;
+				}
+			}
+		}		
+	}
+    
+	//将自动提示标识清除
+	static void clearAutoTip()
+	{
+		for(int i = 0; i < (int)CrazyLinkConstent.GRID_NUM; i++)
+		{
+			for(int j = 0; j < (int)CrazyLinkConstent.GRID_NUM; j++) 
+			{
+				if (EFT_AUTOTIP == mStatus[i][j])	
+				{
+					mStatus[i][j] = EFT_NORMAL;
+				}
+			}
+		}				
+		mIsAutoTip = false;
+		mAutoTipTimer = 0;
+	}
+
 	
 	public void draw(GL10 gl)
 	{
 		drawLoading.draw(gl); 
 		if(mIsLoading) return;
 		
-		drawScore.draw(gl,score.getScore());
-		drawSingleScore.draw(gl, mSingleScoreW, mSingleScoreH, score.getAward());
+		drawScore.draw(gl,mScore.getScore());
+		drawSingleScore.draw(gl, mSingleScoreW, mSingleScoreH, mScore.getAward());
+		drawAutoTip.control.start();
 		drawTip1.draw(gl);
 		for(int i = 0; i < (int)CrazyLinkConstent.GRID_NUM; i++)
 		{
@@ -367,17 +488,21 @@ public class ControlCenter {
 			{
 				switch (mStatus[i][j])
 				{
-				case 1:	//正常显示
+				case EFT_NORMAL:	//正常显示
 					drawAnimal.draw(gl,mPic[i][j],i,j);
 					break;
-				case 2:	//交换特效
+				case EFT_EXCHANGE:	//交换特效
 					drawExchange.draw(gl);		
 					break;
-				case 3:	//跌落特效
+				case EFT_FILL:	//跌落特效
 					drawFill.draw(gl, mPic[i][j], i, j);
 					break;
-				case 4:	//消除特效
+				case EFT_DISAPPEAR:	//消除特效
 					drawDisappear.draw(gl, mPic[i][j], i, j);
+					break;
+				case EFT_AUTOTIP:	//自动提示特效
+					drawAutoTip.draw(gl, i, j);
+					drawAnimal.draw(gl,mPic[i][j],i,j);
 					break;
 				}				                  
 			}
@@ -396,6 +521,7 @@ public class ControlCenter {
     	gridTextureId = initTexture(gl, R.drawable.grid);
     	scoreTextureId = initTexture(gl, R.drawable.number);
     	congratulationTextureId = initTexture(gl, R.drawable.word);
+    	fireTextureId = initTexture(gl, R.drawable.fire);
 	}
 	
 	//初始化渲染对象
@@ -410,13 +536,16 @@ public class ControlCenter {
     	drawTip1 = new DrawTip1(congratulationTextureId);
     	drawLoading = new DrawLoading(loadingTextureId);		//创建加载动画素材
     	drawExchange = new DrawExchange(drawAnimal);
-    	
-    	regist(drawDisappear.control);
-    	regist(drawExchange.control);
-    	regist(drawFill.control);
-    	regist(drawLoading.control);
-    	regist(drawSingleScore.control);
-    	regist(drawTip1.control);
+    	drawAutoTip = new DrawAutoTip(fireTextureId);
+    
+    	//将渲染类的控制对象注册到控制中心列表
+    	controlRegister(drawDisappear.control);
+    	controlRegister(drawExchange.control);
+    	controlRegister(drawFill.control);
+    	controlRegister(drawLoading.control);
+    	controlRegister(drawSingleScore.control);
+    	controlRegister(drawTip1.control);
+    	controlRegister(drawAutoTip.control);
 	}
 
 	//初始化纹理的方法
@@ -469,13 +598,14 @@ public class ControlCenter {
 			{
 			case EXCHANGE_START:
 			{
+				clearAutoTip();
 				Bundle b = msg.getData();
 				int col1 = b.getInt("col1");
 				int col2 = b.getInt("col2");
 				int row1 = b.getInt("row1");
 				int row2 = b.getInt("row2");				
-		    	mStatus[col1][row1] = 2;			//处于交换状态
-		    	mStatus[col2][row2] = 0;
+		    	mStatus[col1][row1] = EFT_EXCHANGE;			//处于交换状态
+		    	mStatus[col2][row2] = EFT_NONE;
 		    	setSingleScorePosition(col1, row1);
 		    	drawExchange.init(mPic[col1][row1], col1, row1, mPic[col2][row2], col2, row2);
 				break;
@@ -487,11 +617,9 @@ public class ControlCenter {
 				int col2 = b.getInt("col2");
 				int row1 = b.getInt("row1");
 				int row2 = b.getInt("row2");
-				int picId = mPic[col1][row1];
-				mPic[col1][row1] = mPic[col2][row2];
-				mPic[col2][row2] = picId;
-		    	mStatus[col1][row1] = 1;			//交换状态解除
-		    	mStatus[col2][row2] = 1;
+				exchange(mPic, col1, row1, col2, row2);
+		    	mStatus[col1][row1] = EFT_NORMAL;			//交换状态解除
+		    	mStatus[col2][row2] = EFT_NORMAL;
 				
 				markInLine();				
 				break;
@@ -505,10 +633,11 @@ public class ControlCenter {
 			case DISAPPEAR_END:
 			{
 				int clearCnt = clearPic();
-				score.award(clearCnt);
-				if(score.getAward() > 0)
+				mScore.award(clearCnt);
+				if(mScore.getAward() > 0)
 				{
-					drawTip1.control.start(clearCnt);
+					CtlTip1 ctl = (CtlTip1) drawTip1.control;
+					ctl.init(clearCnt);
 					drawSingleScore.control.start();
 				}
 				clearInline();
@@ -532,25 +661,24 @@ public class ControlCenter {
 		}
     };
     
-    static void setSingleScorePosition(int col, int row)
-    {
-    	if(drawSingleScore.control.isRun()) return;
-    	mSingleScoreW = col;
-    	mSingleScoreH = row;
-    }
     
-    void regist(IControl control)
-    {
-    	if(control != null)	mControlList.add(control);
-    }
-    
+    //控制中心的动作执行
     public void run()
     {
+    	mAutoTipTimer++;
+    	if(mAutoTipTimer > 20 * 5)
+    	{
+    		if(!mIsAutoTip)
+    		{
+    			mIsAutoTip = true;
+    			autoTip();
+    		}
+    	}
 		IControl control = null;		
 		for(int i=0;i<mControlList.size();i++){ 
 			control = mControlList.get(i);
 			control.run();
 		}
     }
-	
+    
 }

@@ -11,13 +11,11 @@
 package elong.CrazyLink.Control;
 import android.os.Message;
 import elong.CrazyLink.Core.ControlCenter;
-import elong.CrazyLink.Interface.IControl;
 
-public class CtlDisappear implements IControl{
+public class CtlDisappear extends CtlBase{
 
 	int mCount = 6;
 	int mTimeCnt = 0;
-	boolean mStop = false;
 
 	public void run()
 	{
@@ -39,12 +37,13 @@ public class CtlDisappear implements IControl{
 	public void start()
 	{
 		mCount = 10;
-		mStop = false;
+		super.start();
 	}
 	
 	public int getCount()
 	{
 		return mCount;
-	}		
+	}
+
 }
 

@@ -12,12 +12,10 @@ package elong.CrazyLink.Control;
 
 import android.os.Message;
 import elong.CrazyLink.Core.ControlCenter;
-import elong.CrazyLink.Interface.IControl;
 
-public class CtlFill implements IControl{
+public class CtlFill extends CtlBase{
 	int mDeltaY;	
 	int mStep = 25;				//Æ«ÒÆ²½³¤	
-	boolean mStop = false;			//ÊÇ·ñÍ£Ö¹×´Ì¬
 
 	public CtlFill()
 	{
@@ -43,16 +41,17 @@ public class CtlFill implements IControl{
 			}			
 		}
 	}
-	
-	public void start()
-	{
-		mDeltaY = 100;
-		mStop = false;
-	}
-	
+		
 	public float getY()
 	{
 		return mDeltaY/100.0f;
 	}
+
+	public void start()
+	{
+		mDeltaY = 100;
+		super.start();
+	}
+
 }
 

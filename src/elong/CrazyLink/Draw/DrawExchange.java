@@ -13,6 +13,7 @@ package elong.CrazyLink.Draw;
 import javax.microedition.khronos.opengles.GL10;
 import elong.CrazyLink.CrazyLinkConstent;
 import elong.CrazyLink.Control.CtlExchange;
+import elong.CrazyLink.Interface.IControl;
 
 public class DrawExchange {
 
@@ -25,7 +26,7 @@ public class DrawExchange {
 	int mRow1 = 0;
 	int mRow2 = 0;
 	
-	public CtlExchange control;			//动态控制效果
+	public IControl control;
 	
 	public DrawExchange(DrawAnimal drawAnimal)
 	{
@@ -47,18 +48,19 @@ public class DrawExchange {
 		mCol2 = col2;
 		mRow1 = row1;
 		mRow2 = row2;		
-		control.init(col1, row1, col2, row2);
+		((CtlExchange)control).init(col1, row1, col2, row2);
 	}
 	
 	public void draw(GL10 gl)
 	{
+		CtlExchange ctl = (CtlExchange) control;
 		if(!control.isRun()) return;
 		gl.glPushMatrix();		
-		gl.glTranslatef(control.getX1()*CrazyLinkConstent.translateRatio, control.getY1()*CrazyLinkConstent.translateRatio, 0f);
+		gl.glTranslatef(ctl.getX1()*CrazyLinkConstent.translateRatio, ctl.getY1()*CrazyLinkConstent.translateRatio, 0f);
 		drawAnimal.draw(gl, mWitch1, mCol1, mRow1);
 		gl.glPopMatrix();
 		gl.glPushMatrix();		
-		gl.glTranslatef(control.getX2()*CrazyLinkConstent.translateRatio, control.getY2()*CrazyLinkConstent.translateRatio, 0f);
+		gl.glTranslatef(ctl.getX2()*CrazyLinkConstent.translateRatio, ctl.getY2()*CrazyLinkConstent.translateRatio, 0f);
 		drawAnimal.draw(gl, mWitch2, mCol2, mRow2);
 		gl.glPopMatrix();		
 	}

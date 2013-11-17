@@ -10,14 +10,11 @@
  ********************************************************/
 package elong.CrazyLink.Control;
 
-import elong.CrazyLink.Interface.IControl;
-
-public class CtlSingleScore implements IControl{
+public class CtlSingleScore extends CtlBase{
 	
 	int mDeltaY = 0;
 	int mDelta = 1;
 	int mCount = 0;
-	boolean mStop = true;
 	
 	public void run()
 	{
@@ -38,16 +35,10 @@ public class CtlSingleScore implements IControl{
 	
 	public void start()
 	{
-		if(!mStop) return;
 		mDeltaY = 0;
 		mCount = 0;
-		mStop = false;		
+		super.start();
 	}
-	
-	public boolean isRun()
-	{
-		return !mStop;
-	}
-	
+		
 }
 

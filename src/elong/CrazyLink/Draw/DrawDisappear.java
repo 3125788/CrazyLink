@@ -13,12 +13,13 @@ package elong.CrazyLink.Draw;
 import javax.microedition.khronos.opengles.GL10;
 
 import elong.CrazyLink.Control.CtlDisappear;
+import elong.CrazyLink.Interface.IControl;
 
 public class DrawDisappear {
 
 	DrawAnimal drawAnimal;
 	
-	public CtlDisappear control;			//动态控制效果
+	public IControl control;
 	
 	public DrawDisappear(DrawAnimal drawAnimal)
 	{
@@ -28,8 +29,9 @@ public class DrawDisappear {
 	}
 	
 	public void draw(GL10 gl, int witch, int col, int row)
-	{			
-		if(0 == control.getCount() % 2)	//这里实现闪动	
+	{
+		if(!control.isRun()) return;
+		if(0 == ((CtlDisappear)control).getCount() % 2)	//这里实现闪动	
 		{
 			gl.glPushMatrix();
 			drawAnimal.draw(gl, witch, col, row);

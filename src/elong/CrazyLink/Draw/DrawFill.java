@@ -13,6 +13,7 @@ package elong.CrazyLink.Draw;
 import javax.microedition.khronos.opengles.GL10;
 import elong.CrazyLink.CrazyLinkConstent;
 import elong.CrazyLink.Control.CtlFill;
+import elong.CrazyLink.Interface.IControl;
 
 public class DrawFill {
 
@@ -25,7 +26,7 @@ public class DrawFill {
 	int mRow1 = 0;
 	int mRow2 = 0;
 	
-	public CtlFill control;			//动态控制效果
+	public IControl control;
 	
 	public DrawFill(DrawAnimal drawAnimal)
 	{
@@ -36,8 +37,10 @@ public class DrawFill {
 	
 	public void draw(GL10 gl, int witch, int col, int row)
 	{
+		//if(!control.isRun()) return;
+		CtlFill ctl = (CtlFill)control;
 		gl.glPushMatrix();		
-		gl.glTranslatef(0f, control.getY()*CrazyLinkConstent.translateRatio, 0f);
+		gl.glTranslatef(0f, ctl.getY()*CrazyLinkConstent.translateRatio, 0f);
 		drawAnimal.draw(gl, witch, col, row);
 		gl.glPopMatrix();
 	}

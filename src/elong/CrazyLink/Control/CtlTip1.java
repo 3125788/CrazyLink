@@ -10,9 +10,7 @@
  ********************************************************/
 package elong.CrazyLink.Control;
 
-import elong.CrazyLink.Interface.IControl;
-
-public class CtlTip1 implements IControl{
+public class CtlTip1 extends CtlBase{
 	
 	int mDeltaW = 0;
 	int mDeltaH = 0;
@@ -21,7 +19,6 @@ public class CtlTip1 implements IControl{
 	int mDirection = 0;
 	int mKeep = 0;
 	int mPicId = 0;
-	boolean mStop = true;
 	
 	public void run()
 	{
@@ -89,7 +86,7 @@ public class CtlTip1 implements IControl{
 		return mDeltaY;
 	}
 	
-	public void start(int clearCnt)
+	public void init(int clearCnt)
 	{
 		if(clearCnt < 3) return;
 		if(!mStop) return;
@@ -97,18 +94,13 @@ public class CtlTip1 implements IControl{
 		mDeltaH = 0;
 		mDeltaX = 0;
 		mDeltaY = 0;
-		mStop = false;
 		mDirection = 0;
 		
 		if(clearCnt >6) clearCnt = 6;
-		mPicId = clearCnt - 3;		
+		mPicId = clearCnt - 3;
+		super.start();
 	}
-	
-	public boolean isRun()
-	{
-		return !mStop;
-	}
-	
+		
 	public int getPicId()
 	{
 		return mPicId;

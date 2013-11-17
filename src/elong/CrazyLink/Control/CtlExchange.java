@@ -13,9 +13,8 @@ package elong.CrazyLink.Control;
 import android.os.Bundle;
 import android.os.Message;
 import elong.CrazyLink.Core.ControlCenter;
-import elong.CrazyLink.Interface.IControl;
 
-public class CtlExchange implements IControl{
+public class CtlExchange extends CtlBase{
 	int mCol1 = 0;					//坐标值
 	int mCol2 = 0;
 	int mRow1 = 0;
@@ -30,9 +29,7 @@ public class CtlExchange implements IControl{
 	boolean mDirectionX = true;   //运动方向控制
 	boolean mDirectionY = true;
 	boolean mNeedMoveX = false;	//是否需要偏移
-	boolean mNeedMoveY = false;
-	
-	boolean mStop = false;			//是否停止状态
+	boolean mNeedMoveY = false;	
 
 	public void init(int col1, int row1, int col2, int row2)
 	{
@@ -213,8 +210,4 @@ public class CtlExchange implements IControl{
 		return delta + mDeltaY2/100.0f;
 	}
 	
-	public boolean isRun()
-	{
-		return !mStop;
-	}
 }

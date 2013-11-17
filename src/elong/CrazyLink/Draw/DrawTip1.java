@@ -20,6 +20,7 @@ import javax.microedition.khronos.opengles.GL10;
 
 import elong.CrazyLink.CrazyLinkConstent;
 import elong.CrazyLink.Control.CtlTip1;
+import elong.CrazyLink.Interface.IControl;
 
 public class DrawTip1 {
 	
@@ -28,7 +29,7 @@ public class DrawTip1 {
     int vCount=0;							//顶点数量     
     int textureId;							//纹理索引
     float textureRatio;						//为了准确获取纹理图片中的素材对象，需要设置纹理的变换率
-    public CtlTip1 control;
+    public IControl control;
     
     public DrawTip1(int textureId)
     {
@@ -38,11 +39,11 @@ public class DrawTip1 {
 	//顶点坐标数据的初始化
     private void initVertexBuffer()
     {
-    	    	
-    	int w = CrazyLinkConstent.UNIT_SIZE*control.getW();
-    	int h = CrazyLinkConstent.UNIT_SIZE*control.getH();
-    	float x = control.getX()/10.0f;
-    	float y = control.getY()/10.0f;
+    	CtlTip1 ctl = (CtlTip1)control;
+    	int w = CrazyLinkConstent.UNIT_SIZE*ctl.getW();
+    	int h = CrazyLinkConstent.UNIT_SIZE*ctl.getH();
+    	float x = ctl.getX()/10.0f;
+    	float y = ctl.getY()/10.0f;
     	
         vCount=6;//顶点的数量，一个正方形用两个三角形表示，共需要6个顶点   
         int deltaX = (int)(-(2.0f-x)*96*CrazyLinkConstent.UNIT_SIZE);
@@ -99,7 +100,7 @@ public class DrawTip1 {
     {   
     	if(!control.isRun()) return;    		
     	initVertexBuffer();	//根据col,row初始化顶点坐标
-    	initTextureBuffer(control.getPicId());	//根据witch来初始化纹理顶点数据
+    	initTextureBuffer(((CtlTip1)control).getPicId());	//根据witch来初始化纹理顶点数据
     	//gl.glTranslatef(col * textureRatio, row * textureRatio, 0);	//在x=col,y=row的位置绘制选定的素材对象        
         //顶点坐标，允许使用顶点数组
         gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
