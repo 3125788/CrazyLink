@@ -371,6 +371,11 @@ public class ControlCenter {
 	
 	static void exchange(int pic[][], int col1, int row1, int col2, int row2)
 	{
+		//对交换的坐标进行有效性校验，如果是无效的，则不进行交换
+		if(col1 < 0 || col1 > 6) return;
+		if(col2 < 0 || col2 > 6) return;
+		if(row1 < 0 || row1 > 6) return;
+		if(row2 < 0 || row2 > 6) return;
 		int picId = pic[col1][row1];
 		pic[col1][row1] = pic[col2][row2];
 		pic[col2][row2] = picId;
@@ -393,9 +398,9 @@ public class ControlCenter {
     //只需要交换一步就能成行的，认为满足自动提示条件
     boolean autoTipMethod(int col, int row)
     {
-		for(int i = 1; i < (int)CrazyLinkConstent.GRID_NUM - 1; i++)
+		for(int i = 0; i < (int)CrazyLinkConstent.GRID_NUM; i++)
 		{
-			for(int j = 1; j < (int)CrazyLinkConstent.GRID_NUM - 1; j++) 
+			for(int j = 0; j < (int)CrazyLinkConstent.GRID_NUM; j++) 
 			{
 				exchange(mPicBak, i, j, i-1, j);
 				if(isInLine(mPicBak, i, j)) return true;
@@ -416,7 +421,8 @@ public class ControlCenter {
 		}
     	return false;
     }
-    
+
+    //自动提示
     void autoTip()
     {	
 		for(int i = 0; i < (int)CrazyLinkConstent.GRID_NUM; i++)
@@ -521,7 +527,7 @@ public class ControlCenter {
     	gridTextureId = initTexture(gl, R.drawable.grid);
     	scoreTextureId = initTexture(gl, R.drawable.number);
     	congratulationTextureId = initTexture(gl, R.drawable.word);
-    	fireTextureId = initTexture(gl, R.drawable.fire);
+    	fireTextureId = initTexture(gl, R.drawable.autotip);
 	}
 	
 	//初始化渲染对象
@@ -656,6 +662,7 @@ public class ControlCenter {
 						markInLine();
 					}
 				}
+				clearAutoTip();
 				break;
 			}
 		}
@@ -666,7 +673,7 @@ public class ControlCenter {
     public void run()
     {
     	mAutoTipTimer++;
-    	if(mAutoTipTimer > 20 * 5)
+    	if(mAutoTipTimer > CrazyLinkConstent.AUTOTIP_DELAY)
     	{
     		if(!mIsAutoTip)
     		{

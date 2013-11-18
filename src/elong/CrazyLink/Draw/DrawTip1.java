@@ -98,9 +98,10 @@ public class DrawTip1 {
 
     public void draw(GL10 gl)
     {   
-    	if(!control.isRun()) return;    		
+    	if(!control.isRun()) return;   
+    	CtlTip1 ctl = (CtlTip1)control;
     	initVertexBuffer();	//根据col,row初始化顶点坐标
-    	initTextureBuffer(((CtlTip1)control).getPicId());	//根据witch来初始化纹理顶点数据
+    	initTextureBuffer(ctl.getPicId());	//根据witch来初始化纹理顶点数据
     	//gl.glTranslatef(col * textureRatio, row * textureRatio, 0);	//在x=col,y=row的位置绘制选定的素材对象        
         //顶点坐标，允许使用顶点数组
         gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);

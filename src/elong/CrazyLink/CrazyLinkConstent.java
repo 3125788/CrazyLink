@@ -17,6 +17,10 @@ public class CrazyLinkConstent {
 	public static float translateRatio = 0;
 	public static float denisty = 0;
 	public static float widthPixel = 0;
+	
+	public static int DELAY_MS = 50;	//延迟50MS
+	public static int AUTOTIP_DELAY = 5 * 1000 / DELAY_MS;	//自动提示延迟5秒
+	
 
 	
 	

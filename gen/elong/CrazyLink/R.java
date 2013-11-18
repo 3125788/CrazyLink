@@ -13,7 +13,7 @@ public final class R {
     public static final class drawable {
         public static final int animal=0x7f020000;
         public static final int animal_bak=0x7f020001;
-        public static final int fire=0x7f020002;
+        public static final int autotip=0x7f020002;
         public static final int grid=0x7f020003;
         public static final int icon=0x7f020004;
         public static final int loading_01=0x7f020005;

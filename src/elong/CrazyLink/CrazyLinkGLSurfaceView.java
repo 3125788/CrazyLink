@@ -55,7 +55,7 @@ public class CrazyLinkGLSurfaceView extends GLSurfaceView{
     					try
     			        {
     						controlCenter.run();
-    			      	  	Thread.sleep(50);//ÐÝÏ¢50ms
+    			      	  	Thread.sleep(CrazyLinkConstent.DELAY_MS);//ÐÝÏ¢50ms
     			        }
     			        catch(Exception e)
     			        {
