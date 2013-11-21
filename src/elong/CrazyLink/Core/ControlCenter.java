@@ -28,6 +28,7 @@ import elong.CrazyLink.R;
 import elong.CrazyLink.Control.CtlTip1;
 import elong.CrazyLink.Draw.DrawAnimal;
 import elong.CrazyLink.Draw.DrawAutoTip;
+import elong.CrazyLink.Draw.DrawExplosion;
 import elong.CrazyLink.Draw.DrawSingleScore;
 import elong.CrazyLink.Draw.DrawTip1;
 import elong.CrazyLink.Draw.DrawDisappear;
@@ -57,6 +58,7 @@ public class ControlCenter {
     int scoreTextureId;
     int congratulationTextureId;
     int fireTextureId;
+    int explosionTextureId;
     
     static int mAutoTipTimer = 0;			//自动提示计时器
     
@@ -70,6 +72,7 @@ public class ControlCenter {
 	static public DrawSingleScore drawSingleScore;
 	static public DrawTip1 drawTip1;
 	static public DrawAutoTip drawAutoTip;
+	static public DrawExplosion drawExplosion;
 
 	
 	static Score mScore;	//计算分数
@@ -239,6 +242,7 @@ public class ControlCenter {
 		if (markCount > 0)
 		{
 			drawDisappear.control.start();
+			drawExplosion.control.start();
 			mScore.increase();
 			mScore.increase(markCount);			
 		}
@@ -449,6 +453,7 @@ public class ControlCenter {
 	//将可以自动提示的动物标识出来
 	static void markAutoTip()
 	{
+		boolean isAutoTip = false;
 		for(int i = 0; i < (int)CrazyLinkConstent.GRID_NUM; i++)
 		{
 			for(int j = 0; j < (int)CrazyLinkConstent.GRID_NUM; j++) 
@@ -456,9 +461,11 @@ public class ControlCenter {
 				if (isInLine(mPicBak, i, j))	
 				{
 					mStatus[i][j] = EFT_AUTOTIP;
+					isAutoTip = true;
 				}
 			}
 		}		
+		if(isAutoTip) drawAutoTip.control.start();
 	}
     
 	//将自动提示标识清除
@@ -486,7 +493,6 @@ public class ControlCenter {
 		
 		drawScore.draw(gl,mScore.getScore());
 		drawSingleScore.draw(gl, mSingleScoreW, mSingleScoreH, mScore.getAward());
-		drawAutoTip.control.start();
 		drawTip1.draw(gl);
 		for(int i = 0; i < (int)CrazyLinkConstent.GRID_NUM; i++)
 		{
@@ -504,6 +510,7 @@ public class ControlCenter {
 					drawFill.draw(gl, mPic[i][j], i, j);
 					break;
 				case EFT_DISAPPEAR:	//消除特效
+					drawExplosion.draw(gl, i, j);
 					drawDisappear.draw(gl, mPic[i][j], i, j);
 					break;
 				case EFT_AUTOTIP:	//自动提示特效
@@ -528,6 +535,7 @@ public class ControlCenter {
     	scoreTextureId = initTexture(gl, R.drawable.number);
     	congratulationTextureId = initTexture(gl, R.drawable.word);
     	fireTextureId = initTexture(gl, R.drawable.autotip);
+    	explosionTextureId = initTexture(gl, R.drawable.explosion);
 	}
 	
 	//初始化渲染对象
@@ -543,6 +551,7 @@ public class ControlCenter {
     	drawLoading = new DrawLoading(loadingTextureId);		//创建加载动画素材
     	drawExchange = new DrawExchange(drawAnimal);
     	drawAutoTip = new DrawAutoTip(fireTextureId);
+    	drawExplosion = new DrawExplosion(explosionTextureId);
     
     	//将渲染类的控制对象注册到控制中心列表
     	controlRegister(drawDisappear.control);
@@ -552,6 +561,7 @@ public class ControlCenter {
     	controlRegister(drawSingleScore.control);
     	controlRegister(drawTip1.control);
     	controlRegister(drawAutoTip.control);
+    	controlRegister(drawExplosion.control);
 	}
 
 	//初始化纹理的方法

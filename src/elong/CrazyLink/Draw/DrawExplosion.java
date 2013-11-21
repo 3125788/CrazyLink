@@ -17,12 +17,12 @@ import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import elong.CrazyLink.CrazyLinkConstent;
-import elong.CrazyLink.Control.CtlAutoTip;
+import elong.CrazyLink.Control.CtlExplosion;
 import elong.CrazyLink.Interface.IControl;
 
 import javax.microedition.khronos.opengles.GL10;
 
-public class DrawAutoTip {
+public class DrawExplosion {
 	
 	private IntBuffer   mVertexBuffer;		//顶点坐标数据缓冲
     private FloatBuffer   mTextureBuffer;	//顶点纹理数据缓冲
@@ -32,10 +32,10 @@ public class DrawAutoTip {
     
     public IControl control;
     
-    public DrawAutoTip(int textureId)
+    public DrawExplosion(int textureId)
     {
     	this.textureId=textureId;
-    	control = new CtlAutoTip();
+    	control = new CtlExplosion();
     }	
 	//顶点坐标数据的初始化
     private void initVertexBuffer(int col, int row)
@@ -68,7 +68,7 @@ public class DrawAutoTip {
     //顶点纹理数据的初始化    
     private void initTextureBuffer(int witch)
     {
-        textureRatio = (float)(1/4.0f);		//图片是4个独立的素材对象组成，每次需要根据witch准确地获取对应的素材
+        textureRatio = (float)(1/10.0f);		//图片是10个独立的素材对象组成，每次需要根据witch准确地获取对应的素材
         float textureCoors[]=new float[]	//顶点纹理S、T坐标值数组
 	    {
         	(witch - 1) * textureRatio,0,
@@ -95,7 +95,7 @@ public class DrawAutoTip {
     public void draw(GL10 gl, int col, int row)
     {
     	if (!control.isRun()) return;
-    	CtlAutoTip ctl = (CtlAutoTip)control;
+    	CtlExplosion ctl = (CtlExplosion)control;
     	int witch = ctl.getPicId();
     	initVertexBuffer(col, row);	//根据col,row初始化顶点坐标
     	initTextureBuffer(witch);	//根据witch来初始化纹理顶点数据
