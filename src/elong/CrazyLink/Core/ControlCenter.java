@@ -508,7 +508,7 @@ public class ControlCenter {
 	{
 		CtlMonster ctl = (CtlMonster)drawMonster.control;
 		int pic = mPic[col][row];
-		if(ANIMAL_MONSTER == pic) pic = ctl.getPicId();
+		if(isMonster(col,row)) pic = ctl.getPicId();
 		return pic;
 	}
 	
@@ -706,7 +706,7 @@ public class ControlCenter {
 		    	mStatus[col2][row2] = EFT_NONE;
 		    	setSingleScorePosition(col1, row1);
 		    	int pic1 = getPicId(col1, row1);
-		    	int pic2 = getPicId(col1, row2);
+		    	int pic2 = getPicId(col2, row2);
 		    	drawExchange.init(pic1, col1, row1, pic2, col2, row2);
 				break;
 			}
