@@ -1,9 +1,8 @@
-
 /**********************************************************
  * 项目名称：山寨“爱消除”游戏7日教程
  * 作          者：郑敏新
  * 腾讯微博：SuperCube3D
- * 日          期：2013年10月
+ * 日          期：2013年11月
  * 声          明：版权所有   侵权必究
  * 本源代码供网友研究学习OpenGL ES开发Android应用用，
  * 请勿全部或部分用于商业用途
@@ -18,12 +17,13 @@ import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import elong.CrazyLink.CrazyLinkConstent;
+import elong.CrazyLink.Control.CtlBomb;
 import elong.CrazyLink.Control.CtlMonster;
 import elong.CrazyLink.Interface.IControl;
 
 import javax.microedition.khronos.opengles.GL10;
 
-public class DrawMonster {
+public class DrawBomb {
 	
 	private IntBuffer   mVertexBuffer;		//顶点坐标数据缓冲
     private FloatBuffer   mTextureBuffer;	//顶点纹理数据缓冲
@@ -33,10 +33,10 @@ public class DrawMonster {
     
     public IControl control;
     
-    public DrawMonster(int textureId)
+    public DrawBomb(int textureId)
     {
     	this.textureId=textureId; 
-    	control = new CtlMonster();
+    	control = new CtlBomb();
     }	
 	//顶点坐标数据的初始化
     private void initVertexBuffer(int col, int row)
@@ -69,7 +69,7 @@ public class DrawMonster {
     //顶点纹理数据的初始化    
     private void initTextureBuffer(int witch)
     {
-        textureRatio = (float)(1/8.0f);		//图片是8个独立的素材对象组成，每次需要根据witch准确地获取对应的素材
+        textureRatio = (float)(1/4.0f);		//图片是4个独立的素材对象组成，每次需要根据witch准确地获取对应的素材
         float textureCoors[]=new float[]	//顶点纹理S、T坐标值数组
 	    {
         	(witch - 1) * textureRatio,0,
@@ -95,7 +95,7 @@ public class DrawMonster {
 
     public void draw(GL10 gl, int col, int row)
     {   
-    	CtlMonster ctl = (CtlMonster)control;
+    	CtlBomb ctl = (CtlBomb)control;
     	initVertexBuffer(col, row);	//根据col,row初始化顶点坐标
     	initTextureBuffer(ctl.getPicId());	//根据witch来初始化纹理顶点数据
     	//gl.glTranslatef(col * textureRatio, row * textureRatio, 0);	//在x=col,y=row的位置绘制选定的素材对象        

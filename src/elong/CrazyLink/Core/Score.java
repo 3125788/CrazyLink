@@ -10,6 +10,7 @@
 
 package elong.CrazyLink.Core;
 
+import elong.CrazyLink.CrazyLinkConstent;
 import android.os.Message;
 
 public class Score {
@@ -119,7 +120,7 @@ public class Score {
 		if(clearNum > 3)
 		{
 			mOver3++;
-			if(1 == mOver3 % 10)
+			if(1 == mOver3 % CrazyLinkConstent.MONSTER_APPEAR)
 			{
 				//生成一个MONSTER
 				Message msg = new Message();

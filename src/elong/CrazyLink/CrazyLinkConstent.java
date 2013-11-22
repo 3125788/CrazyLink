@@ -20,6 +20,7 @@ public class CrazyLinkConstent {
 	
 	public static int DELAY_MS = 50;	//延迟50MS
 	public static int AUTOTIP_DELAY = 5 * 1000 / DELAY_MS;	//自动提示延迟5秒
+	public static int MONSTER_APPEAR = 5;	//MONSTER出现的时机
 	
 
 	

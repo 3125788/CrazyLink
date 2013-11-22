@@ -29,6 +29,7 @@ import elong.CrazyLink.Control.CtlMonster;
 import elong.CrazyLink.Control.CtlTip1;
 import elong.CrazyLink.Draw.DrawAnimal;
 import elong.CrazyLink.Draw.DrawAutoTip;
+import elong.CrazyLink.Draw.DrawBomb;
 import elong.CrazyLink.Draw.DrawExplosion;
 import elong.CrazyLink.Draw.DrawMonster;
 import elong.CrazyLink.Draw.DrawSingleScore;
@@ -62,6 +63,7 @@ public class ControlCenter {
     int fireTextureId;
     int explosionTextureId;
     int monsterTextureId;
+    int bombTextureId;
     
     static int mAutoTipTimer = 0;			//自动提示计时器
     
@@ -77,6 +79,7 @@ public class ControlCenter {
 	static public DrawAutoTip drawAutoTip;
 	static public DrawExplosion drawExplosion;
 	static public DrawMonster drawMonster;
+	static public DrawBomb drawBomb;
 
 	
 	static Score mScore;	//计算分数
@@ -94,7 +97,10 @@ public class ControlCenter {
 	static final int EFT_DISAPPEAR  = 4;		//消除效果
 	static final int EFT_AUTOTIP  = 5;		//自动提示效果
 	
-	static final int ANIMAL_MONSTER = 8;
+	static final int ANIMAL_BOMB = 8;		//炸弹
+	static final int ANIMAL_LASER = 9;		//激光
+	static final int ANIMAL_MONSTER = 10;	//怪兽	
+
 
 
 	public ControlCenter(Context context)
@@ -506,10 +512,29 @@ public class ControlCenter {
 	
 	static int getPicId(int col, int row)
 	{
-		CtlMonster ctl = (CtlMonster)drawMonster.control;
 		int pic = mPic[col][row];
-		if(isMonster(col,row)) pic = ctl.getPicId();
+		if(isMonster(col,row)) 
+		{
+			CtlMonster ctl;
+			ctl = (CtlMonster)drawMonster.control;
+			pic = ctl.getPicId();
+		}
+		else if(isBomb(col,row))
+		{
+			pic = ANIMAL_BOMB;
+		}
+		else if(isLaser(col,row))
+		{
+			//pic = ANIMAL_LASER;
+		}
 		return pic;
+	}
+	
+	//正常的渲染效果
+	static boolean isNormalEFT(int col, int row)
+	{
+		if(EFT_NORMAL == mStatus[col][row]) return true;
+		else return false;
 	}
 	
 	public static boolean isMonster(int col, int row)
@@ -517,10 +542,69 @@ public class ControlCenter {
 		if(ANIMAL_MONSTER == mPic[col][row]) return true;
 		else return false;
 	}
+	
+	public static boolean isBomb(int col, int row)
+	{
+		if(ANIMAL_BOMB == mPic[col][row]) return true;
+		else return false;
+	}
+	
+	public static boolean isLaser(int col, int row)
+	{
+		if(ANIMAL_LASER == mPic[col][row]) return true;
+		else return false;
+	}
 
+	
+	static void markSpecialAnimal(int col, int row)
+	{
+		if(isMonster(col, row))
+		{
+			markMonster(col, row);
+		}
+		else if(isBomb(col, row))
+		{
+			markBomb(col, row);
+		}
+		else if(isLaser(col, row))
+		{
+			//markLaser(col,row);
+		}
+		else
+		{}
+	}
+
+	//标记怪兽可消除的格子
 	static void markMonster(int col, int row)
 	{
 		if (isMonster(col,row))
+		{
+			CtlMonster ctl = (CtlMonster)drawMonster.control;		
+			int picId = ctl.getPicId();
+			int markCount = 0;
+			mPic[col][row] = EFT_DISAPPEAR;
+			for(int i = 0; i < (int)CrazyLinkConstent.GRID_NUM; i++)
+			{
+				for(int j = 0; j < (int)CrazyLinkConstent.GRID_NUM; j++)
+				{
+					if(picId == mPic[i][j])
+					{
+						mStatus[i][j] = EFT_DISAPPEAR;
+						markCount++;
+					}						
+				}
+			}
+			drawDisappear.control.start();
+			drawExplosion.control.start();
+			mScore.increase();
+			mScore.increase(markCount);			
+		}
+	}
+	
+	//标记炸弹可消除的格子
+	static void markBomb(int col, int row)
+	{
+		if (isBomb(col,row))
 		{
 			int markCount = 0;
 			for(int i = col-1; i <= col+1; i++)
@@ -543,8 +627,30 @@ public class ControlCenter {
 			mScore.increase(markCount);			
 		}
 	}
+
+	//标记激光可消除的格子
+	static void markLaser(int col, int row)
+	{
+		if (isLaser(col,row))
+		{
+			int markCount = 0;
+			for(int i = 0; i < (int)CrazyLinkConstent.GRID_NUM; i++)
+			{
+				mStatus[col][i] = EFT_DISAPPEAR;
+				mStatus[i][row] = EFT_DISAPPEAR;
+				markCount++;
+				markCount++;
+			}
+			drawDisappear.control.start();
+			drawExplosion.control.start();
+			mScore.increase();
+			mScore.increase(markCount);			
+		}
+	}
+
 	
-	static void genMonster()
+	//生成特殊动物
+	static void genSpecialAnimal()
 	{
 		int data = (int) (Math.random()*1000);
 		data = (data % 49);
@@ -552,7 +658,28 @@ public class ControlCenter {
 		int y = 0;
 		x = data / (int)CrazyLinkConstent.GRID_NUM;
 		y = data % (int)CrazyLinkConstent.GRID_NUM;
-		mPic[x][y] = ANIMAL_MONSTER;
+		
+		while(!isNormalEFT(x,y))
+		{
+			data = (data++) % ((int)CrazyLinkConstent.GRID_NUM * (int)CrazyLinkConstent.GRID_NUM);
+			x = data / (int)CrazyLinkConstent.GRID_NUM;
+			y = data % (int)CrazyLinkConstent.GRID_NUM;			
+		}
+		int animal = data % 2;
+		switch (animal)
+		{
+		case 0:
+			mPic[x][y] = ANIMAL_MONSTER;
+			break;
+		case 1:
+			mPic[x][y] = ANIMAL_BOMB;
+			break;
+		case 2:
+			mPic[x][y] = ANIMAL_LASER;
+			break;
+		default:
+			break;
+		}
 	}
 
 	
@@ -572,10 +699,14 @@ public class ControlCenter {
 				switch (mStatus[i][j])
 				{
 				case EFT_NORMAL:	//正常显示
-					if(ANIMAL_MONSTER == mPic[i][j])
+					if(isMonster(i,j))
+						drawMonster.draw(gl, i, j);
+					else if(isBomb(i,j))
+						drawBomb.draw(gl, i, j);
+					else if(isLaser(i,j))
 						drawMonster.draw(gl, i, j);
 					else
-						drawAnimal.draw(gl,mPic[i][j],i,j);
+						drawAnimal.draw(gl,getPicId(i,j),i,j);
 					break;
 				case EFT_EXCHANGE:	//交换特效
 					drawExchange.draw(gl);		
@@ -614,6 +745,7 @@ public class ControlCenter {
     	fireTextureId = initTexture(gl, R.drawable.autotip);
     	explosionTextureId = initTexture(gl, R.drawable.explosion);
     	monsterTextureId = initTexture(gl, R.drawable.animal);
+    	bombTextureId = initTexture(gl, R.drawable.bomb);
 	}
 	
 	//初始化渲染对象
@@ -631,6 +763,7 @@ public class ControlCenter {
     	drawAutoTip = new DrawAutoTip(fireTextureId);
     	drawExplosion = new DrawExplosion(explosionTextureId);
     	drawMonster = new DrawMonster(monsterTextureId);
+    	drawBomb = new DrawBomb(bombTextureId);
     
     	//将渲染类的控制对象注册到控制中心列表
     	controlRegister(drawDisappear.control);
@@ -642,6 +775,7 @@ public class ControlCenter {
     	controlRegister(drawAutoTip.control);
     	controlRegister(drawExplosion.control);
     	controlRegister(drawMonster.control);
+    	controlRegister(drawBomb.control);
 	}
 
 	//初始化纹理的方法
@@ -770,10 +904,11 @@ public class ControlCenter {
 				Bundle b = msg.getData();
 				int col = b.getInt("col1");
 				int row = b.getInt("row1");
-				markMonster(col, row);
+				setSingleScorePosition(col, row);
+				markSpecialAnimal(col, row);
 				break;
 			case GEN_MONSTER:
-				genMonster();
+				genSpecialAnimal();
 				break;
 			}
 		}
