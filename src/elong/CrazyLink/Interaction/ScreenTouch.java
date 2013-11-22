@@ -156,6 +156,8 @@ public class ScreenTouch {
 		Bundle b = new Bundle();
 		int x  = getGridX();
 		int y = getGridY();
+		if(!(x >= 0 && x < (int)CrazyLinkConstent.GRID_NUM)) return;
+		if(!(y >= 0 && y < (int)CrazyLinkConstent.GRID_NUM)) return;
 		b.putInt("col1", x);
 		b.putInt("row1", y);
 		if(isValidTouchMove())	//校验动作是否合法
