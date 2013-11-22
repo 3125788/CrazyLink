@@ -12,18 +12,17 @@ package elong.CrazyLink.Control;
 
 
 //自动提示效果
-public class CtlAutoTip extends CtlBase{
+public class CtlMonster extends CtlBase{
 	
 	int mPicId = 1;
 	int mTimeCnt = 0;
 
 	public void run()
 	{
-		if(mStop) return;
 		mTimeCnt++;
-		if (1 == (mTimeCnt % 2)) return;		//降频
+		if (1 != (mTimeCnt % 3)) return;		//降频
 		mPicId++;
-		if (mPicId > 4) mPicId = 1;
+		if (mPicId > 7) mPicId = 1;
 	}
 	
 	public int getPicId()
@@ -31,4 +30,5 @@ public class CtlAutoTip extends CtlBase{
 		return mPicId;
 	}			
 }
+
 

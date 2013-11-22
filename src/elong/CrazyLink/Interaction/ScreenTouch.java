@@ -134,7 +134,7 @@ public class ScreenTouch {
 		return neighborY;
 	}
 	
-	boolean isValidTouch()
+	boolean isValidTouchMove()
 	{		
 		//校验触摸操作是否有效
 		if(-1 == mGridX || -1 == mGridY) return false;			
@@ -152,17 +152,22 @@ public class ScreenTouch {
 	//产生有效的触摸事件，发消息给mHandler统一处理
 	void RaiseTouchEvent()
 	{
-		if(!isValidTouch())	//校验动作是否合法
-			return;
-		//Toast.makeText(mContext, "Direction:" + getDirection() + " (" + getGridX() + " ," + getGridY() + ")",
-		//	     Toast.LENGTH_SHORT).show();
-		Bundle b = new Bundle();
-		b.putInt("col1", getGridX());
-		b.putInt("row1", getGridY());
-		b.putInt("col2", getNeighborX());
-		b.putInt("row2", getNeighborY());
 		Message msg = new Message();
-	    msg.what = ControlCenter.EXCHANGE_START;
+		Bundle b = new Bundle();
+		int x  = getGridX();
+		int y = getGridY();
+		b.putInt("col1", x);
+		b.putInt("row1", y);
+		if(isValidTouchMove())	//校验动作是否合法
+		{		
+			b.putInt("col2", getNeighborX());
+			b.putInt("row2", getNeighborY());	
+			msg.what = ControlCenter.EXCHANGE_START;
+		}
+		else
+		{
+			msg.what = ControlCenter.SCREEN_TOUCH;
+		}
 		msg.setData(b);
 	    ControlCenter.mHandler.sendMessage(msg);
 	}

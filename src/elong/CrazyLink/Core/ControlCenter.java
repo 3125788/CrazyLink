@@ -25,10 +25,12 @@ import android.os.Handler;
 import android.os.Message;
 import elong.CrazyLink.CrazyLinkConstent;
 import elong.CrazyLink.R;
+import elong.CrazyLink.Control.CtlMonster;
 import elong.CrazyLink.Control.CtlTip1;
 import elong.CrazyLink.Draw.DrawAnimal;
 import elong.CrazyLink.Draw.DrawAutoTip;
 import elong.CrazyLink.Draw.DrawExplosion;
+import elong.CrazyLink.Draw.DrawMonster;
 import elong.CrazyLink.Draw.DrawSingleScore;
 import elong.CrazyLink.Draw.DrawTip1;
 import elong.CrazyLink.Draw.DrawDisappear;
@@ -59,6 +61,7 @@ public class ControlCenter {
     int congratulationTextureId;
     int fireTextureId;
     int explosionTextureId;
+    int monsterTextureId;
     
     static int mAutoTipTimer = 0;			//自动提示计时器
     
@@ -73,6 +76,7 @@ public class ControlCenter {
 	static public DrawTip1 drawTip1;
 	static public DrawAutoTip drawAutoTip;
 	static public DrawExplosion drawExplosion;
+	static public DrawMonster drawMonster;
 
 	
 	static Score mScore;	//计算分数
@@ -89,6 +93,8 @@ public class ControlCenter {
 	static final int EFT_FILL  = 3;			//跌落效果
 	static final int EFT_DISAPPEAR  = 4;		//消除效果
 	static final int EFT_AUTOTIP  = 5;		//自动提示效果
+	
+	static final int ANIMAL_MONSTER = 8;
 
 
 	public ControlCenter(Context context)
@@ -244,6 +250,7 @@ public class ControlCenter {
 			drawDisappear.control.start();
 			drawExplosion.control.start();
 			mScore.increase();
+			mScore.calcTotal(markCount);
 			mScore.increase(markCount);			
 		}
 		else
@@ -484,6 +491,69 @@ public class ControlCenter {
 		mIsAutoTip = false;
 		mAutoTipTimer = 0;
 	}
+	
+	//恢复正常状态
+	static void clearStatus()
+	{
+		for(int i = 0; i < (int)CrazyLinkConstent.GRID_NUM; i++)
+		{
+			for(int j = 0; j < (int)CrazyLinkConstent.GRID_NUM; j++) 
+			{
+				mStatus[i][j] = EFT_NORMAL;
+			}
+		}						
+	}
+	
+	static int getPicId(int col, int row)
+	{
+		CtlMonster ctl = (CtlMonster)drawMonster.control;
+		int pic = mPic[col][row];
+		if(ANIMAL_MONSTER == pic) pic = ctl.getPicId();
+		return pic;
+	}
+	
+	public static boolean isMonster(int col, int row)
+	{
+		if(ANIMAL_MONSTER == mPic[col][row]) return true;
+		else return false;
+	}
+
+	static void markMonster(int col, int row)
+	{
+		if (isMonster(col,row))
+		{
+			int markCount = 0;
+			for(int i = col-1; i <= col+1; i++)
+			{
+				if(i >= 0 && i < (int)CrazyLinkConstent.GRID_NUM)
+				{
+					for(int j = row-1; j <= row+1; j++)
+					{
+						if(j >= 0 && j < (int)CrazyLinkConstent.GRID_NUM)
+						{
+							mStatus[i][j] = EFT_DISAPPEAR;
+							markCount++;
+						}						
+					}
+				}
+			}
+			drawDisappear.control.start();
+			drawExplosion.control.start();
+			mScore.increase();
+			mScore.increase(markCount);			
+		}
+	}
+	
+	static void genMonster()
+	{
+		int data = (int) (Math.random()*1000);
+		data = (data % 49);
+		int x = 0;
+		int y = 0;
+		x = data / (int)CrazyLinkConstent.GRID_NUM;
+		y = data % (int)CrazyLinkConstent.GRID_NUM;
+		mPic[x][y] = ANIMAL_MONSTER;
+	}
 
 	
 	public void draw(GL10 gl)
@@ -494,6 +564,7 @@ public class ControlCenter {
 		drawScore.draw(gl,mScore.getScore());
 		drawSingleScore.draw(gl, mSingleScoreW, mSingleScoreH, mScore.getAward());
 		drawTip1.draw(gl);
+		
 		for(int i = 0; i < (int)CrazyLinkConstent.GRID_NUM; i++)
 		{
 			for(int j = 0; j < (int)CrazyLinkConstent.GRID_NUM; j++)
@@ -501,17 +572,23 @@ public class ControlCenter {
 				switch (mStatus[i][j])
 				{
 				case EFT_NORMAL:	//正常显示
-					drawAnimal.draw(gl,mPic[i][j],i,j);
+					if(ANIMAL_MONSTER == mPic[i][j])
+						drawMonster.draw(gl, i, j);
+					else
+						drawAnimal.draw(gl,mPic[i][j],i,j);
 					break;
 				case EFT_EXCHANGE:	//交换特效
 					drawExchange.draw(gl);		
 					break;
 				case EFT_FILL:	//跌落特效
-					drawFill.draw(gl, mPic[i][j], i, j);
+				{
+					int pic = getPicId(i,j);
+					drawFill.draw(gl, pic, i, j);
 					break;
+				}
 				case EFT_DISAPPEAR:	//消除特效
 					drawExplosion.draw(gl, i, j);
-					drawDisappear.draw(gl, mPic[i][j], i, j);
+					drawDisappear.draw(gl, getPicId(i,j), i, j);
 					break;
 				case EFT_AUTOTIP:	//自动提示特效
 					drawAutoTip.draw(gl, i, j);
@@ -536,6 +613,7 @@ public class ControlCenter {
     	congratulationTextureId = initTexture(gl, R.drawable.word);
     	fireTextureId = initTexture(gl, R.drawable.autotip);
     	explosionTextureId = initTexture(gl, R.drawable.explosion);
+    	monsterTextureId = initTexture(gl, R.drawable.animal);
 	}
 	
 	//初始化渲染对象
@@ -552,6 +630,7 @@ public class ControlCenter {
     	drawExchange = new DrawExchange(drawAnimal);
     	drawAutoTip = new DrawAutoTip(fireTextureId);
     	drawExplosion = new DrawExplosion(explosionTextureId);
+    	drawMonster = new DrawMonster(monsterTextureId);
     
     	//将渲染类的控制对象注册到控制中心列表
     	controlRegister(drawDisappear.control);
@@ -562,6 +641,7 @@ public class ControlCenter {
     	controlRegister(drawTip1.control);
     	controlRegister(drawAutoTip.control);
     	controlRegister(drawExplosion.control);
+    	controlRegister(drawMonster.control);
 	}
 
 	//初始化纹理的方法
@@ -601,6 +681,8 @@ public class ControlCenter {
 	public static final int LOADING_END = 4;
 	public static final int DISAPPEAR_END = 5;
 	public static final int FILL_END = 6;
+	public static final int SCREEN_TOUCH = 7;
+	public static final int GEN_MONSTER = 8;
 
 
 	
@@ -623,7 +705,9 @@ public class ControlCenter {
 		    	mStatus[col1][row1] = EFT_EXCHANGE;			//处于交换状态
 		    	mStatus[col2][row2] = EFT_NONE;
 		    	setSingleScorePosition(col1, row1);
-		    	drawExchange.init(mPic[col1][row1], col1, row1, mPic[col2][row2], col2, row2);
+		    	int pic1 = getPicId(col1, row1);
+		    	int pic2 = getPicId(col1, row2);
+		    	drawExchange.init(pic1, col1, row1, pic2, col2, row2);
 				break;
 			}
 			case EXCHANGE_END:
@@ -657,7 +741,14 @@ public class ControlCenter {
 					drawSingleScore.control.start();
 				}
 				clearInline();
-				markFill();
+				if(isNeedFill())
+				{
+					markFill();
+				}
+				else
+				{
+					clearStatus();
+				}	
 				break;
 			}
 			case FILL_END:				
@@ -667,12 +758,22 @@ public class ControlCenter {
 				}
 				else
 				{
+					clearStatus();
 					if(isNeedClear())
 					{
 						markInLine();
 					}
 				}
 				clearAutoTip();
+				break;
+			case SCREEN_TOUCH:
+				Bundle b = msg.getData();
+				int col = b.getInt("col1");
+				int row = b.getInt("row1");
+				markMonster(col, row);
+				break;
+			case GEN_MONSTER:
+				genMonster();
 				break;
 			}
 		}

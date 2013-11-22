@@ -10,11 +10,15 @@
 
 package elong.CrazyLink.Core;
 
+import android.os.Message;
+
 public class Score {
 	int mTotalScore = 0;	//总成绩
 	int mAwardScore = 0;	//当次的奖励
 	float mAwardRatio = 0;	//奖励倍数
 	int mContinueCnt = 0;	//连续消除次数
+	
+	int mOver3 = 0;
 	
 	public Score()
 	{
@@ -108,6 +112,21 @@ public class Score {
 	public void increase(int clearNum)
 	{
 		mAwardRatio += (float)clearNum / 5;
+	}
+	
+	public void calcTotal(int clearNum)
+	{
+		if(clearNum > 3)
+		{
+			mOver3++;
+			if(1 == mOver3 % 10)
+			{
+				//生成一个MONSTER
+				Message msg = new Message();
+				msg.what = ControlCenter.GEN_MONSTER;
+			    ControlCenter.mHandler.sendMessage(msg);	
+			}				
+		}
 	}
 
 }

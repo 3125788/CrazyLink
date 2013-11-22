@@ -33,17 +33,9 @@ public class CtlExplosion extends CtlBase{
 	
 	public void start()
 	{
+		mPicId = 1;
 		mStop = false;
 	}
 	
-	public void end()
-	{
-		mStop = true;
-	}
-	
-	public boolean isRun()
-	{
-		return !mStop;
-	}
 }
 
