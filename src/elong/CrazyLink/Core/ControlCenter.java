@@ -652,8 +652,9 @@ public class ControlCenter {
 	//生成特殊动物
 	static void genSpecialAnimal()
 	{
+		int cnt = 0;
 		int data = (int) (Math.random()*1000);
-		data = (data % 49);
+		data = (data % ((int)CrazyLinkConstent.GRID_NUM * (int)CrazyLinkConstent.GRID_NUM));
 		int x = 0;
 		int y = 0;
 		x = data / (int)CrazyLinkConstent.GRID_NUM;
@@ -663,7 +664,9 @@ public class ControlCenter {
 		{
 			data = (data++) % ((int)CrazyLinkConstent.GRID_NUM * (int)CrazyLinkConstent.GRID_NUM);
 			x = data / (int)CrazyLinkConstent.GRID_NUM;
-			y = data % (int)CrazyLinkConstent.GRID_NUM;			
+			y = data % (int)CrazyLinkConstent.GRID_NUM;
+			cnt++;
+			if(cnt>10) break;     	//预防无法正常退出
 		}
 		int animal = data % 2;
 		switch (animal)
@@ -713,8 +716,7 @@ public class ControlCenter {
 					break;
 				case EFT_FILL:	//跌落特效
 				{
-					int pic = getPicId(i,j);
-					drawFill.draw(gl, pic, i, j);
+					drawFill.draw(gl, getPicId(i,j), i, j);
 					break;
 				}
 				case EFT_DISAPPEAR:	//消除特效
@@ -723,7 +725,7 @@ public class ControlCenter {
 					break;
 				case EFT_AUTOTIP:	//自动提示特效
 					drawAutoTip.draw(gl, i, j);
-					drawAnimal.draw(gl,mPic[i][j],i,j);
+					drawAnimal.draw(gl,getPicId(i,j),i,j);
 					break;
 				}				                  
 			}
@@ -816,7 +818,7 @@ public class ControlCenter {
 	public static final int DISAPPEAR_END = 5;
 	public static final int FILL_END = 6;
 	public static final int SCREEN_TOUCH = 7;
-	public static final int GEN_MONSTER = 8;
+	public static final int GEN_SPECIALANIMAL = 8;
 
 
 	
@@ -907,7 +909,7 @@ public class ControlCenter {
 				setSingleScorePosition(col, row);
 				markSpecialAnimal(col, row);
 				break;
-			case GEN_MONSTER:
+			case GEN_SPECIALANIMAL:
 				genSpecialAnimal();
 				break;
 			}

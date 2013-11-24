@@ -18,7 +18,6 @@ import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import elong.CrazyLink.CrazyLinkConstent;
 import elong.CrazyLink.Control.CtlBomb;
-import elong.CrazyLink.Control.CtlMonster;
 import elong.CrazyLink.Interface.IControl;
 
 import javax.microedition.khronos.opengles.GL10;

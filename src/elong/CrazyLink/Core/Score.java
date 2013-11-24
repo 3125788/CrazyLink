@@ -19,7 +19,8 @@ public class Score {
 	float mAwardRatio = 0;	//奖励倍数
 	int mContinueCnt = 0;	//连续消除次数
 	
-	int mOver3 = 0;
+	int mOver3 = 0;			//超过3个
+	int mJust3 = 0;			//等于3个
 	
 	public Score()
 	{
@@ -124,9 +125,21 @@ public class Score {
 			{
 				//生成一个MONSTER
 				Message msg = new Message();
-				msg.what = ControlCenter.GEN_MONSTER;
+				msg.what = ControlCenter.GEN_SPECIALANIMAL;
 			    ControlCenter.mHandler.sendMessage(msg);	
 			}				
+		}
+		else
+		{
+			mJust3++;
+			if((CrazyLinkConstent.MONSTER_APPEAR * 3 - 1) == mJust3 % (CrazyLinkConstent.MONSTER_APPEAR * 3))
+			{
+				//生成一个MONSTER
+				Message msg = new Message();
+				msg.what = ControlCenter.GEN_SPECIALANIMAL;
+			    ControlCenter.mHandler.sendMessage(msg);	
+			}				
+			
 		}
 	}
 
