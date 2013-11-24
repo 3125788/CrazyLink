@@ -25,6 +25,7 @@ import android.os.Handler;
 import android.os.Message;
 import elong.CrazyLink.CrazyLinkConstent;
 import elong.CrazyLink.R;
+import elong.CrazyLink.Control.CtlExchange;
 import elong.CrazyLink.Control.CtlMonster;
 import elong.CrazyLink.Control.CtlTip1;
 import elong.CrazyLink.Draw.DrawAnimal;
@@ -70,7 +71,7 @@ public class ControlCenter {
 	static public DrawAnimal drawAnimal;
 	static public DrawLoading drawLoading;
 	static public DrawGrid drawGrid;
-	static public DrawExchange drawExchange;
+	static ArrayList<DrawExchange> mDrawExchangeList = new ArrayList<DrawExchange>();
 	static public DrawDisappear drawDisappear;
 	static public DrawFill drawFill;
 	static public DrawScore drawScore;
@@ -712,7 +713,7 @@ public class ControlCenter {
 						drawAnimal.draw(gl,getPicId(i,j),i,j);
 					break;
 				case EFT_EXCHANGE:	//交换特效
-					drawExchange.draw(gl);		
+					drawExchangeRun(gl);							
 					break;
 				case EFT_FILL:	//跌落特效
 				{
@@ -760,16 +761,14 @@ public class ControlCenter {
     	drawScore = new DrawScore(scoreTextureId);
     	drawSingleScore = new DrawSingleScore(gl);
     	drawTip1 = new DrawTip1(congratulationTextureId);
-    	drawLoading = new DrawLoading(loadingTextureId);		//创建加载动画素材
-    	drawExchange = new DrawExchange(drawAnimal);
+    	drawLoading = new DrawLoading(loadingTextureId);		//创建加载动画素材    	
     	drawAutoTip = new DrawAutoTip(fireTextureId);
     	drawExplosion = new DrawExplosion(explosionTextureId);
     	drawMonster = new DrawMonster(monsterTextureId);
     	drawBomb = new DrawBomb(bombTextureId);
     
     	//将渲染类的控制对象注册到控制中心列表
-    	controlRegister(drawDisappear.control);
-    	controlRegister(drawExchange.control);
+    	controlRegister(drawDisappear.control);    	
     	controlRegister(drawFill.control);
     	controlRegister(drawLoading.control);
     	controlRegister(drawSingleScore.control);
@@ -778,6 +777,44 @@ public class ControlCenter {
     	controlRegister(drawExplosion.control);
     	controlRegister(drawMonster.control);
     	controlRegister(drawBomb.control);
+    	
+    	initExchangeList();
+	}
+	
+	void initExchangeList()
+	{
+		DrawExchange drawExchange;
+		for(int i = 0; i < CrazyLinkConstent.EXCHANGE_OBJ; i++)
+		{
+			drawExchange = new DrawExchange(drawAnimal);
+			controlRegister(drawExchange.control);
+			mDrawExchangeList.add(drawExchange);
+		}
+	}
+	
+	static DrawExchange getDrawExchange()
+	{
+		DrawExchange drawExchange;
+		CtlExchange ctl;
+		for(int i = 0; i < CrazyLinkConstent.EXCHANGE_OBJ; i++)
+		{
+			drawExchange = mDrawExchangeList.get(i);
+			ctl = (CtlExchange)drawExchange.control;
+			if(!ctl.isRun()) return drawExchange;				
+		}
+		return null;
+	}
+	
+	void drawExchangeRun(GL10 gl)
+	{
+		DrawExchange drawExchange;
+		CtlExchange ctl;
+		for(int i = 0; i < CrazyLinkConstent.EXCHANGE_OBJ; i++)
+		{
+			drawExchange = mDrawExchangeList.get(i);
+			ctl = (CtlExchange)drawExchange.control;
+			if(ctl.isRun()) drawExchange.draw(gl);				
+		}		
 	}
 
 	//初始化纹理的方法
@@ -843,7 +880,8 @@ public class ControlCenter {
 		    	setSingleScorePosition(col1, row1);
 		    	int pic1 = getPicId(col1, row1);
 		    	int pic2 = getPicId(col2, row2);
-		    	drawExchange.init(pic1, col1, row1, pic2, col2, row2);
+		    	DrawExchange drawExchange = getDrawExchange();
+		    	if(drawExchange != null) drawExchange.init(pic1, col1, row1, pic2, col2, row2);
 				break;
 			}
 			case EXCHANGE_END:
