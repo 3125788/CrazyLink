@@ -25,6 +25,7 @@ import android.os.Handler;
 import android.os.Message;
 import elong.CrazyLink.CrazyLinkConstent;
 import elong.CrazyLink.R;
+import elong.CrazyLink.Control.CtlDisappear;
 import elong.CrazyLink.Control.CtlExchange;
 import elong.CrazyLink.Control.CtlMonster;
 import elong.CrazyLink.Control.CtlTip1;
@@ -48,10 +49,12 @@ public class ControlCenter {
 
 	Context mContext;
 	
-	static int mPic[][];				//对应格子显示的图片，调用DrawAnimal渲染
-	static int mPicBak[][];				//mPic的副本，用于autotip计算
+	static ActionTokenPool mToken;		//操作令牌，只有获取到令牌才能操作
 	
-	static int mStatus[][];		//0：不显示；1：显示动物；2:显示交换特效；3:跌落特效；4:消除特效
+	static int mAnimalPic[][];			//对应格子显示的图片，调用DrawAnimal渲染
+	static int mPicBak[][];				//mPic的副本，用于autotip计算
+	static int mEffect[][];				//0：不显示；1：显示动物；2:显示交换特效；3:跌落特效；4:消除特效
+	static int mDisappearToken[][];		//消除特效获取的TOKEN
 	
 	static int mSingleScoreW = 0;	//显示当次奖励的位置
 	static int mSingleScoreH = 0;
@@ -72,7 +75,7 @@ public class ControlCenter {
 	static public DrawLoading drawLoading;
 	static public DrawGrid drawGrid;
 	static ArrayList<DrawExchange> mDrawExchangeList = new ArrayList<DrawExchange>();
-	static public DrawDisappear drawDisappear;
+	static ArrayList<DrawDisappear> mDrawDisappearList = new ArrayList<DrawDisappear>();
 	static public DrawFill drawFill;
 	static public DrawScore drawScore;
 	static public DrawSingleScore drawSingleScore;
@@ -94,9 +97,9 @@ public class ControlCenter {
 	static final int EFT_NONE  = 0;			//空白
 	static final int EFT_NORMAL  = 1;		//正常，无特殊效果
 	static final int EFT_EXCHANGE  = 2;		//交换效果
-	static final int EFT_FILL  = 3;			//跌落效果
-	static final int EFT_DISAPPEAR  = 4;		//消除效果
-	static final int EFT_AUTOTIP  = 5;		//自动提示效果
+	static final int EFT_FILL  = 3;			//跌落效果	
+	static final int EFT_AUTOTIP  = 4;		//自动提示效果
+	static final int EFT_DISAPPEAR  = 5;	//消除效果
 	
 	static final int ANIMAL_BOMB = 8;		//炸弹
 	static final int ANIMAL_LASER = 9;		//激光
@@ -108,9 +111,11 @@ public class ControlCenter {
 	{
 		mContext = context;
 		mScore = new Score();
-	    mPic = new int[(int) CrazyLinkConstent.GRID_NUM][(int) CrazyLinkConstent.GRID_NUM];
+	    mAnimalPic = new int[(int) CrazyLinkConstent.GRID_NUM][(int) CrazyLinkConstent.GRID_NUM];
 	    mPicBak = new int[(int) CrazyLinkConstent.GRID_NUM][(int) CrazyLinkConstent.GRID_NUM];
-	    mStatus = new int[(int) CrazyLinkConstent.GRID_NUM][(int) CrazyLinkConstent.GRID_NUM];
+	    mEffect = new int[(int) CrazyLinkConstent.GRID_NUM][(int) CrazyLinkConstent.GRID_NUM];
+	    mDisappearToken = new int[(int) CrazyLinkConstent.GRID_NUM][(int) CrazyLinkConstent.GRID_NUM];
+	    mToken = new ActionTokenPool();
 		init();
 	}
 	
@@ -121,15 +126,26 @@ public class ControlCenter {
 		{
 			for(int j = 0; j < (int)CrazyLinkConstent.GRID_NUM; j++) 
 			{
-				mPic[i][j] = getRandom();
-				while (isInLine(mPic, i,j))
+				mAnimalPic[i][j] = getRandom();
+				while (isInLine(mAnimalPic, i,j))
 				{
-					mPic[i][j] = getRandom();	
+					mAnimalPic[i][j] = getRandom();	
 				}
-				mStatus[i][j] = EFT_NORMAL;
+				mEffect[i][j] = EFT_NORMAL;
+				mDisappearToken[i][j] = -1;
 			}
 		}
 		
+	}
+	
+	public static int takeToken()
+	{
+		return mToken.takeToken();
+	}
+	
+	public static void freeToken(int token)
+	{
+		mToken.freeToken(token);
 	}
 
 	//产生1~7的随机数
@@ -238,23 +254,30 @@ public class ControlCenter {
 	}
 
 	//将成行的动物标记出来
-	static void markInLine()
+	static void markDisappear(int token)
 	{
+		if(-1 == token) return;
 		int markCount = 0;
 		for(int i = 0; i < (int)CrazyLinkConstent.GRID_NUM; i++)
 		{
 			for(int j = 0; j < (int)CrazyLinkConstent.GRID_NUM; j++) 
 			{
-				if (isInLine(mPic, i, j))	
+				if (isInLine(mAnimalPic, i, j) && -1 == mDisappearToken[i][j])	
 				{
-					mStatus[i][j] = EFT_DISAPPEAR;
+					mEffect[i][j] = EFT_DISAPPEAR;
+					mDisappearToken[i][j] = token;
 					markCount++;
 				}
 			}
 		}		
 		if (markCount > 0)
 		{
-			drawDisappear.control.start();
+	    	DrawDisappear drawDisappear = getDrawDisappear(token);
+	    	if(drawDisappear != null) 
+	    	{
+	    		drawDisappear.control.setToken(token);
+	    		drawDisappear.control.start();
+	    	}
 			drawExplosion.control.start();
 			mScore.increase();
 			mScore.calcTotal(markCount);
@@ -262,33 +285,26 @@ public class ControlCenter {
 		}
 		else
 		{
+			freeToken(token);
 			mScore.reset();
 		}
 	}
 	
-	//清除消除标志
-	static void clearInline()
-	{
-		for(int i = 0; i < (int)CrazyLinkConstent.GRID_NUM; i++)
-		{
-			for(int j = 0; j < (int)CrazyLinkConstent.GRID_NUM; j++) 
-			{
-				mStatus[i][j] = EFT_NORMAL;
-			}
-		}				
-	}
-	
-	//消除完成后，要将对应的格子置为0
-	static int clearPic()
+
+	//消除完成后，要将对应的格子置为EFT_NORMAL
+	static int clearPic(int token)
 	{
 		int clearCount = 0;
+		if(-1 == token) return 0;
 		for(int i = 0; i < (int)CrazyLinkConstent.GRID_NUM; i++)
 		{
 			for(int j = 0; j < (int)CrazyLinkConstent.GRID_NUM; j++) 
 			{
-				if (EFT_DISAPPEAR == mStatus[i][j]) 
+				if (EFT_DISAPPEAR == mEffect[i][j] && (token == mDisappearToken[i][j])) 
 				{
-					mPic[i][j] = 0;
+					mAnimalPic[i][j] = 0;
+					mEffect[i][j] = EFT_NORMAL;
+					mDisappearToken[i][j] = -1;
 					clearCount++;
 				}
 			}
@@ -303,7 +319,7 @@ public class ControlCenter {
 		{
 			for(int j = 0; j < (int)CrazyLinkConstent.GRID_NUM; j++) 
 			{
-				if (isInLine(mPic, i,j))
+				if (isInLine(mAnimalPic, i,j) && (-1 == mDisappearToken[i][j]))
 				{
 					return true;
 				}
@@ -315,11 +331,11 @@ public class ControlCenter {
 	//标记跌落特效
 	static void fillGrid(int col, int row)
 	{
-		if(0 == mPic[col][row])
+		if(0 == mAnimalPic[col][row])
 		{
 			for(int i = row; i < (int)CrazyLinkConstent.GRID_NUM; i++)
 			{
-				mStatus[col][i] = EFT_FILL;
+				mEffect[col][i] = EFT_FILL;
 			}
 		}
 	}
@@ -331,19 +347,43 @@ public class ControlCenter {
 		{
 			for(int j = 0; j < (int)CrazyLinkConstent.GRID_NUM; j++) 
 			{
-				mStatus[i][j] = EFT_NORMAL;
-			}
-		}						
-		for(int i = 0; i < (int)CrazyLinkConstent.GRID_NUM; i++)
-		{
-			for(int j = 0; j < (int)CrazyLinkConstent.GRID_NUM; j++) 
-			{
 				fillGrid(i,j);
 			}
 		}				
 		fillMethod();
 		drawFill.control.start();
 	}
+	
+	static void unMark(int mark)
+	{
+		for(int i = 0; i < (int)CrazyLinkConstent.GRID_NUM; i++)
+		{
+			for(int j = 0; j < (int)CrazyLinkConstent.GRID_NUM; j++) 
+			{
+				if(mark == mEffect[i][j]) mEffect[i][j] = EFT_NORMAL;					
+			}
+		}				
+	}
+
+	static void unMarkDisappear(int token)
+	{
+		for(int i = 0; i < (int)CrazyLinkConstent.GRID_NUM; i++)
+		{
+			for(int j = 0; j < (int)CrazyLinkConstent.GRID_NUM; j++) 
+			{
+				if((token == mDisappearToken[i][j]) && (EFT_DISAPPEAR == mEffect[i][j])) 
+				{
+					mEffect[i][j] = EFT_NORMAL;
+				}
+				if(token == mDisappearToken[i][j]) 
+				{
+					mDisappearToken[i][j] = -1;
+				}
+				
+			}
+		}				
+	}
+
 	
 	//是否需要填充（跌落）
 	static boolean isNeedFill()
@@ -352,7 +392,7 @@ public class ControlCenter {
 		{
 			for(int j = 0; j < (int)CrazyLinkConstent.GRID_NUM; j++) 
 			{
-				if(0 == mPic[i][j])
+				if(0 == mAnimalPic[i][j])
 				{
 					return true;
 				}
@@ -368,18 +408,18 @@ public class ControlCenter {
 		{
 			for(int j = 0; j < (int)CrazyLinkConstent.GRID_NUM; j++) 
 			{
-				if(0 == mPic[i][j])		//0代表该格子是空的，需要跌落
+				if(0 == mAnimalPic[i][j])		//0代表该格子是空的，需要跌落
 				{
 					if(j < (int)CrazyLinkConstent.GRID_NUM - 1)
 					{
 						//从上一行中跌落
-						mPic[i][j] = mPic[i][j + 1];
-						mPic[i][j + 1] = 0;
+						mAnimalPic[i][j] = mAnimalPic[i][j + 1];
+						mAnimalPic[i][j + 1] = 0;
 					}
 					else
 					{
 						//如果消除的是最高的一行，则随机产生跌落动物
-						mPic[i][j] = getRandom();	
+						mAnimalPic[i][j] = getRandom();	
 					}
 				}
 			}
@@ -447,7 +487,7 @@ public class ControlCenter {
 		{
 			for(int j = 0; j < (int)CrazyLinkConstent.GRID_NUM; j++) 
 			{
-				mPicBak[i][j] = mPic[i][j];
+				mPicBak[i][j] = mAnimalPic[i][j];
 			}
 		}
 
@@ -474,7 +514,7 @@ public class ControlCenter {
 			{
 				if (isInLine(mPicBak, i, j))	
 				{
-					mStatus[i][j] = EFT_AUTOTIP;
+					mEffect[i][j] = EFT_AUTOTIP;
 					isAutoTip = true;
 				}
 			}
@@ -485,35 +525,15 @@ public class ControlCenter {
 	//将自动提示标识清除
 	static void clearAutoTip()
 	{
-		for(int i = 0; i < (int)CrazyLinkConstent.GRID_NUM; i++)
-		{
-			for(int j = 0; j < (int)CrazyLinkConstent.GRID_NUM; j++) 
-			{
-				if (EFT_AUTOTIP == mStatus[i][j])	
-				{
-					mStatus[i][j] = EFT_NORMAL;
-				}
-			}
-		}				
+		unMark(EFT_AUTOTIP);
 		mIsAutoTip = false;
 		mAutoTipTimer = 0;
 	}
 	
-	//恢复正常状态
-	static void clearStatus()
-	{
-		for(int i = 0; i < (int)CrazyLinkConstent.GRID_NUM; i++)
-		{
-			for(int j = 0; j < (int)CrazyLinkConstent.GRID_NUM; j++) 
-			{
-				mStatus[i][j] = EFT_NORMAL;
-			}
-		}						
-	}
 	
 	static int getPicId(int col, int row)
 	{
-		int pic = mPic[col][row];
+		int pic = mAnimalPic[col][row];
 		if(isMonster(col,row)) 
 		{
 			CtlMonster ctl;
@@ -534,68 +554,78 @@ public class ControlCenter {
 	//正常的渲染效果
 	static boolean isNormalEFT(int col, int row)
 	{
-		if(EFT_NORMAL == mStatus[col][row]) return true;
+		if(EFT_NORMAL == mEffect[col][row]) return true;
 		else return false;
 	}
 	
 	public static boolean isMonster(int col, int row)
 	{
-		if(ANIMAL_MONSTER == mPic[col][row]) return true;
+		if(ANIMAL_MONSTER == mAnimalPic[col][row]) return true;
 		else return false;
 	}
 	
 	public static boolean isBomb(int col, int row)
 	{
-		if(ANIMAL_BOMB == mPic[col][row]) return true;
+		if(ANIMAL_BOMB == mAnimalPic[col][row]) return true;
 		else return false;
 	}
 	
 	public static boolean isLaser(int col, int row)
 	{
-		if(ANIMAL_LASER == mPic[col][row]) return true;
+		if(ANIMAL_LASER == mAnimalPic[col][row]) return true;
 		else return false;
 	}
 
 	
-	static void markSpecialAnimal(int col, int row)
+	static void markSpecialAnimal(int token, int col, int row)
 	{
 		if(isMonster(col, row))
 		{
-			markMonster(col, row);
+			markMonster(token, col, row);
 		}
 		else if(isBomb(col, row))
 		{
-			markBomb(col, row);
+			markBomb(token, col, row);
 		}
 		else if(isLaser(col, row))
 		{
-			//markLaser(col,row);
+			//markLaser(token, col,row);
 		}
 		else
-		{}
+		{
+			freeToken(token);
+		}
 	}
 
 	//标记怪兽可消除的格子
-	static void markMonster(int col, int row)
+	static void markMonster(int token, int col, int row)
 	{
+		if(-1 == token) return;
 		if (isMonster(col,row))
 		{
 			CtlMonster ctl = (CtlMonster)drawMonster.control;		
 			int picId = ctl.getPicId();
 			int markCount = 0;
-			mPic[col][row] = EFT_DISAPPEAR;
+			mAnimalPic[col][row] = EFT_DISAPPEAR + token;
 			for(int i = 0; i < (int)CrazyLinkConstent.GRID_NUM; i++)
 			{
 				for(int j = 0; j < (int)CrazyLinkConstent.GRID_NUM; j++)
 				{
-					if(picId == mPic[i][j])
+					if(picId == mAnimalPic[i][j] && -1 == mDisappearToken[i][j])
 					{
-						mStatus[i][j] = EFT_DISAPPEAR;
+						mEffect[i][j] = EFT_DISAPPEAR;
+						mDisappearToken[i][j] = token;
 						markCount++;
 					}						
 				}
 			}
-			drawDisappear.control.start();
+	    	DrawDisappear drawDisappear = getDrawDisappear(token);
+	    	if(drawDisappear != null) 
+	    	{
+	    		drawDisappear.control.setToken(token);
+	    		drawDisappear.control.start();
+	    	}
+
 			drawExplosion.control.start();
 			mScore.increase();
 			mScore.increase(markCount);			
@@ -603,8 +633,9 @@ public class ControlCenter {
 	}
 	
 	//标记炸弹可消除的格子
-	static void markBomb(int col, int row)
+	static void markBomb(int token, int col, int row)
 	{
+		if(-1 == token) return;
 		if (isBomb(col,row))
 		{
 			int markCount = 0;
@@ -616,13 +647,23 @@ public class ControlCenter {
 					{
 						if(j >= 0 && j < (int)CrazyLinkConstent.GRID_NUM)
 						{
-							mStatus[i][j] = EFT_DISAPPEAR;
-							markCount++;
+							if(-1 == mDisappearToken[i][j])
+							{
+								mEffect[i][j] = EFT_DISAPPEAR;
+								mDisappearToken[i][j] = token;
+								markCount++;
+							}
 						}						
 					}
 				}
 			}
-			drawDisappear.control.start();
+	    	DrawDisappear drawDisappear = getDrawDisappear(token);
+	    	if(drawDisappear != null) 
+	    	{
+	    		drawDisappear.control.setToken(token);
+	    		drawDisappear.control.start();
+	    	}
+
 			drawExplosion.control.start();
 			mScore.increase();
 			mScore.increase(markCount);			
@@ -630,19 +671,34 @@ public class ControlCenter {
 	}
 
 	//标记激光可消除的格子
-	static void markLaser(int col, int row)
+	static void markLaser(int token, int col, int row)
 	{
+		if(-1 == token) return;
 		if (isLaser(col,row))
 		{
 			int markCount = 0;
 			for(int i = 0; i < (int)CrazyLinkConstent.GRID_NUM; i++)
 			{
-				mStatus[col][i] = EFT_DISAPPEAR;
-				mStatus[i][row] = EFT_DISAPPEAR;
-				markCount++;
-				markCount++;
+				if(-1 == mDisappearToken[col][i])
+				{
+					mEffect[col][i] = EFT_DISAPPEAR;
+					mDisappearToken[col][i] = token;
+					markCount++;
+				}
+				if(-1 == mDisappearToken[i][row])
+				{
+					mEffect[i][row] = EFT_DISAPPEAR;					
+					mDisappearToken[i][row] = token;					
+					markCount++;
+				}
 			}
-			drawDisappear.control.start();
+	    	DrawDisappear drawDisappear = getDrawDisappear(token);
+	    	if(drawDisappear != null) 
+	    	{
+	    		drawDisappear.control.setToken(token);
+	    		drawDisappear.control.start();
+	    	}
+
 			drawExplosion.control.start();
 			mScore.increase();
 			mScore.increase(markCount);			
@@ -673,13 +729,13 @@ public class ControlCenter {
 		switch (animal)
 		{
 		case 0:
-			mPic[x][y] = ANIMAL_MONSTER;
+			mAnimalPic[x][y] = ANIMAL_MONSTER;
 			break;
 		case 1:
-			mPic[x][y] = ANIMAL_BOMB;
+			mAnimalPic[x][y] = ANIMAL_BOMB;
 			break;
 		case 2:
-			mPic[x][y] = ANIMAL_LASER;
+			mAnimalPic[x][y] = ANIMAL_LASER;
 			break;
 		default:
 			break;
@@ -689,9 +745,11 @@ public class ControlCenter {
 	
 	public void draw(GL10 gl)
 	{
-		drawLoading.draw(gl); 
-		if(mIsLoading) return;
-		
+		if(mIsLoading)
+		{
+			drawLoading.draw(gl);
+			return;
+		}
 		drawScore.draw(gl,mScore.getScore());
 		drawSingleScore.draw(gl, mSingleScoreW, mSingleScoreH, mScore.getAward());
 		drawTip1.draw(gl);
@@ -700,7 +758,7 @@ public class ControlCenter {
 		{
 			for(int j = 0; j < (int)CrazyLinkConstent.GRID_NUM; j++)
 			{
-				switch (mStatus[i][j])
+				switch (mEffect[i][j])
 				{
 				case EFT_NORMAL:	//正常显示
 					if(isMonster(i,j))
@@ -716,17 +774,18 @@ public class ControlCenter {
 					drawExchangeRun(gl);							
 					break;
 				case EFT_FILL:	//跌落特效
-				{
 					drawFill.draw(gl, getPicId(i,j), i, j);
-					break;
-				}
-				case EFT_DISAPPEAR:	//消除特效
-					drawExplosion.draw(gl, i, j);
-					drawDisappear.draw(gl, getPicId(i,j), i, j);
 					break;
 				case EFT_AUTOTIP:	//自动提示特效
 					drawAutoTip.draw(gl, i, j);
 					drawAnimal.draw(gl,getPicId(i,j),i,j);
+					break;
+				case EFT_DISAPPEAR:		//消除特效
+					drawExplosion.draw(gl, i, j);
+					drawDisappeareRun(gl, i, j);											
+					break;
+				default:
+					
 					break;
 				}				                  
 			}
@@ -756,7 +815,6 @@ public class ControlCenter {
 	{
     	drawAnimal = new DrawAnimal(animalTextureId);			//创建动物素材对象    	
     	drawGrid = new DrawGrid(gridTextureId);					//创建棋盘素材对象
-    	drawDisappear = new DrawDisappear(drawAnimal);
     	drawFill = new DrawFill(drawAnimal);
     	drawScore = new DrawScore(scoreTextureId);
     	drawSingleScore = new DrawSingleScore(gl);
@@ -767,8 +825,7 @@ public class ControlCenter {
     	drawMonster = new DrawMonster(monsterTextureId);
     	drawBomb = new DrawBomb(bombTextureId);
     
-    	//将渲染类的控制对象注册到控制中心列表
-    	controlRegister(drawDisappear.control);    	
+    	//将渲染类的控制对象注册到控制中心列表    	
     	controlRegister(drawFill.control);
     	controlRegister(drawLoading.control);
     	controlRegister(drawSingleScore.control);
@@ -779,12 +836,13 @@ public class ControlCenter {
     	controlRegister(drawBomb.control);
     	
     	initExchangeList();
+    	initDisappearList();
 	}
 	
 	void initExchangeList()
 	{
 		DrawExchange drawExchange;
-		for(int i = 0; i < CrazyLinkConstent.EXCHANGE_OBJ; i++)
+		for(int i = 0; i < CrazyLinkConstent.MAX_TOKEN; i++)
 		{
 			drawExchange = new DrawExchange(drawAnimal);
 			controlRegister(drawExchange.control);
@@ -792,24 +850,34 @@ public class ControlCenter {
 		}
 	}
 	
-	static DrawExchange getDrawExchange()
+	void initDisappearList()
 	{
-		DrawExchange drawExchange;
-		CtlExchange ctl;
-		for(int i = 0; i < CrazyLinkConstent.EXCHANGE_OBJ; i++)
+		DrawDisappear drawDisappear;
+		for(int i = 0; i < CrazyLinkConstent.MAX_TOKEN; i++)
 		{
-			drawExchange = mDrawExchangeList.get(i);
-			ctl = (CtlExchange)drawExchange.control;
-			if(!ctl.isRun()) return drawExchange;				
+			drawDisappear = new DrawDisappear(drawAnimal);
+			controlRegister(drawDisappear.control);
+			mDrawDisappearList.add(drawDisappear);
 		}
-		return null;
+	}
+	
+	static DrawExchange getDrawExchange(int token)
+	{
+		if(-1 == token) return null;
+		return mDrawExchangeList.get(token);
+	}
+
+	static DrawDisappear getDrawDisappear(int token)
+	{
+		if(-1 == token) return null;
+		return mDrawDisappearList.get(token);
 	}
 	
 	void drawExchangeRun(GL10 gl)
 	{
 		DrawExchange drawExchange;
 		CtlExchange ctl;
-		for(int i = 0; i < CrazyLinkConstent.EXCHANGE_OBJ; i++)
+		for(int i = 0; i < CrazyLinkConstent.MAX_TOKEN; i++)
 		{
 			drawExchange = mDrawExchangeList.get(i);
 			ctl = (CtlExchange)drawExchange.control;
@@ -817,6 +885,18 @@ public class ControlCenter {
 		}		
 	}
 
+	void drawDisappeareRun(GL10 gl, int col, int row)
+	{
+		int token = mDisappearToken[col][row];
+		if(-1 == token) return;
+		DrawDisappear drawDisappear = mDrawDisappearList.get(token);
+		if(drawDisappear != null)
+		{
+			CtlDisappear ctl = (CtlDisappear)drawDisappear.control;
+			if(ctl.isRun()) drawDisappear.draw(gl, getPicId(col, row), col, row);
+		}
+	}
+	
 	//初始化纹理的方法
 	private int initTexture(GL10 gl, int drawableId)
 	{
@@ -871,42 +951,47 @@ public class ControlCenter {
 			{
 				clearAutoTip();
 				Bundle b = msg.getData();
+				int token = b.getInt("token");
 				int col1 = b.getInt("col1");
 				int col2 = b.getInt("col2");
 				int row1 = b.getInt("row1");
 				int row2 = b.getInt("row2");				
-		    	mStatus[col1][row1] = EFT_EXCHANGE;			//处于交换状态
-		    	mStatus[col2][row2] = EFT_NONE;
+		    	mEffect[col1][row1] = EFT_EXCHANGE;			//处于交换状态
+		    	mEffect[col2][row2] = EFT_NONE;
 		    	setSingleScorePosition(col1, row1);
 		    	int pic1 = getPicId(col1, row1);
 		    	int pic2 = getPicId(col2, row2);
-		    	DrawExchange drawExchange = getDrawExchange();
-		    	if(drawExchange != null) drawExchange.init(pic1, col1, row1, pic2, col2, row2);
+		    	DrawExchange drawExchange = getDrawExchange(token);
+		    	if(drawExchange != null) drawExchange.init(token, pic1, col1, row1, pic2, col2, row2);
 				break;
 			}
 			case EXCHANGE_END:
 			{
 				Bundle b = msg.getData();
+				int token = b.getInt("token");
 				int col1 = b.getInt("col1");
 				int col2 = b.getInt("col2");
 				int row1 = b.getInt("row1");
 				int row2 = b.getInt("row2");
-				exchange(mPic, col1, row1, col2, row2);
-		    	mStatus[col1][row1] = EFT_NORMAL;			//交换状态解除
-		    	mStatus[col2][row2] = EFT_NORMAL;
-				
-				markInLine();				
+				exchange(mAnimalPic, col1, row1, col2, row2);
+		    	mEffect[col1][row1] = EFT_NORMAL;			//交换状态解除
+		    	mEffect[col2][row2] = EFT_NORMAL;
+				markDisappear(token);				
 				break;
 			}
-			case LOADING_START:		    	
+			case LOADING_START:	
+				mIsLoading = true;
 		    	drawLoading.control.start();
 		    	break;
 			case LOADING_END:
 				mIsLoading = false;
 				break;			
 			case DISAPPEAR_END:
-			{
-				int clearCnt = clearPic();
+			{				
+				Bundle b = msg.getData();
+				int token = b.getInt("token");				
+				int clearCnt = clearPic(token);
+				unMarkDisappear(token);
 				mScore.award(clearCnt);
 				if(mScore.getAward() > 0)
 				{
@@ -914,38 +999,35 @@ public class ControlCenter {
 					ctl.init(clearCnt);
 					drawSingleScore.control.start();
 				}
-				clearInline();
-				if(isNeedFill())
-				{
-					markFill();
-				}
-				else
-				{
-					clearStatus();
-				}	
+				//clearInline();
+				freeToken(token);
+				markFill();
 				break;
 			}
-			case FILL_END:				
+			case FILL_END:	
+				unMark(EFT_FILL);
 				if(isNeedFill())
 				{
 					markFill();
 				}
 				else
 				{
-					clearStatus();
+					//clearStatus(token);
 					if(isNeedClear())
 					{
-						markInLine();
+						int token = takeToken();
+						markDisappear(token);
 					}
 				}
 				clearAutoTip();
 				break;
 			case SCREEN_TOUCH:
 				Bundle b = msg.getData();
+				int token = b.getInt("token");
 				int col = b.getInt("col1");
 				int row = b.getInt("row1");
 				setSingleScorePosition(col, row);
-				markSpecialAnimal(col, row);
+				markSpecialAnimal(token, col, row);
 				break;
 			case GEN_SPECIALANIMAL:
 				genSpecialAnimal();

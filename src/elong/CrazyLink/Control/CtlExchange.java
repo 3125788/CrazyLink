@@ -31,8 +31,9 @@ public class CtlExchange extends CtlBase{
 	boolean mNeedMoveX = false;	//ÊÇ·ñÐèÒªÆ«ÒÆ
 	boolean mNeedMoveY = false;	
 
-	public void init(int col1, int row1, int col2, int row2)
+	public void init(int token, int col1, int row1, int col2, int row2)
 	{
+		super.setToken(token);
 		mNeedMoveX = false;
 		mNeedMoveY = false;
 		mCol1 = col1;
@@ -138,6 +139,8 @@ public class CtlExchange extends CtlBase{
 		if(mStop)
 		{
 			Bundle b = new Bundle();
+			b.putInt("token", mToken);
+			setToken(-1);
 			b.putInt("col1", mCol1);
 			b.putInt("row1", mRow1);
 			b.putInt("col2", mCol2);

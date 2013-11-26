@@ -17,6 +17,7 @@ import elong.CrazyLink.Interface.IControl;
 
 public class DrawExchange {
 
+	int mToken = 0;
 	DrawAnimal drawAnimal;
 	int mWitch1 = 0;
 	int mWitch2 = 0;
@@ -40,15 +41,16 @@ public class DrawExchange {
 		control = new CtlExchange();
 	}
 	
-	public void init(int witch1, int col1, int row1, int witch2, int col2, int row2)
+	public void init(int token, int witch1, int col1, int row1, int witch2, int col2, int row2)
 	{
+		mToken = token;
 		mWitch1 = witch1;
 		mWitch2 = witch2;
 		mCol1 = col1;
 		mCol2 = col2;
 		mRow1 = row1;
 		mRow2 = row2;		
-		((CtlExchange)control).init(col1, row1, col2, row2);
+		((CtlExchange)control).init(token, col1, row1, col2, row2);
 	}
 	
 	public void draw(GL10 gl)

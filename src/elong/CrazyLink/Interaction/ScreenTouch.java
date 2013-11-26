@@ -152,12 +152,15 @@ public class ScreenTouch {
 	//产生有效的触摸事件，发消息给mHandler统一处理
 	void RaiseTouchEvent()
 	{
+		int token = ControlCenter.takeToken();
+		if(-1 == token) return;
 		Message msg = new Message();
 		Bundle b = new Bundle();
 		int x  = getGridX();
 		int y = getGridY();
 		if(!(x >= 0 && x < (int)CrazyLinkConstent.GRID_NUM)) return;
 		if(!(y >= 0 && y < (int)CrazyLinkConstent.GRID_NUM)) return;
+		b.putInt("token", token);
 		b.putInt("col1", x);
 		b.putInt("row1", y);
 		if(isValidTouchMove())	//校验动作是否合法

@@ -9,12 +9,13 @@
  ********************************************************/
 
 package elong.CrazyLink.Control;
+import android.os.Bundle;
 import android.os.Message;
 import elong.CrazyLink.Core.ControlCenter;
 
 public class CtlDisappear extends CtlBase{
 
-	int mCount = 6;
+	int mCount = 0;
 	int mTimeCnt = 0;
 
 	public void run()
@@ -27,8 +28,12 @@ public class CtlDisappear extends CtlBase{
 			if(0 == mCount)
 			{
 				mStop = true;
+				Bundle b = new Bundle();
+				b.putInt("token", mToken);
+				setToken(-1);
 				Message msg = new Message();
 			    msg.what = ControlCenter.DISAPPEAR_END;
+			    msg.setData(b);
 			    ControlCenter.mHandler.sendMessage(msg);
 			}
 		}
@@ -36,7 +41,7 @@ public class CtlDisappear extends CtlBase{
 	
 	public void start()
 	{
-		mCount = 10;
+		if(0 == mCount) mCount = 10;
 		super.start();
 	}
 	

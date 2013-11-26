@@ -5,5 +5,6 @@ public interface IControl {
 	void start();
 	void end();
 	boolean isRun();
-
+	void setToken(int token);
+	int getToken();
 }

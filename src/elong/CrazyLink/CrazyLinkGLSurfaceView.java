@@ -124,7 +124,6 @@ public class CrazyLinkGLSurfaceView extends GLSurfaceView{
             controlCenter.initDraw(gl);
             
     		Message msg = new Message();
-    		ControlCenter.mIsLoading = true;
     	    msg.what = ControlCenter.LOADING_START;
     	    ControlCenter.mHandler.sendMessage(msg);
 

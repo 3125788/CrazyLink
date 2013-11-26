@@ -4,7 +4,7 @@ import elong.CrazyLink.Interface.IControl;
 
 
 public class CtlBase implements IControl{
-
+	public int mToken = 0;
 	public boolean mStop = true;
 
 	public boolean isRun() {
@@ -23,5 +23,13 @@ public class CtlBase implements IControl{
 		mStop = true;
 	}
 	
-
+	public void setToken(int token)
+	{
+		mToken = token;
+	}
+	
+	public int getToken()
+	{
+		return mToken;
+	}
 }
