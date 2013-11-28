@@ -46,7 +46,7 @@ public class DrawTip1 {
     	float y = ctl.getY()/10.0f;
     	
         vCount=6;//顶点的数量，一个正方形用两个三角形表示，共需要6个顶点   
-        int deltaX = (int)(-(2.0f-x)*96*CrazyLinkConstent.UNIT_SIZE);
+        int deltaX = (int)(-(2.0f-x)*64*CrazyLinkConstent.UNIT_SIZE);
         int deltaY = (int)((4.8f-y)*2*32*CrazyLinkConstent.UNIT_SIZE);
         int vertices[]=new int[]//顶点坐标数据数组
         {

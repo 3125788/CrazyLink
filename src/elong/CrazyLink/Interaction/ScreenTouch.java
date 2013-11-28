@@ -175,6 +175,7 @@ public class ScreenTouch {
 		}
 		msg.setData(b);
 	    ControlCenter.mHandler.sendMessage(msg);
+	    System.out.println("touch grid(" + x +"," + y +")");
 	}
 	
 }

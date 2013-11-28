@@ -29,6 +29,7 @@ import elong.CrazyLink.Control.CtlDisappear;
 import elong.CrazyLink.Control.CtlExchange;
 import elong.CrazyLink.Control.CtlMonster;
 import elong.CrazyLink.Control.CtlTip1;
+import elong.CrazyLink.Core.Sound.E_SOUND;
 import elong.CrazyLink.Draw.DrawAnimal;
 import elong.CrazyLink.Draw.DrawAutoTip;
 import elong.CrazyLink.Draw.DrawBomb;
@@ -87,6 +88,7 @@ public class ControlCenter {
 
 	
 	static Score mScore;	//计算分数
+	static Sound mSound;
 	
 	
 	public static boolean mIsLoading = false;	//显示正在加载
@@ -111,6 +113,7 @@ public class ControlCenter {
 	{
 		mContext = context;
 		mScore = new Score();
+		mSound = new Sound(context);
 	    mAnimalPic = new int[(int) CrazyLinkConstent.GRID_NUM][(int) CrazyLinkConstent.GRID_NUM];
 	    mPicBak = new int[(int) CrazyLinkConstent.GRID_NUM][(int) CrazyLinkConstent.GRID_NUM];
 	    mEffect = new int[(int) CrazyLinkConstent.GRID_NUM][(int) CrazyLinkConstent.GRID_NUM];
@@ -272,6 +275,13 @@ public class ControlCenter {
 		}		
 		if (markCount > 0)
 		{
+			if(3 == markCount)
+				mSound.play(E_SOUND.DISAPPEAR3);
+			else if(4 == markCount)
+				mSound.play(E_SOUND.DISAPPEAR4);
+			else if(markCount >= 5)
+				mSound.play(E_SOUND.DISAPPEAR5);
+			
 	    	DrawDisappear drawDisappear = getDrawDisappear(token);
 	    	if(drawDisappear != null) 
 	    	{
@@ -352,6 +362,7 @@ public class ControlCenter {
 		}				
 		fillMethod();
 		drawFill.control.start();
+		mSound.play(E_SOUND.FILL);
 	}
 	
 	static void unMark(int mark)
@@ -581,10 +592,12 @@ public class ControlCenter {
 	{
 		if(isMonster(col, row))
 		{
+			mSound.play(E_SOUND.MONSTER);
 			markMonster(token, col, row);
 		}
 		else if(isBomb(col, row))
 		{
+			mSound.play(E_SOUND.BOMB);
 			markBomb(token, col, row);
 		}
 		else if(isLaser(col, row))
@@ -949,6 +962,7 @@ public class ControlCenter {
 			{
 			case EXCHANGE_START:
 			{
+				mSound.play(E_SOUND.SLIDE);
 				clearAutoTip();
 				Bundle b = msg.getData();
 				int token = b.getInt("token");
@@ -985,6 +999,7 @@ public class ControlCenter {
 		    	break;
 			case LOADING_END:
 				mIsLoading = false;
+				mSound.play(E_SOUND.READYGO);
 				break;			
 			case DISAPPEAR_END:
 			{				
@@ -996,6 +1011,12 @@ public class ControlCenter {
 				if(mScore.getAward() > 0)
 				{
 					CtlTip1 ctl = (CtlTip1) drawTip1.control;
+					if(4 == clearCnt)
+						mSound.play(E_SOUND.COOL);
+					else if(5 == clearCnt)
+						;
+					else if(clearCnt > 5)
+						mSound.play(E_SOUND.SUPER);
 					ctl.init(clearCnt);
 					drawSingleScore.control.start();
 				}
