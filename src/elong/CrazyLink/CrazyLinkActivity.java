@@ -13,10 +13,12 @@ package elong.CrazyLink;
 
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 
 public class CrazyLinkActivity extends Activity {	
 	CrazyLinkGLSurfaceView mGLSurfaceView;
+	private MediaPlayer mp;
 	
     /** Called when the activity is first created. */
     @Override
@@ -31,6 +33,26 @@ public class CrazyLinkActivity extends Activity {
     }
 
 	@Override
+	protected void onStart() {
+		// TODO Auto-generated method stub
+		super.onStart();
+		if(mp==null){
+
+			// R.raw.mmp是资源文件，MP3格式的
+			mp = MediaPlayer.create(this, R.raw.s_background);
+			mp.setLooping(true);
+			mp.start();
+
+			}
+	}
+
+	@Override
+	protected void onStop() {
+		// TODO Auto-generated method stub
+		super.onStop();
+	}
+
+	@Override
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
@@ -42,5 +64,13 @@ public class CrazyLinkActivity extends Activity {
 		// TODO Auto-generated method stub
 		super.onPause();
 		mGLSurfaceView.onPause();
+		mp.pause();
+	}
+	
+	@Override
+	public void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+		mp.stop();
 	}
 }
