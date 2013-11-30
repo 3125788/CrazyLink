@@ -24,6 +24,7 @@ public class CrazyLinkConstent {
 	
 	public static int MAX_TOKEN = 6;		//最大令牌数
 	
+	public static int MOVE_THRESDHOLDER = 5;  //触发移动的门限，避免误操作
 
 	
 	
