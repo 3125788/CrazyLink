@@ -51,14 +51,10 @@ public class DrawSingleScore {
     }	
     
 	//顶点坐标数据的初始化
-    private void initVertexBuffer(int col, int row)
+    private void initVertexBuffer(int col, int row, float x, float y)
     {
     	if (col == 0) col = 1;
-    	
-    	CtlSingleScore ctl = (CtlSingleScore)control;
-    	
         vCount=6;//顶点的数量，一个正方形用两个三角形表示，共需要6个顶点
-        float y = ctl.getY()/30.0f;
         float deltaX = ((col-3)*64*CrazyLinkConstent.UNIT_SIZE);
         float deltaY = (((float)row-3 + y)*64*CrazyLinkConstent.UNIT_SIZE);
         int vertices[]=new int[]//顶点坐标数据数组
@@ -151,7 +147,8 @@ public class DrawSingleScore {
     	
     	Bitmap bmp = genBitmap(score);
     	bindTexture(gl, bmp);
-    	initVertexBuffer(col, row);	//根据col,row初始化顶点坐标
+    	CtlSingleScore ctl = (CtlSingleScore)control;
+    	initVertexBuffer(col, row, 0, ctl.getY()/30.0f);	//根据col,row初始化顶点坐标
 
     	//顶点坐标，允许使用顶点数组
         gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);

@@ -3,6 +3,7 @@ package elong.CrazyLink.Core;
 
 import java.util.HashMap;
 
+import elong.CrazyLink.CrazyLinkConstent.E_SOUND;
 import elong.CrazyLink.R;
 
 import android.content.Context;
@@ -11,20 +12,6 @@ import android.media.SoundPool;
 
 public class Sound {
 	
-	public enum E_SOUND
-	{
-		SLIDE,
-		FILL,
-		DISAPPEAR3,
-		DISAPPEAR4,
-		DISAPPEAR5,
-		READYGO,
-		TIMEOVER,
-		SUPER,
-		COOL,
-		BOMB,
-		MONSTER,
-	}
 
 	
 	//“Ù–ßµƒ“Ù¡ø   

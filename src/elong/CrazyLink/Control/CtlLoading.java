@@ -30,7 +30,7 @@ public class CtlLoading extends CtlBase{
 			mStop = true;
 			Message msg = new Message();
 		    msg.what = ControlCenter.LOADING_END;
-		    ControlCenter.mHandler.sendMessage(msg);
+		    ControlCenter.mHandler.sendMessage(msg);	
 		}
 	}
 	

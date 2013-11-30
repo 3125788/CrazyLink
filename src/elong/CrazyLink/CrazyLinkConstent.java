@@ -25,8 +25,34 @@ public class CrazyLinkConstent {
 	public static int MAX_TOKEN = 6;		//最大令牌数
 	
 	public static int MOVE_THRESDHOLDER = 5;  //触发移动的门限，避免误操作
+	
+	public static int LIFE_NUM = 3;			//生命数
+	
+	public static int LIFE_UP = 9;			//消除数大于该值时增加生命值
+	public static int LIFE_TIMEOUT = 10;	//操作间隔超过这个值时失去一条生命
 
 	
+	public enum E_SOUND
+	{
+		SLIDE,
+		FILL,
+		DISAPPEAR3,
+		DISAPPEAR4,
+		DISAPPEAR5,
+		READYGO,
+		TIMEOVER,
+		SUPER,
+		COOL,
+		BOMB,
+		MONSTER,
+	}
+	
+	public enum E_TIP
+	{
+		READYGO,
+		LEVELUP,
+		GAMEOVER,
+	}
 	
 
 }

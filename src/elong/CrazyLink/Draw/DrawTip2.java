@@ -1,8 +1,9 @@
+
 /**********************************************************
  * 项目名称：山寨“爱消除”游戏7日教程
  * 作          者：郑敏新
  * 腾讯微博：SuperCube3D
- * 日          期：2013年10月
+ * 日          期：2013年11月
  * 声          明：版权所有   侵权必究
  * 本源代码供网友研究学习OpenGL ES开发Android应用用，
  * 请勿全部或部分用于商业用途
@@ -18,35 +19,39 @@ import java.nio.IntBuffer;
 import javax.microedition.khronos.opengles.GL10;
 
 import elong.CrazyLink.CrazyLinkConstent;
+import elong.CrazyLink.Control.CtlTip2;
+import elong.CrazyLink.Interface.IControl;
 
-public class DrawScore {
+public class DrawTip2 {
 	
 	private IntBuffer   mVertexBuffer;		//顶点坐标数据缓冲
     private FloatBuffer   mTextureBuffer;	//顶点纹理数据缓冲
     int vCount=0;							//顶点数量     
     int textureId;							//纹理索引
     float textureRatio;						//为了准确获取纹理图片中的素材对象，需要设置纹理的变换率
-    public DrawScore(int textureId)
+    public IControl control;
+    
+    public DrawTip2(int textureId)
     {
-    	this.textureId=textureId;    	
+    	this.textureId=textureId;
+    	control = new CtlTip2();
     }	
 	//顶点坐标数据的初始化
-    private void initVertexBuffer(int col)
+    private void initVertexBuffer()
     {
-    	    	
-    	int w = 10;
-    	int h = 16;
+    	CtlTip2 ctl = (CtlTip2)control;
+    	int w = CrazyLinkConstent.UNIT_SIZE*ctl.getW();
+    	int h = CrazyLinkConstent.UNIT_SIZE*ctl.getH();
+    	
         vCount=6;//顶点的数量，一个正方形用两个三角形表示，共需要6个顶点   
-        int deltaX = ((col-10)*2*w*CrazyLinkConstent.UNIT_SIZE);
-        int deltaY = 10*2*h*CrazyLinkConstent.UNIT_SIZE;
         int vertices[]=new int[]//顶点坐标数据数组
         {
-           	-w*CrazyLinkConstent.UNIT_SIZE+deltaX,h*CrazyLinkConstent.UNIT_SIZE+deltaY,0,
-        	-w*CrazyLinkConstent.UNIT_SIZE+deltaX,-h*CrazyLinkConstent.UNIT_SIZE+deltaY,0,
-        	w*CrazyLinkConstent.UNIT_SIZE+deltaX,-h*CrazyLinkConstent.UNIT_SIZE+deltaY,0,
-        	w*CrazyLinkConstent.UNIT_SIZE+deltaX,-h*CrazyLinkConstent.UNIT_SIZE+deltaY,0,
-        	w*CrazyLinkConstent.UNIT_SIZE+deltaX,h*CrazyLinkConstent.UNIT_SIZE+deltaY,0,
-        	-w*CrazyLinkConstent.UNIT_SIZE+deltaX,h*CrazyLinkConstent.UNIT_SIZE+deltaY,0
+           	-w,h,0,
+        	-w,-h,0,
+        	w,-h,0,
+        	w,-h,0,
+        	w,h,0,
+        	-w,h,0
         };
         //创建顶点坐标数据缓冲
         //int类型占用4个字节，因此转换为byte的数据时需要*4
@@ -63,7 +68,7 @@ public class DrawScore {
     //顶点纹理数据的初始化    
     private void initTextureBuffer(int witch)
     {
-        textureRatio = (float)(1/10.0f);		//图片是10个独立的素材对象组成，每次需要根据witch准确地获取对应的素材
+        textureRatio = (float)(1/4.0f);		//图片是4个独立的素材对象组成，每次需要根据witch准确地获取对应的素材
         float textureCoors[]=new float[]	//顶点纹理S、T坐标值数组
 	    {
         	witch * textureRatio,0,
@@ -87,10 +92,12 @@ public class DrawScore {
     }
 	
 
-    void drawNumber(GL10 gl, int number, int col)
+    public void draw(GL10 gl)
     {   
-    	initVertexBuffer(col);	//根据col,row初始化顶点坐标
-    	initTextureBuffer(number);	//根据witch来初始化纹理顶点数据
+    	if(!control.isRun()) return;   
+    	CtlTip2 ctl = (CtlTip2)control;
+    	initVertexBuffer();	//根据col,row初始化顶点坐标
+    	initTextureBuffer(ctl.getPicId());	//根据witch来初始化纹理顶点数据
     	//gl.glTranslatef(col * textureRatio, row * textureRatio, 0);	//在x=col,y=row的位置绘制选定的素材对象        
         //顶点坐标，允许使用顶点数组
         gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
@@ -127,20 +134,6 @@ public class DrawScore {
         gl.glDisable(GL10.GL_TEXTURE_2D);//关闭纹理
     }
     
-    public void draw(GL10 gl, int score)
-    {
-    	String szScore = Integer.toString(score);
-    	int len = szScore.length();
-    	while(len < 10)
-    	{
-    		szScore = "0" + szScore;
-    		len++;
-    	}
-
-    	for(int i = 0; i < szScore.length(); i++)
-    	{
-    		drawNumber(gl, szScore.charAt(i) - '0', i);
-    	}
-    }
 }
+
 

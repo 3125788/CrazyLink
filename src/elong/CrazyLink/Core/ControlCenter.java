@@ -29,11 +29,14 @@ import elong.CrazyLink.Control.CtlDisappear;
 import elong.CrazyLink.Control.CtlExchange;
 import elong.CrazyLink.Control.CtlMonster;
 import elong.CrazyLink.Control.CtlTip1;
-import elong.CrazyLink.Core.Sound.E_SOUND;
+import elong.CrazyLink.Control.CtlTip2;
+import elong.CrazyLink.CrazyLinkConstent.E_SOUND;
+import elong.CrazyLink.CrazyLinkConstent.E_TIP;
 import elong.CrazyLink.Draw.DrawAnimal;
 import elong.CrazyLink.Draw.DrawAutoTip;
 import elong.CrazyLink.Draw.DrawBomb;
 import elong.CrazyLink.Draw.DrawExplosion;
+import elong.CrazyLink.Draw.DrawLife;
 import elong.CrazyLink.Draw.DrawMonster;
 import elong.CrazyLink.Draw.DrawSingleScore;
 import elong.CrazyLink.Draw.DrawTip1;
@@ -43,6 +46,7 @@ import elong.CrazyLink.Draw.DrawFill;
 import elong.CrazyLink.Draw.DrawGrid;
 import elong.CrazyLink.Draw.DrawLoading;
 import elong.CrazyLink.Draw.DrawScore;
+import elong.CrazyLink.Draw.DrawTip2;
 import elong.CrazyLink.Interface.IControl;
 
 
@@ -64,7 +68,9 @@ public class ControlCenter {
     int[] loadingTextureId = new int[10];			//加载动画素材纹理id
     int gridTextureId;				//网格素材纹理id
     int scoreTextureId;
+    int lifeTextureId;
     int congratulationTextureId;
+    int tip2TextureId;
     int fireTextureId;
     int explosionTextureId;
     int monsterTextureId;
@@ -79,8 +85,10 @@ public class ControlCenter {
 	static ArrayList<DrawDisappear> mDrawDisappearList = new ArrayList<DrawDisappear>();
 	static public DrawFill drawFill;
 	static public DrawScore drawScore;
+	static public DrawLife drawLife;
 	static public DrawSingleScore drawSingleScore;
 	static public DrawTip1 drawTip1;
+	static public DrawTip2 drawTip2;
 	static public DrawAutoTip drawAutoTip;
 	static public DrawExplosion drawExplosion;
 	static public DrawMonster drawMonster;
@@ -764,8 +772,10 @@ public class ControlCenter {
 			return;
 		}
 		drawScore.draw(gl,mScore.getScore());
+		drawLife.draw(gl, mScore.mLife);
 		drawSingleScore.draw(gl, mSingleScoreW, mSingleScoreH, mScore.getAward());
 		drawTip1.draw(gl);
+		drawTip2.draw(gl);
 		
 		for(int i = 0; i < (int)CrazyLinkConstent.GRID_NUM; i++)
 		{
@@ -816,7 +826,9 @@ public class ControlCenter {
     	}    	
     	gridTextureId = initTexture(gl, R.drawable.grid);
     	scoreTextureId = initTexture(gl, R.drawable.number);
+    	lifeTextureId = initTexture(gl, R.drawable.life);
     	congratulationTextureId = initTexture(gl, R.drawable.word);
+    	tip2TextureId = initTexture(gl, R.drawable.word2);
     	fireTextureId = initTexture(gl, R.drawable.autotip);
     	explosionTextureId = initTexture(gl, R.drawable.explosion);
     	monsterTextureId = initTexture(gl, R.drawable.animal);
@@ -830,8 +842,11 @@ public class ControlCenter {
     	drawGrid = new DrawGrid(gridTextureId);					//创建棋盘素材对象
     	drawFill = new DrawFill(drawAnimal);
     	drawScore = new DrawScore(scoreTextureId);
+    	drawLife = new DrawLife(gl, lifeTextureId);
     	drawSingleScore = new DrawSingleScore(gl);
     	drawTip1 = new DrawTip1(congratulationTextureId);
+    	drawTip2 = new DrawTip2(tip2TextureId);
+
     	drawLoading = new DrawLoading(loadingTextureId);		//创建加载动画素材    	
     	drawAutoTip = new DrawAutoTip(fireTextureId);
     	drawExplosion = new DrawExplosion(explosionTextureId);
@@ -843,6 +858,7 @@ public class ControlCenter {
     	controlRegister(drawLoading.control);
     	controlRegister(drawSingleScore.control);
     	controlRegister(drawTip1.control);
+    	controlRegister(drawTip2.control);
     	controlRegister(drawAutoTip.control);
     	controlRegister(drawExplosion.control);
     	controlRegister(drawMonster.control);
@@ -949,6 +965,9 @@ public class ControlCenter {
 	public static final int FILL_END = 6;
 	public static final int SCREEN_TOUCH = 7;
 	public static final int GEN_SPECIALANIMAL = 8;
+	public static final int READY_GO = 9;
+	public static final int LEVEL_UP = 10;
+	public static final int GAME_OVER = 11;
 
 
 	
@@ -960,99 +979,121 @@ public class ControlCenter {
 			    // process incoming messages here
 			switch(msg.what)
 			{
-			case EXCHANGE_START:
-			{
-				mSound.play(E_SOUND.SLIDE);
-				clearAutoTip();
-				Bundle b = msg.getData();
-				int token = b.getInt("token");
-				int col1 = b.getInt("col1");
-				int col2 = b.getInt("col2");
-				int row1 = b.getInt("row1");
-				int row2 = b.getInt("row2");				
-		    	mEffect[col1][row1] = EFT_EXCHANGE;			//处于交换状态
-		    	mEffect[col2][row2] = EFT_NONE;
-		    	setSingleScorePosition(col1, row1);
-		    	int pic1 = getPicId(col1, row1);
-		    	int pic2 = getPicId(col2, row2);
-		    	DrawExchange drawExchange = getDrawExchange(token);
-		    	if(drawExchange != null) drawExchange.init(token, pic1, col1, row1, pic2, col2, row2);
-				break;
-			}
-			case EXCHANGE_END:
-			{
-				Bundle b = msg.getData();
-				int token = b.getInt("token");
-				int col1 = b.getInt("col1");
-				int col2 = b.getInt("col2");
-				int row1 = b.getInt("row1");
-				int row2 = b.getInt("row2");
-				exchange(mAnimalPic, col1, row1, col2, row2);
-		    	mEffect[col1][row1] = EFT_NORMAL;			//交换状态解除
-		    	mEffect[col2][row2] = EFT_NORMAL;
-				markDisappear(token);				
-				break;
-			}
-			case LOADING_START:	
-				mIsLoading = true;
-		    	drawLoading.control.start();
-		    	break;
-			case LOADING_END:
-				mIsLoading = false;
-				mSound.play(E_SOUND.READYGO);
-				break;			
-			case DISAPPEAR_END:
-			{				
-				Bundle b = msg.getData();
-				int token = b.getInt("token");				
-				int clearCnt = clearPic(token);
-				unMarkDisappear(token);
-				mScore.award(clearCnt);
-				if(mScore.getAward() > 0)
+				case EXCHANGE_START:
 				{
-					CtlTip1 ctl = (CtlTip1) drawTip1.control;
-					if(4 == clearCnt)
-						mSound.play(E_SOUND.COOL);
-					else if(5 == clearCnt)
-						;
-					else if(clearCnt > 5)
-						mSound.play(E_SOUND.SUPER);
-					ctl.init(clearCnt);
-					drawSingleScore.control.start();
+					mSound.play(E_SOUND.SLIDE);
+					clearAutoTip();
+					Bundle b = msg.getData();
+					int token = b.getInt("token");
+					int col1 = b.getInt("col1");
+					int col2 = b.getInt("col2");
+					int row1 = b.getInt("row1");
+					int row2 = b.getInt("row2");				
+			    	mEffect[col1][row1] = EFT_EXCHANGE;			//处于交换状态
+			    	mEffect[col2][row2] = EFT_NONE;
+			    	setSingleScorePosition(col1, row1);
+			    	int pic1 = getPicId(col1, row1);
+			    	int pic2 = getPicId(col2, row2);
+			    	DrawExchange drawExchange = getDrawExchange(token);
+			    	if(drawExchange != null) drawExchange.init(token, pic1, col1, row1, pic2, col2, row2);
+					break;
 				}
-				//clearInline();
-				freeToken(token);
-				markFill();
-				break;
-			}
-			case FILL_END:	
-				unMark(EFT_FILL);
-				if(isNeedFill())
+				case EXCHANGE_END:
 				{
-					markFill();
+					Bundle b = msg.getData();
+					int token = b.getInt("token");
+					int col1 = b.getInt("col1");
+					int col2 = b.getInt("col2");
+					int row1 = b.getInt("row1");
+					int row2 = b.getInt("row2");
+					exchange(mAnimalPic, col1, row1, col2, row2);
+			    	mEffect[col1][row1] = EFT_NORMAL;			//交换状态解除
+			    	mEffect[col2][row2] = EFT_NORMAL;
+					markDisappear(token);				
+					break;
 				}
-				else
+				case LOADING_START:	
+					mIsLoading = true;
+			    	drawLoading.control.start();
+			    	break;
+				case LOADING_END:
 				{
-					//clearStatus(token);
-					if(isNeedClear())
+					mIsLoading = false;
+					mSound.play(E_SOUND.READYGO);
+					CtlTip2 ctl = (CtlTip2) drawTip2.control;
+					ctl.init(E_TIP.READYGO.ordinal());	//ready go
+					break;
+				}
+				case DISAPPEAR_END:
+				{				
+					Bundle b = msg.getData();
+					int token = b.getInt("token");				
+					int clearCnt = clearPic(token);
+					unMarkDisappear(token);
+					mScore.award(clearCnt);
+					if(mScore.getAward() > 0)
 					{
-						int token = takeToken();
-						markDisappear(token);
+						CtlTip1 ctl = (CtlTip1) drawTip1.control;
+						if(4 == clearCnt)
+							mSound.play(E_SOUND.COOL);
+						else if(5 == clearCnt)
+							;
+						else if(clearCnt > 5)
+							mSound.play(E_SOUND.SUPER);
+						ctl.init(clearCnt);
+						drawSingleScore.control.start();
 					}
+					//clearInline();
+					freeToken(token);
+					markFill();
+					break;
 				}
-				clearAutoTip();
-				break;
-			case SCREEN_TOUCH:
-				Bundle b = msg.getData();
-				int token = b.getInt("token");
-				int col = b.getInt("col1");
-				int row = b.getInt("row1");
-				setSingleScorePosition(col, row);
-				markSpecialAnimal(token, col, row);
-				break;
-			case GEN_SPECIALANIMAL:
-				genSpecialAnimal();
-				break;
+				case FILL_END:	
+					unMark(EFT_FILL);
+					if(isNeedFill())
+					{
+						markFill();
+					}
+					else
+					{
+						//clearStatus(token);
+						if(isNeedClear())
+						{
+							int token = takeToken();
+							markDisappear(token);
+						}
+					}
+					clearAutoTip();
+					break;
+				case SCREEN_TOUCH:
+					Bundle b = msg.getData();
+					int token = b.getInt("token");
+					int col = b.getInt("col1");
+					int row = b.getInt("row1");
+					setSingleScorePosition(col, row);
+					markSpecialAnimal(token, col, row);
+					break;
+				case GEN_SPECIALANIMAL:
+					genSpecialAnimal();
+					break;
+				case READY_GO:
+				{
+					CtlTip2 ctl = (CtlTip2) drawTip2.control;
+					ctl.init(0);
+					break;
+				}
+				case LEVEL_UP:
+				{
+					CtlTip2 ctl = (CtlTip2) drawTip2.control;
+					ctl.init(E_TIP.LEVELUP.ordinal());	//level up
+					break;
+				}
+				case GAME_OVER:
+				{
+					CtlTip2 ctl = (CtlTip2) drawTip2.control;
+					ctl.init(E_TIP.GAMEOVER.ordinal());	//game over
+					break;
+				}
 			}
 		}
     };

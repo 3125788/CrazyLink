@@ -22,6 +22,8 @@ public class Score {
 	int mOver3 = 0;			//超过3个
 	int mJust3 = 0;			//等于3个
 	
+	int mLife = CrazyLinkConstent.LIFE_NUM;
+	
 	public Score()
 	{
 		mTotalScore = 0;
@@ -101,6 +103,13 @@ public class Score {
 	{
 		mAwardRatio = 0;
 		mContinueCnt = 0;
+		mLife--;
+		if(0 == mLife)
+		{
+			Message msg = new Message();
+			msg.what = ControlCenter.GAME_OVER;
+		    ControlCenter.mHandler.sendMessage(msg);				
+		}
 	}
 	
 	//递增分数系数
@@ -114,6 +123,10 @@ public class Score {
 	public void increase(int clearNum)
 	{
 		mAwardRatio += (float)clearNum / 5;
+		if (clearNum > CrazyLinkConstent.LIFE_UP)
+		{
+			increaseLife();	//增加生命
+		}
 	}
 	
 	public void calcTotal(int clearNum)
@@ -138,9 +151,19 @@ public class Score {
 				Message msg = new Message();
 				msg.what = ControlCenter.GEN_SPECIALANIMAL;
 			    ControlCenter.mHandler.sendMessage(msg);	
-			}				
-			
+			}							
 		}
+
+	}
+	
+	void increaseLife()
+	{
+		mLife++;
+	}
+	
+	int getLife()
+	{
+		return mLife;
 	}
 
 }
