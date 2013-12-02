@@ -27,6 +27,8 @@ import elong.CrazyLink.CrazyLinkConstent;
 import elong.CrazyLink.R;
 import elong.CrazyLink.Control.CtlDisappear;
 import elong.CrazyLink.Control.CtlExchange;
+import elong.CrazyLink.Control.CtlLifeAdd;
+import elong.CrazyLink.Control.CtlLifeDel;
 import elong.CrazyLink.Control.CtlMonster;
 import elong.CrazyLink.Control.CtlTip1;
 import elong.CrazyLink.Control.CtlTip2;
@@ -37,6 +39,8 @@ import elong.CrazyLink.Draw.DrawAutoTip;
 import elong.CrazyLink.Draw.DrawBomb;
 import elong.CrazyLink.Draw.DrawExplosion;
 import elong.CrazyLink.Draw.DrawLife;
+import elong.CrazyLink.Draw.DrawLifeAdd;
+import elong.CrazyLink.Draw.DrawLifeDel;
 import elong.CrazyLink.Draw.DrawMonster;
 import elong.CrazyLink.Draw.DrawSingleScore;
 import elong.CrazyLink.Draw.DrawTip1;
@@ -71,6 +75,8 @@ public class ControlCenter {
     int lifeTextureId;
     int congratulationTextureId;
     int tip2TextureId;
+    int lifeAddTextureId;
+    int lifeDelTextureId;
     int fireTextureId;
     int explosionTextureId;
     int monsterTextureId;
@@ -93,10 +99,12 @@ public class ControlCenter {
 	static public DrawExplosion drawExplosion;
 	static public DrawMonster drawMonster;
 	static public DrawBomb drawBomb;
+	static public DrawLifeAdd drawLifeAdd;
+	static public DrawLifeDel drawLifeDel;
 
 	
 	static Score mScore;	//计算分数
-	static Sound mSound;
+	public static Sound mSound;
 	
 	
 	public static boolean mIsLoading = false;	//显示正在加载
@@ -776,6 +784,8 @@ public class ControlCenter {
 		drawSingleScore.draw(gl, mSingleScoreW, mSingleScoreH, mScore.getAward());
 		drawTip1.draw(gl);
 		drawTip2.draw(gl);
+		drawLifeAdd.draw(gl);
+		drawLifeDel.draw(gl);
 		
 		for(int i = 0; i < (int)CrazyLinkConstent.GRID_NUM; i++)
 		{
@@ -833,6 +843,8 @@ public class ControlCenter {
     	explosionTextureId = initTexture(gl, R.drawable.explosion);
     	monsterTextureId = initTexture(gl, R.drawable.animal);
     	bombTextureId = initTexture(gl, R.drawable.bomb);
+    	lifeAddTextureId = initTexture(gl, R.drawable.life_add);
+    	lifeDelTextureId = initTexture(gl, R.drawable.life_del);
 	}
 	
 	//初始化渲染对象
@@ -846,6 +858,8 @@ public class ControlCenter {
     	drawSingleScore = new DrawSingleScore(gl);
     	drawTip1 = new DrawTip1(congratulationTextureId);
     	drawTip2 = new DrawTip2(tip2TextureId);
+    	drawLifeAdd = new DrawLifeAdd(lifeAddTextureId);
+    	drawLifeDel = new DrawLifeDel(lifeDelTextureId);
 
     	drawLoading = new DrawLoading(loadingTextureId);		//创建加载动画素材    	
     	drawAutoTip = new DrawAutoTip(fireTextureId);
@@ -863,6 +877,8 @@ public class ControlCenter {
     	controlRegister(drawExplosion.control);
     	controlRegister(drawMonster.control);
     	controlRegister(drawBomb.control);
+    	controlRegister(drawLifeAdd.control);
+    	controlRegister(drawLifeDel.control);
     	
     	initExchangeList();
     	initDisappearList();
@@ -968,6 +984,10 @@ public class ControlCenter {
 	public static final int READY_GO = 9;
 	public static final int LEVEL_UP = 10;
 	public static final int GAME_OVER = 11;
+	public static final int LIFEADD_START = 12;
+	public static final int LIFEADD_END = 13;
+	public static final int LIFEDEL_START = 14;
+	public static final int LIFEDEL_END = 15;
 
 
 	
@@ -1037,7 +1057,7 @@ public class ControlCenter {
 						if(4 == clearCnt)
 							mSound.play(E_SOUND.COOL);
 						else if(5 == clearCnt)
-							;
+							mSound.play(E_SOUND.PERFECT);
 						else if(clearCnt > 5)
 							mSound.play(E_SOUND.SUPER);
 						ctl.init(clearCnt);
@@ -1086,12 +1106,36 @@ public class ControlCenter {
 				{
 					CtlTip2 ctl = (CtlTip2) drawTip2.control;
 					ctl.init(E_TIP.LEVELUP.ordinal());	//level up
+					mSound.play(E_SOUND.LEVELUP);
 					break;
 				}
 				case GAME_OVER:
 				{
 					CtlTip2 ctl = (CtlTip2) drawTip2.control;
 					ctl.init(E_TIP.GAMEOVER.ordinal());	//game over
+					mSound.play(E_SOUND.TIMEOVER);
+					break;
+				}
+				case LIFEADD_START:
+				{
+					CtlLifeAdd ctl = (CtlLifeAdd) drawLifeAdd.control;
+					ctl.init(mScore.getLife());
+					break;
+				}
+				case LIFEADD_END:
+				{
+					mScore.increaseLife();
+					break;
+				}
+				case LIFEDEL_START:
+				{
+					CtlLifeDel ctl = (CtlLifeDel) drawLifeDel.control;
+					ctl.init(mScore.getLife());
+					break;
+				}
+				case LIFEDEL_END:
+				{
+					mScore.decreaseLife();
 					break;
 				}
 			}

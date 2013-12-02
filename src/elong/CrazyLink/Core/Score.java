@@ -11,6 +11,7 @@
 package elong.CrazyLink.Core;
 
 import elong.CrazyLink.CrazyLinkConstent;
+import elong.CrazyLink.CrazyLinkConstent.E_SOUND;
 import android.os.Message;
 
 public class Score {
@@ -103,13 +104,7 @@ public class Score {
 	{
 		mAwardRatio = 0;
 		mContinueCnt = 0;
-		mLife--;
-		if(0 == mLife)
-		{
-			Message msg = new Message();
-			msg.what = ControlCenter.GAME_OVER;
-		    ControlCenter.mHandler.sendMessage(msg);				
-		}
+		lifeDelMsg();
 	}
 	
 	//递增分数系数
@@ -125,7 +120,7 @@ public class Score {
 		mAwardRatio += (float)clearNum / 5;
 		if (clearNum > CrazyLinkConstent.LIFE_UP)
 		{
-			increaseLife();	//增加生命
+			lifeAddMsg();	//增加生命
 		}
 	}
 	
@@ -159,7 +154,36 @@ public class Score {
 	void increaseLife()
 	{
 		mLife++;
+		ControlCenter.mSound.play(E_SOUND.LIFEADD);
 	}
+	
+	void lifeAddMsg()
+	{
+		Message msg = new Message();
+		msg.what = ControlCenter.LIFEADD_START;
+	    ControlCenter.mHandler.sendMessage(msg);			
+	}
+	
+	void decreaseLife()
+	{
+		mLife--;
+		ControlCenter.mSound.play(E_SOUND.LIFEDEL);
+		if(0 == mLife)
+		{
+			Message msg = new Message();
+			msg.what = ControlCenter.GAME_OVER;
+		    ControlCenter.mHandler.sendMessage(msg);				
+		}
+
+	}
+	
+	void lifeDelMsg()
+	{
+		Message msg = new Message();
+		msg.what = ControlCenter.LIFEDEL_START;
+	    ControlCenter.mHandler.sendMessage(msg);			
+	}
+	
 	
 	int getLife()
 	{

@@ -7,4 +7,5 @@ public interface IControl {
 	boolean isRun();
 	void setToken(int token);
 	int getToken();
+	void sendMsg();
 }

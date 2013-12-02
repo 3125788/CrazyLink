@@ -18,19 +18,21 @@ public final class R {
         public static final int grid=0x7f020004;
         public static final int icon=0x7f020005;
         public static final int life=0x7f020006;
-        public static final int loading_01=0x7f020007;
-        public static final int loading_02=0x7f020008;
-        public static final int loading_03=0x7f020009;
-        public static final int loading_04=0x7f02000a;
-        public static final int loading_05=0x7f02000b;
-        public static final int loading_06=0x7f02000c;
-        public static final int loading_07=0x7f02000d;
-        public static final int loading_08=0x7f02000e;
-        public static final int loading_09=0x7f02000f;
-        public static final int loading_10=0x7f020010;
-        public static final int number=0x7f020011;
-        public static final int word=0x7f020012;
-        public static final int word2=0x7f020013;
+        public static final int life_add=0x7f020007;
+        public static final int life_del=0x7f020008;
+        public static final int loading_01=0x7f020009;
+        public static final int loading_02=0x7f02000a;
+        public static final int loading_03=0x7f02000b;
+        public static final int loading_04=0x7f02000c;
+        public static final int loading_05=0x7f02000d;
+        public static final int loading_06=0x7f02000e;
+        public static final int loading_07=0x7f02000f;
+        public static final int loading_08=0x7f020010;
+        public static final int loading_09=0x7f020011;
+        public static final int loading_10=0x7f020012;
+        public static final int number=0x7f020013;
+        public static final int word=0x7f020014;
+        public static final int word2=0x7f020015;
     }
     public static final class layout {
         public static final int main=0x7f030000;
@@ -43,11 +45,16 @@ public final class R {
         public static final int s_disappear4=0x7f040004;
         public static final int s_disappear5=0x7f040005;
         public static final int s_fill=0x7f040006;
-        public static final int s_monster=0x7f040007;
-        public static final int s_readygo=0x7f040008;
-        public static final int s_slide=0x7f040009;
-        public static final int s_super=0x7f04000a;
-        public static final int s_timeover=0x7f04000b;
+        public static final int s_good=0x7f040007;
+        public static final int s_levelup=0x7f040008;
+        public static final int s_lifeadd=0x7f040009;
+        public static final int s_lifedel=0x7f04000a;
+        public static final int s_monster=0x7f04000b;
+        public static final int s_perfect=0x7f04000c;
+        public static final int s_readygo=0x7f04000d;
+        public static final int s_slide=0x7f04000e;
+        public static final int s_super=0x7f04000f;
+        public static final int s_timeover=0x7f040010;
     }
     public static final class string {
         public static final int app_name=0x7f050001;

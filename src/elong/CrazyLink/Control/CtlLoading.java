@@ -28,9 +28,7 @@ public class CtlLoading extends CtlBase{
 		if(mTimeCnt > 60)
 		{
 			mStop = true;
-			Message msg = new Message();
-		    msg.what = ControlCenter.LOADING_END;
-		    ControlCenter.mHandler.sendMessage(msg);	
+			sendMsg();
 		}
 	}
 	
@@ -38,5 +36,12 @@ public class CtlLoading extends CtlBase{
 	{
 		return mPicId;
 	}		
+	
+	public void sendMsg()
+	{
+		Message msg = new Message();
+	    msg.what = ControlCenter.LOADING_END;
+	    ControlCenter.mHandler.sendMessage(msg);
+	}
 	
 }

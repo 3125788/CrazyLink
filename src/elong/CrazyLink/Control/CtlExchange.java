@@ -138,17 +138,7 @@ public class CtlExchange extends CtlBase{
 		
 		if(mStop)
 		{
-			Bundle b = new Bundle();
-			b.putInt("token", mToken);
-			setToken(-1);
-			b.putInt("col1", mCol1);
-			b.putInt("row1", mRow1);
-			b.putInt("col2", mCol2);
-			b.putInt("row2", mRow2);
-			Message msg = new Message();
-		    msg.what = ControlCenter.EXCHANGE_END;
-			msg.setData(b);
-		    ControlCenter.mHandler.sendMessage(msg);
+			sendMsg();
 		}
 
 	}
@@ -211,6 +201,21 @@ public class CtlExchange extends CtlBase{
 			delta = -0.5f;
 		}
 		return delta + mDeltaY2/100.0f;
+	}
+	
+	public void sendMsg()
+	{
+		Bundle b = new Bundle();
+		b.putInt("token", mToken);
+		setToken(-1);
+		b.putInt("col1", mCol1);
+		b.putInt("row1", mRow1);
+		b.putInt("col2", mCol2);
+		b.putInt("row2", mRow2);
+		Message msg = new Message();
+	    msg.what = ControlCenter.EXCHANGE_END;
+		msg.setData(b);
+	    ControlCenter.mHandler.sendMessage(msg);
 	}
 	
 }

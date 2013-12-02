@@ -41,10 +41,15 @@ public class CrazyLinkConstent {
 		DISAPPEAR5,
 		READYGO,
 		TIMEOVER,
+		LEVELUP,
 		SUPER,
 		COOL,
+		GOOD,
+		PERFECT,
 		BOMB,
 		MONSTER,
+		LIFEADD,
+		LIFEDEL,
 	}
 	
 	public enum E_TIP

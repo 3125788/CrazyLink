@@ -35,9 +35,7 @@ public class CtlFill extends CtlBase{
 			}
 			if(mStop)
 			{
-				Message msg = new Message();
-			    msg.what = ControlCenter.FILL_END;
-			    ControlCenter.mHandler.sendMessage(msg);
+				sendMsg();
 			}			
 		}
 	}
@@ -53,5 +51,11 @@ public class CtlFill extends CtlBase{
 		super.start();
 	}
 
+	public void sendMsg()
+	{
+		Message msg = new Message();
+	    msg.what = ControlCenter.FILL_END;
+	    ControlCenter.mHandler.sendMessage(msg);
+	}
 }
 

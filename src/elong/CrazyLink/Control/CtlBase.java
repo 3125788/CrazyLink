@@ -32,4 +32,8 @@ public class CtlBase implements IControl{
 	{
 		return mToken;
 	}
+
+	public void sendMsg() {
+		
+	}
 }

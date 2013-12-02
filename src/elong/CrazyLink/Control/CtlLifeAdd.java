@@ -10,22 +10,37 @@
  ********************************************************/
 package elong.CrazyLink.Control;
 
-public class CtlTip2 extends CtlBase{
+import android.os.Message;
+import elong.CrazyLink.Core.ControlCenter;
+
+public class CtlLifeAdd extends CtlBase{
 	
 	int mDeltaW = 0;
 	int mDeltaH = 0;
+	float mDeltaX = 0;
+	float mDeltaY = 0;
+	float mCol = 0;
 	int mStep = 0;
 	int mKeep = 0;
 	int mPicId = 0;
+	int mGoodCnt = 0;
+	int mTimeCnt = 0;
 	
 	public void run()
 	{
-		int maxW = 128;
-		int minW = 32;
-		int deltaW = 8;
-		int deltaH = 2;
+		int maxW = 48;
+		int minW = 12;
+		int deltaW = 4;
+		int deltaH = 4;
 		if(!mStop)
 		{
+			mTimeCnt++;
+			if (1 == (mTimeCnt %2))
+			{
+				mPicId++;
+				if (mPicId > 3) mPicId = 0;
+			}
+
 			if(0 == mStep)
 			{
 				mDeltaW += deltaW;
@@ -38,7 +53,7 @@ public class CtlTip2 extends CtlBase{
 			else if(1 == mStep)
 			{
 				mKeep++;
-				if(mKeep >= 10)
+				if(mKeep >= 30)
 				{
 					mKeep = 0;
 					mStep = 2;
@@ -48,6 +63,10 @@ public class CtlTip2 extends CtlBase{
 			{
 				mDeltaW -= deltaW;
 				mDeltaH -= deltaH;
+				
+				mDeltaY ++;
+				mDeltaX = mDeltaY / 2;
+				if(mDeltaX >= mCol) mDeltaX = mCol;	//瞄准新添加生命出现的位置
 				if (mDeltaW <= minW)
 				{
 					mStep = 3;
@@ -56,6 +75,7 @@ public class CtlTip2 extends CtlBase{
 			else if(3 == mStep)
 			{
 				mStop = true;
+				sendMsg();
 			}
 		}		
 	}
@@ -70,21 +90,42 @@ public class CtlTip2 extends CtlBase{
 		return mDeltaH;
 	}
 	
-	
-	public void init(int pic)
+	public float getX()
 	{
-		if(pic > 3) return;
+		return mDeltaX;
+	}
+	
+	public float getY()
+	{
+		return mDeltaY;
+	}
+	
+	public void init(int life)
+	{
 		if(!mStop) return;
 		mDeltaW = 0;
 		mDeltaH = 0;
-		mStep = 0;
-		
-		mPicId = pic;
+		mDeltaX = 0;
+		mDeltaY = 0;
+		//根据当前生命值设定新加的图案出现的位置
+		if(life >= 3) mCol = 5;
+		else if(2 == life) mCol = 2;
+		else if(1 == life) mCol = 3;
+		else if(0 == life) mCol = 4;
+		mStep = 0;	
+		mPicId = 0;
 		super.start();
 	}
 		
 	public int getPicId()
 	{
 		return mPicId;
+	}
+	
+	public void sendMsg()
+	{
+		Message msg = new Message();
+		msg.what = ControlCenter.LIFEADD_END;
+	    ControlCenter.mHandler.sendMessage(msg);			
 	}
 }

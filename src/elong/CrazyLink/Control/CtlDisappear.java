@@ -28,13 +28,7 @@ public class CtlDisappear extends CtlBase{
 			if(0 == mCount)
 			{
 				mStop = true;
-				Bundle b = new Bundle();
-				b.putInt("token", mToken);
-				setToken(-1);
-				Message msg = new Message();
-			    msg.what = ControlCenter.DISAPPEAR_END;
-			    msg.setData(b);
-			    ControlCenter.mHandler.sendMessage(msg);
+				sendMsg();
 			}
 		}
 	}
@@ -50,5 +44,15 @@ public class CtlDisappear extends CtlBase{
 		return mCount;
 	}
 
+	public void sendMsg()
+	{
+		Bundle b = new Bundle();
+		b.putInt("token", mToken);
+		setToken(-1);
+		Message msg = new Message();
+	    msg.what = ControlCenter.DISAPPEAR_END;
+	    msg.setData(b);
+	    ControlCenter.mHandler.sendMessage(msg);
+	}
 }
 

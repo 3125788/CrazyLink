@@ -10,13 +10,16 @@
  ********************************************************/
 package elong.CrazyLink.Control;
 
+import elong.CrazyLink.CrazyLinkConstent.E_SOUND;
+import elong.CrazyLink.Core.ControlCenter;
+
 public class CtlTip1 extends CtlBase{
 	
 	int mDeltaW = 0;
 	int mDeltaH = 0;
 	int mDeltaX = 0;
 	int mDeltaY = 0;
-	int mDirection = 0;
+	int mStep = 0;
 	int mKeep = 0;
 	int mPicId = 0;
 	int mGoodCnt = 0;
@@ -29,7 +32,7 @@ public class CtlTip1 extends CtlBase{
 		int deltaH = 2;
 		if(!mStop)
 		{
-			if(0 == mDirection)
+			if(0 == mStep)
 			{
 				mDeltaW += deltaW;
 				mDeltaH += deltaH;
@@ -37,19 +40,19 @@ public class CtlTip1 extends CtlBase{
 				mDeltaY ++;
 				if (mDeltaW >= maxW)
 				{
-					mDirection = 1;
+					mStep = 1;
 				}
 			}
-			else if(1 == mDirection)
+			else if(1 == mStep)
 			{
 				mKeep++;
 				if(mKeep >= 10)
 				{
 					mKeep = 0;
-					mDirection = 2;
+					mStep = 2;
 				}				
 			}
-			else if(2 == mDirection)
+			else if(2 == mStep)
 			{
 				mDeltaW -= deltaW;
 				mDeltaH -= deltaH;
@@ -57,10 +60,10 @@ public class CtlTip1 extends CtlBase{
 				mDeltaY --;
 				if (mDeltaW <= minW)
 				{
-					mDirection = 3;
+					mStep = 3;
 				}				
 			}
-			else if(3 == mDirection)
+			else if(3 == mStep)
 			{
 				mStop = true;
 			}
@@ -95,14 +98,18 @@ public class CtlTip1 extends CtlBase{
 		mDeltaH = 0;
 		mDeltaX = 0;
 		mDeltaY = 0;
-		mDirection = 0;
+		mStep = 0;
 		
 		if(clearCnt >6) clearCnt = 6;
 		mPicId = clearCnt - 3;
 		if(3 == clearCnt)
 		{
 			mGoodCnt++;
-			if(1 == mGoodCnt % 5) super.start();      //连续消除5次3个动物才提示一次GOOD
+			if(1 == mGoodCnt % 5)
+			{
+				super.start();      //连续消除5次3个动物才提示一次GOOD
+				ControlCenter.mSound.play(E_SOUND.GOOD);
+			}
 		}
 		else
 		{
