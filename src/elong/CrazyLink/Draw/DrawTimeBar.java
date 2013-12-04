@@ -27,11 +27,14 @@ import android.opengl.GLUtils;
 import elong.CrazyLink.CrazyLinkConstent;
 
 
-public class DrawLife {
+public class DrawTimeBar {
 	
-	private IntBuffer   mLifeVertexBuffer;		//顶点坐标数据缓冲
+	int mMaxTime = 0;
+
+	
+	private IntBuffer   mVertexBuffer;		//顶点坐标数据缓冲
 	private IntBuffer   mNumVertexBuffer;		//顶点坐标数据缓冲
-    private FloatBuffer   mLifeTextureBuffer;	//顶点纹理数据缓冲
+    private FloatBuffer   mTextureBuffer;	//顶点纹理数据缓冲
     private FloatBuffer   mNumTextureBuffer;	//顶点纹理数据缓冲
     int vCount=0;							//顶点数量     
     int textureId;							//纹理索引
@@ -42,31 +45,32 @@ public class DrawLife {
     final int mFontSize = 24;	//字体大小
     
     float textureRatio;						//为了准确获取纹理图片中的素材对象，需要设置纹理的变换率
-    public DrawLife(GL10 gl, int textureId)
+    public DrawTimeBar(GL10 gl, int textureId, int maxTime)
     {
     	this.textureId=textureId;
+    	this.mMaxTime = maxTime;
     	initNumTextureBuffer();
     	int[] textures = new int[1];
 		gl.glGenTextures(1, textures, 0);
 		this.numTextureId = textures[0];
     }	
 	//顶点坐标数据的初始化
-    private void initVertexBuffer(int col)
+    private void initVertexBuffer(float percent)
     {
     	    	
-    	int w = 16;
-    	int h = 16;
+    	float w = 64 * 2.5f;
+    	int h = 24;
         vCount=6;//顶点的数量，一个正方形用两个三角形表示，共需要6个顶点   
-        int deltaX = ((col + 2)*2*w*CrazyLinkConstent.UNIT_SIZE);
-        int deltaY = 10*2*h*CrazyLinkConstent.UNIT_SIZE;
+        float deltaX = 2*w*CrazyLinkConstent.UNIT_SIZE * percent;
+        float deltaY = -64 * 4.5f * CrazyLinkConstent.UNIT_SIZE;
         int vertices[]=new int[]//顶点坐标数据数组
         {
-           	-w*CrazyLinkConstent.UNIT_SIZE+deltaX,h*CrazyLinkConstent.UNIT_SIZE+deltaY,0,
-        	-w*CrazyLinkConstent.UNIT_SIZE+deltaX,-h*CrazyLinkConstent.UNIT_SIZE+deltaY,0,
-        	w*CrazyLinkConstent.UNIT_SIZE+deltaX,-h*CrazyLinkConstent.UNIT_SIZE+deltaY,0,
-        	w*CrazyLinkConstent.UNIT_SIZE+deltaX,-h*CrazyLinkConstent.UNIT_SIZE+deltaY,0,
-        	w*CrazyLinkConstent.UNIT_SIZE+deltaX,h*CrazyLinkConstent.UNIT_SIZE+deltaY,0,
-        	-w*CrazyLinkConstent.UNIT_SIZE+deltaX,h*CrazyLinkConstent.UNIT_SIZE+deltaY,0
+           	(int)(-w*CrazyLinkConstent.UNIT_SIZE),h*CrazyLinkConstent.UNIT_SIZE+(int)deltaY,0,
+        	(int)(-w*CrazyLinkConstent.UNIT_SIZE),-h*CrazyLinkConstent.UNIT_SIZE+(int)deltaY,0,
+        	(int)(-w*CrazyLinkConstent.UNIT_SIZE+deltaX),-h*CrazyLinkConstent.UNIT_SIZE+(int)deltaY,0,
+        	(int)(-w*CrazyLinkConstent.UNIT_SIZE+deltaX),-h*CrazyLinkConstent.UNIT_SIZE+(int)deltaY,0,
+        	(int)(-w*CrazyLinkConstent.UNIT_SIZE+deltaX),h*CrazyLinkConstent.UNIT_SIZE+(int)deltaY,0,
+        	(int)(-w*CrazyLinkConstent.UNIT_SIZE),h*CrazyLinkConstent.UNIT_SIZE+(int)deltaY,0
         };
         //创建顶点坐标数据缓冲
         //int类型占用4个字节，因此转换为byte的数据时需要*4
@@ -74,17 +78,17 @@ public class DrawLife {
         vbb.order(ByteOrder.nativeOrder());		//设置本地的字节顺序
         //特别提示：由于不同平台字节顺序不同数据单元不是字节的一定要经过ByteBuffer
         //转换，关键是要通过ByteOrder设置nativeOrder()，否则有可能会出问题    	        
-        mLifeVertexBuffer = vbb.asIntBuffer();		//转换为int型缓冲
-        mLifeVertexBuffer.put(vertices);			//向缓冲区中放入顶点坐标数据
-        mLifeVertexBuffer.position(0);				//设置缓冲区起始位置
+        mVertexBuffer = vbb.asIntBuffer();		//转换为int型缓冲
+        mVertexBuffer.put(vertices);			//向缓冲区中放入顶点坐标数据
+        mVertexBuffer.position(0);				//设置缓冲区起始位置
         return;
     }
     
     private void initNumVertexBuffer()
     {
         vCount=6;//顶点的数量，一个正方形用两个三角形表示，共需要6个顶点
-        float deltaX = 32*5*CrazyLinkConstent.UNIT_SIZE;
-        float deltaY = 64*5*CrazyLinkConstent.UNIT_SIZE;
+        float deltaX = 0*CrazyLinkConstent.UNIT_SIZE;
+        float deltaY = -64 * 4.5f *CrazyLinkConstent.UNIT_SIZE;
         int vertices[]=new int[]//顶点坐标数据数组
         {
            	-mBitmapW/2*CrazyLinkConstent.UNIT_SIZE+(int)deltaX,mBitmapH/2*CrazyLinkConstent.UNIT_SIZE+(int)deltaY,0,
@@ -110,7 +114,7 @@ public class DrawLife {
     //顶点纹理数据的初始化    
     private void initTextureBuffer(int witch)
     {
-        textureRatio = (float)(1/2.0f);		//图片是2个独立的素材对象组成，每次需要根据witch准确地获取对应的素材
+        textureRatio = (float)(1/4.0f);		//图片是4个独立的素材对象组成，每次需要根据witch准确地获取对应的素材
         float textureCoors[]=new float[]	//顶点纹理S、T坐标值数组
 	    {
         	witch * textureRatio,0,
@@ -127,9 +131,9 @@ public class DrawLife {
         cbb.order(ByteOrder.nativeOrder());//设置本地字节顺序
         //特别提示：由于不同平台字节顺序不同数据单元不是字节的一定要经过ByteBuffer
         //转换，关键是要通过ByteOrder设置nativeOrder()，否则有可能会出问题
-        mLifeTextureBuffer = cbb.asFloatBuffer();//转换为int型缓冲
-        mLifeTextureBuffer.put(textureCoors);//向缓冲区中放入顶点着色数据
-        mLifeTextureBuffer.position(0);//设置缓冲区起始位置
+        mTextureBuffer = cbb.asFloatBuffer();//转换为int型缓冲
+        mTextureBuffer.put(textureCoors);//向缓冲区中放入顶点着色数据
+        mTextureBuffer.position(0);//设置缓冲区起始位置
     	return;
     }
     
@@ -181,15 +185,14 @@ public class DrawLife {
 		paint.setTextSize(mFontSize);	
 		paint.setColor(Color.WHITE);
 		String str = Integer.toString(life);			
-		canvas.drawText(str, 20, 28, paint);	//书写的位置，根据具体情况可以调整一下			
+		canvas.drawText(str, 20, 24, paint);	//书写的位置，根据具体情况可以调整一下			
 
 		return bitmap;
 	}
 	
 	public void drawNumber(GL10 gl, int life)
     {
-		life -= 3;
-		if (life <= 0) return;
+		if (life < 0) return;
     	Bitmap bmp = genBitmap(life);
     	bindTexture(gl, bmp);
     	initNumVertexBuffer();	//根据col,row初始化顶点坐标
@@ -232,11 +235,10 @@ public class DrawLife {
 
 
 
-    void drawLife(GL10 gl, int pic, int col)
+    void drawTimeBackground(GL10 gl)
     {   
-    	initVertexBuffer(col);	//根据col,row初始化顶点坐标
-    	initTextureBuffer(pic);	//根据witch来初始化纹理顶点数据
-    	//gl.glTranslatef(col * textureRatio, row * textureRatio, 0);	//在x=col,y=row的位置绘制选定的素材对象        
+    	initVertexBuffer(1.0f);	//根据col,row初始化顶点坐标
+    	initTextureBuffer(0);	//根据witch来初始化纹理顶点数据        
         //顶点坐标，允许使用顶点数组
         gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
 		//为画笔指定顶点坐标数据
@@ -245,7 +247,7 @@ public class DrawLife {
     		3,				//每个顶点的坐标数量为3  xyz 
     		GL10.GL_FIXED,	//顶点坐标值的类型为 GL_FIXED
     		0, 				//连续顶点坐标数据之间的间隔
-    		mLifeVertexBuffer	//顶点坐标数据
+    		mVertexBuffer	//顶点坐标数据
         );
         
         //纹理坐标，开启纹理
@@ -258,7 +260,7 @@ public class DrawLife {
     		2, 					//每个顶点两个纹理坐标数据 S、T
     		GL10.GL_FLOAT, 		//数据类型
     		0, 					//连续纹理坐标数据之间的间隔
-    		mLifeTextureBuffer		//纹理坐标数据
+    		mTextureBuffer		//纹理坐标数据
         );        		
         gl.glBindTexture(GL10.GL_TEXTURE_2D,textureId);//为画笔绑定指定名称ID纹理   
         
@@ -272,19 +274,59 @@ public class DrawLife {
         gl.glDisable(GL10.GL_TEXTURE_2D);//关闭纹理
     }
     
-    public void draw(GL10 gl, int life)
-    {
-    	int lifeCnt = life;
-    	if (life > 3) lifeCnt = 3;
-    	for(int i = 0; i < 3; i++)
-    	{
-    		if(lifeCnt >= 3)
-    			drawLife(gl, 1, i);
-    		else
-    			drawLife(gl, 0, i);
-    		lifeCnt++;
-    	}
-    	drawNumber(gl, life);
+    void drawTimeProgressBar(GL10 gl, int leftTime)
+    {   
+    	if(leftTime > mMaxTime) leftTime = mMaxTime;
+    	float percent = (float)leftTime / (float)mMaxTime;
+    	initVertexBuffer(percent);	//根据col,row初始化顶点坐标
+    	int picId = 1;
+    	if(percent > 0.2f) picId = 1;
+    	else if(percent > 0.1f) picId = 2;
+    	else picId = 3;
+    		
+    	initTextureBuffer(picId);	//根据witch来初始化纹理顶点数据        
+        //顶点坐标，允许使用顶点数组
+        gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
+		//为画笔指定顶点坐标数据
+        gl.glVertexPointer
+        (
+    		3,				//每个顶点的坐标数量为3  xyz 
+    		GL10.GL_FIXED,	//顶点坐标值的类型为 GL_FIXED
+    		0, 				//连续顶点坐标数据之间的间隔
+    		mVertexBuffer	//顶点坐标数据
+        );
+        
+        //纹理坐标，开启纹理
+        gl.glEnable(GL10.GL_TEXTURE_2D);   
+        //允许使用纹理数组
+        gl.glEnableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
+        //为画笔指定纹理uv坐标数据
+        gl.glTexCoordPointer
+        (
+    		2, 					//每个顶点两个纹理坐标数据 S、T
+    		GL10.GL_FLOAT, 		//数据类型
+    		0, 					//连续纹理坐标数据之间的间隔
+    		mTextureBuffer		//纹理坐标数据
+        );        		
+        gl.glBindTexture(GL10.GL_TEXTURE_2D,textureId);//为画笔绑定指定名称ID纹理   
+        
+        //绘制图形
+        gl.glDrawArrays
+        (
+    		GL10.GL_TRIANGLES, 
+    		0, 
+    		vCount
+        );
+        gl.glDisable(GL10.GL_TEXTURE_2D);//关闭纹理
+    }
+    
+    
+    public void draw(GL10 gl, int leftTime)
+    {    
+    	drawNumber(gl, leftTime);
+    	drawTimeProgressBar(gl, leftTime);
+    	drawTimeBackground(gl);
     }
 }
+
 

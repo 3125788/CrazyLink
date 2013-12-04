@@ -43,6 +43,7 @@ import elong.CrazyLink.Draw.DrawLifeAdd;
 import elong.CrazyLink.Draw.DrawLifeDel;
 import elong.CrazyLink.Draw.DrawMonster;
 import elong.CrazyLink.Draw.DrawSingleScore;
+import elong.CrazyLink.Draw.DrawTimeBar;
 import elong.CrazyLink.Draw.DrawTip1;
 import elong.CrazyLink.Draw.DrawDisappear;
 import elong.CrazyLink.Draw.DrawExchange;
@@ -77,6 +78,7 @@ public class ControlCenter {
     int tip2TextureId;
     int lifeAddTextureId;
     int lifeDelTextureId;
+    int timeBarTextureId;
     int fireTextureId;
     int explosionTextureId;
     int monsterTextureId;
@@ -101,10 +103,12 @@ public class ControlCenter {
 	static public DrawBomb drawBomb;
 	static public DrawLifeAdd drawLifeAdd;
 	static public DrawLifeDel drawLifeDel;
+	static public DrawTimeBar drawTimeBar;
 
 	
 	static Score mScore;	//计算分数
 	public static Sound mSound;
+	public static Timer mTimer;
 	
 	
 	public static boolean mIsLoading = false;	//显示正在加载
@@ -130,6 +134,7 @@ public class ControlCenter {
 		mContext = context;
 		mScore = new Score();
 		mSound = new Sound(context);
+		mTimer = new Timer(CrazyLinkConstent.MAX_TIME);
 	    mAnimalPic = new int[(int) CrazyLinkConstent.GRID_NUM][(int) CrazyLinkConstent.GRID_NUM];
 	    mPicBak = new int[(int) CrazyLinkConstent.GRID_NUM][(int) CrazyLinkConstent.GRID_NUM];
 	    mEffect = new int[(int) CrazyLinkConstent.GRID_NUM][(int) CrazyLinkConstent.GRID_NUM];
@@ -786,6 +791,7 @@ public class ControlCenter {
 		drawTip2.draw(gl);
 		drawLifeAdd.draw(gl);
 		drawLifeDel.draw(gl);
+		drawTimeBar.draw(gl, mTimer.getLeftTime());
 		
 		for(int i = 0; i < (int)CrazyLinkConstent.GRID_NUM; i++)
 		{
@@ -845,6 +851,7 @@ public class ControlCenter {
     	bombTextureId = initTexture(gl, R.drawable.bomb);
     	lifeAddTextureId = initTexture(gl, R.drawable.life_add);
     	lifeDelTextureId = initTexture(gl, R.drawable.life_del);
+    	timeBarTextureId = initTexture(gl, R.drawable.time);
 	}
 	
 	//初始化渲染对象
@@ -860,6 +867,7 @@ public class ControlCenter {
     	drawTip2 = new DrawTip2(tip2TextureId);
     	drawLifeAdd = new DrawLifeAdd(lifeAddTextureId);
     	drawLifeDel = new DrawLifeDel(lifeDelTextureId);
+    	drawTimeBar = new DrawTimeBar(gl, timeBarTextureId, CrazyLinkConstent.MAX_TIME);
 
     	drawLoading = new DrawLoading(loadingTextureId);		//创建加载动画素材    	
     	drawAutoTip = new DrawAutoTip(fireTextureId);
@@ -1042,6 +1050,7 @@ public class ControlCenter {
 					mSound.play(E_SOUND.READYGO);
 					CtlTip2 ctl = (CtlTip2) drawTip2.control;
 					ctl.init(E_TIP.READYGO.ordinal());	//ready go
+					mTimer.start();
 					break;
 				}
 				case DISAPPEAR_END:

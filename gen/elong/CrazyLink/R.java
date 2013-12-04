@@ -31,8 +31,9 @@ public final class R {
         public static final int loading_09=0x7f020011;
         public static final int loading_10=0x7f020012;
         public static final int number=0x7f020013;
-        public static final int word=0x7f020014;
-        public static final int word2=0x7f020015;
+        public static final int time=0x7f020014;
+        public static final int word=0x7f020015;
+        public static final int word2=0x7f020016;
     }
     public static final class layout {
         public static final int main=0x7f030000;

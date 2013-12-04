@@ -11,6 +11,7 @@
 
 package elong.CrazyLink;
 
+import elong.CrazyLink.Core.ControlCenter;
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
 import android.media.MediaPlayer;
@@ -49,6 +50,7 @@ public class CrazyLinkActivity extends Activity {
 	@Override
 	protected void onStop() {
 		// TODO Auto-generated method stub
+		ControlCenter.mTimer.pause();
 		super.onStop();
 	}
 
@@ -57,6 +59,7 @@ public class CrazyLinkActivity extends Activity {
 		// TODO Auto-generated method stub
 		super.onResume();
 		mGLSurfaceView.onResume();
+		ControlCenter.mTimer.resume();
 	}
 
 	@Override
@@ -65,6 +68,7 @@ public class CrazyLinkActivity extends Activity {
 		super.onPause();
 		mGLSurfaceView.onPause();
 		mp.pause();
+		ControlCenter.mTimer.pause();
 	}
 	
 	@Override
