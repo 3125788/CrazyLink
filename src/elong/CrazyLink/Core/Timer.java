@@ -50,13 +50,14 @@ public class Timer {
 		{
 			mUsedTime = System.currentTimeMillis()/1000 - mStartTime;
 			mLeftTime = mMaxTime - mUsedTime;
-		}
-		if(0 == mLeftTime)
-		{
-			mStop = true;
-			Message msg = new Message();
-			msg.what = ControlCenter.GAME_OVER;
-		    ControlCenter.mHandler.sendMessage(msg);
+			if(0 == mLeftTime)
+			{
+				mStop = true;
+				Message msg = new Message();
+				msg.what = ControlCenter.GAME_OVER;
+			    ControlCenter.mHandler.sendMessage(msg);
+			}
+
 		}
 		return (int)mLeftTime;
 	}
