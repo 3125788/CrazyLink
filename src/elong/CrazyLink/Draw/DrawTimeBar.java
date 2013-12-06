@@ -61,16 +61,16 @@ public class DrawTimeBar {
     	float w = 64 * 2.5f;
     	int h = 24;
         vCount=6;//顶点的数量，一个正方形用两个三角形表示，共需要6个顶点   
-        float deltaX = 2*w*CrazyLinkConstent.UNIT_SIZE * percent;
-        float deltaY = -64 * 4.5f * CrazyLinkConstent.UNIT_SIZE;
+        float deltaX = 2*w*CrazyLinkConstent.ADP_SIZE * percent;
+        float deltaY = -64 * 4.5f * CrazyLinkConstent.ADP_SIZE;
         int vertices[]=new int[]//顶点坐标数据数组
         {
-           	(int)(-w*CrazyLinkConstent.UNIT_SIZE),h*CrazyLinkConstent.UNIT_SIZE+(int)deltaY,0,
-        	(int)(-w*CrazyLinkConstent.UNIT_SIZE),-h*CrazyLinkConstent.UNIT_SIZE+(int)deltaY,0,
-        	(int)(-w*CrazyLinkConstent.UNIT_SIZE+deltaX),-h*CrazyLinkConstent.UNIT_SIZE+(int)deltaY,0,
-        	(int)(-w*CrazyLinkConstent.UNIT_SIZE+deltaX),-h*CrazyLinkConstent.UNIT_SIZE+(int)deltaY,0,
-        	(int)(-w*CrazyLinkConstent.UNIT_SIZE+deltaX),h*CrazyLinkConstent.UNIT_SIZE+(int)deltaY,0,
-        	(int)(-w*CrazyLinkConstent.UNIT_SIZE),h*CrazyLinkConstent.UNIT_SIZE+(int)deltaY,0
+           	(int)(-w*CrazyLinkConstent.ADP_SIZE),h*CrazyLinkConstent.ADP_SIZE+(int)deltaY,0,
+        	(int)(-w*CrazyLinkConstent.ADP_SIZE),-h*CrazyLinkConstent.ADP_SIZE+(int)deltaY,0,
+        	(int)(-w*CrazyLinkConstent.ADP_SIZE+deltaX),-h*CrazyLinkConstent.ADP_SIZE+(int)deltaY,0,
+        	(int)(-w*CrazyLinkConstent.ADP_SIZE+deltaX),-h*CrazyLinkConstent.ADP_SIZE+(int)deltaY,0,
+        	(int)(-w*CrazyLinkConstent.ADP_SIZE+deltaX),h*CrazyLinkConstent.ADP_SIZE+(int)deltaY,0,
+        	(int)(-w*CrazyLinkConstent.ADP_SIZE),h*CrazyLinkConstent.ADP_SIZE+(int)deltaY,0
         };
         //创建顶点坐标数据缓冲
         //int类型占用4个字节，因此转换为byte的数据时需要*4
@@ -87,16 +87,16 @@ public class DrawTimeBar {
     private void initNumVertexBuffer()
     {
         vCount=6;//顶点的数量，一个正方形用两个三角形表示，共需要6个顶点
-        float deltaX = 0*CrazyLinkConstent.UNIT_SIZE;
-        float deltaY = -64 * 4.5f *CrazyLinkConstent.UNIT_SIZE;
+        float deltaX = 0*CrazyLinkConstent.ADP_SIZE;
+        float deltaY = -64 * 4.5f *CrazyLinkConstent.ADP_SIZE;
         int vertices[]=new int[]//顶点坐标数据数组
         {
-           	-mBitmapW/2*CrazyLinkConstent.UNIT_SIZE+(int)deltaX,mBitmapH/2*CrazyLinkConstent.UNIT_SIZE+(int)deltaY,0,
-        	-mBitmapW/2*CrazyLinkConstent.UNIT_SIZE+(int)deltaX,-mBitmapH/2*CrazyLinkConstent.UNIT_SIZE+(int)deltaY,0,
-        	mBitmapW/2*CrazyLinkConstent.UNIT_SIZE+(int)deltaX,-mBitmapH/2*CrazyLinkConstent.UNIT_SIZE+(int)deltaY,0,
-        	mBitmapW/2*CrazyLinkConstent.UNIT_SIZE+(int)deltaX,-mBitmapH/2*CrazyLinkConstent.UNIT_SIZE+(int)deltaY,0,
-        	mBitmapW/2*CrazyLinkConstent.UNIT_SIZE+(int)deltaX,mBitmapH/2*CrazyLinkConstent.UNIT_SIZE+(int)deltaY,0,
-        	-mBitmapW/2*CrazyLinkConstent.UNIT_SIZE+(int)deltaX,mBitmapH/2*CrazyLinkConstent.UNIT_SIZE+(int)deltaY,0
+           	-mBitmapW/2*CrazyLinkConstent.ADP_SIZE+(int)deltaX,mBitmapH/2*CrazyLinkConstent.ADP_SIZE+(int)deltaY,0,
+        	-mBitmapW/2*CrazyLinkConstent.ADP_SIZE+(int)deltaX,-mBitmapH/2*CrazyLinkConstent.ADP_SIZE+(int)deltaY,0,
+        	mBitmapW/2*CrazyLinkConstent.ADP_SIZE+(int)deltaX,-mBitmapH/2*CrazyLinkConstent.ADP_SIZE+(int)deltaY,0,
+        	mBitmapW/2*CrazyLinkConstent.ADP_SIZE+(int)deltaX,-mBitmapH/2*CrazyLinkConstent.ADP_SIZE+(int)deltaY,0,
+        	mBitmapW/2*CrazyLinkConstent.ADP_SIZE+(int)deltaX,mBitmapH/2*CrazyLinkConstent.ADP_SIZE+(int)deltaY,0,
+        	-mBitmapW/2*CrazyLinkConstent.ADP_SIZE+(int)deltaX,mBitmapH/2*CrazyLinkConstent.ADP_SIZE+(int)deltaY,0
         };
         //创建顶点坐标数据缓冲
         //int类型占用4个字节，因此转换为byte的数据时需要*4

@@ -42,16 +42,16 @@ public class DrawBomb {
     {
     	    	
         vCount=6;//顶点的数量，一个正方形用两个三角形表示，共需要6个顶点   
-        int deltaX = ((col-3)*64*CrazyLinkConstent.UNIT_SIZE);
-        int deltaY = ((row-3)*64*CrazyLinkConstent.UNIT_SIZE);
+        int deltaX = ((col-3)*64*CrazyLinkConstent.ADP_SIZE);
+        int deltaY = ((row-3)*64*CrazyLinkConstent.ADP_SIZE);
         int vertices[]=new int[]//顶点坐标数据数组
         {
-           	-32*CrazyLinkConstent.UNIT_SIZE+deltaX,32*CrazyLinkConstent.UNIT_SIZE+deltaY,0,
-        	-32*CrazyLinkConstent.UNIT_SIZE+deltaX,-32*CrazyLinkConstent.UNIT_SIZE+deltaY,0,
-        	32*CrazyLinkConstent.UNIT_SIZE+deltaX,-32*CrazyLinkConstent.UNIT_SIZE+deltaY,0,
-        	32*CrazyLinkConstent.UNIT_SIZE+deltaX,-32*CrazyLinkConstent.UNIT_SIZE+deltaY,0,
-        	32*CrazyLinkConstent.UNIT_SIZE+deltaX,32*CrazyLinkConstent.UNIT_SIZE+deltaY,0,
-        	-32*CrazyLinkConstent.UNIT_SIZE+deltaX,32*CrazyLinkConstent.UNIT_SIZE+deltaY,0
+           	-32*CrazyLinkConstent.ADP_SIZE+deltaX,32*CrazyLinkConstent.ADP_SIZE+deltaY,0,
+        	-32*CrazyLinkConstent.ADP_SIZE+deltaX,-32*CrazyLinkConstent.ADP_SIZE+deltaY,0,
+        	32*CrazyLinkConstent.ADP_SIZE+deltaX,-32*CrazyLinkConstent.ADP_SIZE+deltaY,0,
+        	32*CrazyLinkConstent.ADP_SIZE+deltaX,-32*CrazyLinkConstent.ADP_SIZE+deltaY,0,
+        	32*CrazyLinkConstent.ADP_SIZE+deltaX,32*CrazyLinkConstent.ADP_SIZE+deltaY,0,
+        	-32*CrazyLinkConstent.ADP_SIZE+deltaX,32*CrazyLinkConstent.ADP_SIZE+deltaY,0
         };
         //创建顶点坐标数据缓冲
         //int类型占用4个字节，因此转换为byte的数据时需要*4

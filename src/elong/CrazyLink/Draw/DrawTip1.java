@@ -40,14 +40,14 @@ public class DrawTip1 {
     private void initVertexBuffer()
     {
     	CtlTip1 ctl = (CtlTip1)control;
-    	int w = CrazyLinkConstent.UNIT_SIZE*ctl.getW();
-    	int h = CrazyLinkConstent.UNIT_SIZE*ctl.getH();
+    	int w = CrazyLinkConstent.ADP_SIZE*ctl.getW();
+    	int h = CrazyLinkConstent.ADP_SIZE*ctl.getH();
     	float x = ctl.getX()/10.0f;
     	float y = ctl.getY()/10.0f;
     	
         vCount=6;//顶点的数量，一个正方形用两个三角形表示，共需要6个顶点   
-        int deltaX = (int)(-(2.0f-x)*64*CrazyLinkConstent.UNIT_SIZE);
-        int deltaY = (int)((4.8f-y)*2*32*CrazyLinkConstent.UNIT_SIZE);
+        int deltaX = (int)(-(2.0f-x)*64*CrazyLinkConstent.ADP_SIZE);
+        int deltaY = (int)((4.8f-y)*2*32*CrazyLinkConstent.ADP_SIZE);
         int vertices[]=new int[]//顶点坐标数据数组
         {
            	deltaX-w,deltaY+h,0,

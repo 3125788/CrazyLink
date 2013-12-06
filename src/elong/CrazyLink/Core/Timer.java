@@ -23,25 +23,35 @@ public class Timer {
 	public Timer(int maxTime)
 	{
 		mMaxTime = maxTime;
+		mLeftTime = maxTime;
 		mStop = true;
 	}
 	
 	public void start()
 	{
-		mStartTime = System.currentTimeMillis()/1000 - mUsedTime;
-		mStop = false;
+		if(mLeftTime > 0)
+		{
+			mStartTime = System.currentTimeMillis()/1000 - mUsedTime;
+			mStop = false;
+		}
 	}
 	
 	public void pause()
 	{
-		mUsedTime = System.currentTimeMillis()/1000 - mStartTime;
-		mStop = true;
+		if(mLeftTime > 0)
+		{
+			mUsedTime = System.currentTimeMillis()/1000 - mStartTime;
+			mStop = true;
+		}
 	}
 	
 	public void resume()
 	{
-		mStartTime = System.currentTimeMillis()/1000 - mUsedTime;
-		mStop = false;		
+		if(mLeftTime > 0)
+		{
+			mStartTime = System.currentTimeMillis()/1000 - mUsedTime;
+			mStop = false;
+		}
 	}
 	
 	public int getLeftTime()

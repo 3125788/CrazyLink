@@ -12,7 +12,10 @@ package elong.CrazyLink;
 
 public class CrazyLinkConstent {
 	public static final float GRID_NUM = 7.0f;
-	public static int UNIT_SIZE = (int) (96 * CrazyLinkConstent.GRID_NUM);
+	public static int UNIT_SIZE = (int) (88 * CrazyLinkConstent.GRID_NUM);
+	public static int VIEW_WIDTH = 480;
+	public static int VIEW_HEIGHT = 800;
+	public static int ADP_SIZE = 0;
 	public static float screentRatio = 0;
 	public static float translateRatio = 0;
 	public static float denisty = 0;
@@ -28,7 +31,7 @@ public class CrazyLinkConstent {
 	
 	public static int LIFE_NUM = 3;			//生命数
 	
-	public static int LIFE_UP = 3;			//消除数大于该值时增加生命值
+	public static int LIFE_UP = 9;			//消除数大于该值时增加生命值
 	public static int LIFE_TIMEOUT = 10;	//操作间隔超过这个值时失去一条生命
 	
 	public static int MAX_TIME = 100;		//一局游戏的时间，秒数
