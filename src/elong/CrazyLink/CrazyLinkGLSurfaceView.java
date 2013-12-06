@@ -1,11 +1,11 @@
 /**********************************************************
- * ÏîÄ¿Ãû³Æ£ºÉ½Õ¯¡°°®Ïû³ý¡±ÓÎÏ·7ÈÕ½Ì³Ì
- * ×÷          Õß£ºÖ£ÃôÐÂ
- * ÌÚÑ¶Î¢²©£ºSuperCube3D
- * ÈÕ          ÆÚ£º2013Äê10ÔÂ
- * Éù          Ã÷£º°æÈ¨ËùÓÐ   ÇÖÈ¨±Ø¾¿
- * ±¾Ô´´úÂë¹©ÍøÓÑÑÐ¾¿Ñ§Ï°OpenGL ES¿ª·¢AndroidÓ¦ÓÃÓÃ£¬
- * ÇëÎðÈ«²¿»ò²¿·ÖÓÃÓÚÉÌÒµÓÃÍ¾
+ * ï¿½ï¿½Ä¿ï¿½ï¿½Æ£ï¿½É½Õ¯ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï·7ï¿½Õ½Ì³ï¿½
+ * ï¿½ï¿½          ï¿½ß£ï¿½Ö£ï¿½ï¿½ï¿½ï¿½
+ * ï¿½ï¿½Ñ¶Î¢ï¿½ï¿½ï¿½ï¿½SuperCube3D
+ * ï¿½ï¿½          ï¿½Ú£ï¿½2013ï¿½ï¿½10ï¿½ï¿½
+ * ï¿½ï¿½          ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¨ï¿½ï¿½ï¿½ï¿½   ï¿½ï¿½È¨ï¿½Ø¾ï¿½
+ * ï¿½ï¿½Ô´ï¿½ï¿½ï¿½ë¹©ï¿½ï¿½ï¿½ï¿½ï¿½Ð¾ï¿½Ñ§Ï°OpenGL ESï¿½ï¿½ï¿½ï¿½AndroidÓ¦ï¿½ï¿½ï¿½Ã£ï¿½
+ * ï¿½ï¿½ï¿½ï¿½È«ï¿½ï¿½ï¿½ò²¿·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òµï¿½ï¿½Í¾
  ********************************************************/
 
 package elong.CrazyLink;
@@ -21,7 +21,7 @@ import android.view.MotionEvent;
 
 public class CrazyLinkGLSurfaceView extends GLSurfaceView{
 	
-    private SceneRenderer mRenderer;		//³¡¾°äÖÈ¾Æ÷
+    private SceneRenderer mRenderer;		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¾ï¿½ï¿½
     Context mContext;
     
 	static boolean m_bThreadRun = false;
@@ -35,9 +35,9 @@ public class CrazyLinkGLSurfaceView extends GLSurfaceView{
 	public CrazyLinkGLSurfaceView(CrazyLinkActivity activity) {
         super(activity);
         mContext = this.getContext();
-        mRenderer = new SceneRenderer();	//´´½¨³¡¾°äÖÈ¾Æ÷
-        setRenderer(mRenderer);				//ÉèÖÃäÖÈ¾Æ÷		
-        setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);//ÉèÖÃäÖÈ¾Ä£Ê½ÎªÖ÷¶¯äÖÈ¾
+        mRenderer = new SceneRenderer();	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¾ï¿½ï¿½
+        setRenderer(mRenderer);				//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¾ï¿½ï¿½		
+        setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¾Ä£Ê½Îªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È¾
         
         
         
@@ -55,7 +55,7 @@ public class CrazyLinkGLSurfaceView extends GLSurfaceView{
     					try
     			        {
     						controlCenter.run();
-    			      	  	Thread.sleep(CrazyLinkConstent.DELAY_MS);//ÐÝÏ¢50ms
+    			      	  	Thread.sleep(CrazyLinkConstent.DELAY_MS);//ï¿½ï¿½Ï¢50ms
     			        }
     			        catch(Exception e)
     			        {
@@ -68,7 +68,7 @@ public class CrazyLinkGLSurfaceView extends GLSurfaceView{
         
     }
 	
-    //´¥ÃþÊÂ¼þ»Øµ÷·½·¨
+    //ï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½ï¿½Øµï¿½ï¿½ï¿½ï¿½ï¿½
     @Override public boolean onTouchEvent(MotionEvent e) {
     	if(screenTouch != null)
     	{
@@ -81,10 +81,10 @@ public class CrazyLinkGLSurfaceView extends GLSurfaceView{
     { 
 
         public void onDrawFrame(GL10 gl) {  
-        	gl.glShadeModel(GL10.GL_SMOOTH);		//×ÅÉ«Ä£Ê½ÎªÆ½»¬×ÅÉ«
-        	gl.glClear(GL10.GL_COLOR_BUFFER_BIT|GL10.GL_DEPTH_BUFFER_BIT);//Çå³ýÑÕÉ«»º³åÇø¼°Éî¶È»º³åÇø
-        	gl.glMatrixMode(GL10.GL_MODELVIEW);		//ÉèÖÃ¾ØÕóÎªÄ£Ê½¾ØÕó
-        	gl.glLoadIdentity();					//ÉèÖÃµ±Ç°¾ØÕóÎªµ¥Î»¾ØÕó
+        	gl.glShadeModel(GL10.GL_SMOOTH);		//ï¿½ï¿½É«Ä£Ê½ÎªÆ½ï¿½ï¿½ï¿½ï¿½É«
+        	gl.glClear(GL10.GL_COLOR_BUFFER_BIT|GL10.GL_DEPTH_BUFFER_BIT);//ï¿½ï¿½ï¿½ï¿½ï¿½É«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È»ï¿½ï¿½ï¿½ï¿½ï¿½
+        	gl.glMatrixMode(GL10.GL_MODELVIEW);		//ï¿½ï¿½ï¿½Ã¾ï¿½ï¿½ï¿½ÎªÄ£Ê½ï¿½ï¿½ï¿½ï¿½
+        	gl.glLoadIdentity();					//ï¿½ï¿½ï¿½Ãµï¿½Ç°ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½Î»ï¿½ï¿½ï¿½ï¿½
         	gl.glTranslatef(0f, 0f, -10f);			        	
         	
         	controlCenter.draw(gl);
@@ -92,13 +92,14 @@ public class CrazyLinkGLSurfaceView extends GLSurfaceView{
         
         public void onSurfaceChanged(GL10 gl, int width, int height) {
        	
-        	screenTouch = new ScreenTouch(mContext, width, height);
-        	gl.glViewport(0, 0, width, height);        	//ÉèÖÃµ±Ç°¾ØÕóÎªÍ¶Ó°¾ØÕó
-            gl.glMatrixMode(GL10.GL_PROJECTION);        //ÉèÖÃµ±Ç°¾ØÕóÎªµ¥Î»¾ØÕó
-            gl.glLoadIdentity();            			//¼ÆËãÍ¸ÊÓÍ¶Ó°µÄ±ÈÀý
            	CrazyLinkConstent.translateRatio = (float) width / height;
-        	CrazyLinkConstent.screentRatio = (float) width / height;       //µ÷ÓÃ´Ë·½·¨¼ÆËã²úÉúÍ¸ÊÓÍ¶Ó°¾ØÕó
-           	//gl.glFrustumf(-CrazyLinkConstent.screentRatio, CrazyLinkConstent.screentRatio, -1, 1, 1, 100);
+        	CrazyLinkConstent.screentRatio = (float) width / height;       //ï¿½ï¿½ï¿½Ã´Ë·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ï¿½Í¶Ó°ï¿½ï¿½ï¿½ï¿½
+   			CrazyLinkConstent.ADP_SIZE = CrazyLinkConstent.UNIT_SIZE * CrazyLinkConstent.VIEW_HEIGHT/height * width/CrazyLinkConstent.VIEW_WIDTH;   			
+        	screenTouch = new ScreenTouch(mContext, width, height);        	
+        	gl.glViewport(0, 0, width, height);        	//ï¿½ï¿½ï¿½Ãµï¿½Ç°ï¿½ï¿½ï¿½ï¿½ÎªÍ¶Ó°ï¿½ï¿½ï¿½ï¿½
+            gl.glMatrixMode(GL10.GL_PROJECTION);        //ï¿½ï¿½ï¿½Ãµï¿½Ç°ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½Î»ï¿½ï¿½ï¿½ï¿½
+            gl.glLoadIdentity();            			//ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ï¿½Í¶Ó°ï¿½Ä±ï¿½ï¿½ï¿½
+           	
            	gl.glOrthof(-CrazyLinkConstent.screentRatio*CrazyLinkConstent.GRID_NUM/2, 
            			CrazyLinkConstent.screentRatio*CrazyLinkConstent.GRID_NUM/2, 
            			-1*CrazyLinkConstent.GRID_NUM/2, 
@@ -106,19 +107,19 @@ public class CrazyLinkGLSurfaceView extends GLSurfaceView{
         }
 
         public void onSurfaceCreated(GL10 gl, EGLConfig config) {
-        	gl.glDisable(GL10.GL_DITHER);			//¹Ø±Õ¿¹¶¶¶¯
-            gl.glHint(GL10.GL_PERSPECTIVE_CORRECTION_HINT,GL10.GL_FASTEST);//ÉèÖÃÌØ¶¨HintÏîÄ¿µÄÄ£Ê½£¬ÕâÀïÎªÉèÖÃÎªÊ¹ÓÃ¿ìËÙÄ£Ê½
-            gl.glClearColor(0,0,0,0);            	//ÉèÖÃÆÁÄ»±³¾°É«ºÚÉ«RGBA   
-            gl.glShadeModel(GL10.GL_SMOOTH);        //ÉèÖÃ×ÅÉ«Ä£ÐÍÎªÆ½»¬×ÅÉ«
-            gl.glEnable(GL10.GL_DEPTH_TEST);		//ÆôÓÃÉî¶È²âÊÔ
+        	gl.glDisable(GL10.GL_DITHER);			//ï¿½Ø±Õ¿ï¿½ï¿½ï¿½ï¿½ï¿½
+            gl.glHint(GL10.GL_PERSPECTIVE_CORRECTION_HINT,GL10.GL_FASTEST);//ï¿½ï¿½ï¿½ï¿½ï¿½Ø¶ï¿½Hintï¿½ï¿½Ä¿ï¿½ï¿½Ä£Ê½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½ÎªÊ¹ï¿½Ã¿ï¿½ï¿½ï¿½Ä£Ê½
+            gl.glClearColor(0,0,0,0);            	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä»ï¿½ï¿½ï¿½ï¿½É«ï¿½ï¿½É«RGBA   
+            gl.glShadeModel(GL10.GL_SMOOTH);        //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É«Ä£ï¿½ï¿½ÎªÆ½ï¿½ï¿½ï¿½ï¿½É«
+            gl.glEnable(GL10.GL_DEPTH_TEST);		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½È²ï¿½ï¿½ï¿½
 
-            /*********ÒÔÏÂÎªÔö¼ÓÍ¸Ã÷Ð§¹ûµÄ´úÂë***********/
-            /*Í¸Ã÷Ð§¹û¶ÔËØ²ÄÍ¼Æ¬Ò²ÓÐÒªÇó£¬ÒªÇóÍ¼Æ¬µÄ±³¾°ÊÇÍ¸Ã÷µÄ*/
+            /*********ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½Í¸ï¿½ï¿½Ð§ï¿½ï¿½Ä´ï¿½ï¿½ï¿½***********/
+            /*Í¸ï¿½ï¿½Ð§ï¿½ï¿½ï¿½ï¿½Ø²ï¿½Í¼Æ¬Ò²ï¿½ï¿½Òªï¿½ï¿½Òªï¿½ï¿½Í¼Æ¬ï¿½Ä±ï¿½ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ï¿½ï¿½ï¿½*/
         	gl.glEnable(GL10.GL_BLEND);  
         	gl.glBlendFunc(GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA);  
         	gl.glEnable(GL10.GL_ALPHA_TEST);
         	gl.glAlphaFunc(GL10.GL_GREATER,0.1f);
-        	/*********Í¸Ã÷Ð§¹û***********/
+        	/*********Í¸ï¿½ï¿½Ð§ï¿½ï¿½***********/
         	
             controlCenter.initTexture(gl);         
             controlCenter.initDraw(gl);
