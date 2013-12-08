@@ -1,15 +1,17 @@
 /**********************************************************
- * ��Ŀ��ƣ�ɽկ���������Ϸ7�ս̳�
- * ��          �ߣ�֣����
- * ��Ѷ΢����SuperCube3D
- * ��          �ڣ�2013��10��
- * ��          ������Ȩ����   ��Ȩ�ؾ�
- * ��Դ���빩�����о�ѧϰOpenGL ES����AndroidӦ���ã�
- * ����ȫ���򲿷�������ҵ��;
+ * 项目名称：山寨“爱消除”游戏7日教程
+ * 作          者：郑敏新
+ * 腾讯微博：SuperCube3D
+ * 日          期：2013年10月
+ * 声          明：版权所有   侵权必究
+ * 本源代码供网友研究学习OpenGL ES开发Android应用用，
+ * 请勿全部或部分用于商业用途
  ********************************************************/
+
 
 package elong.CrazyLink;
 
+import elong.CrazyLink.CrazyLinkConstent.E_SCENARIO;
 import elong.CrazyLink.Core.ControlCenter;
 import elong.CrazyLink.Interaction.ScreenTouch;
 import javax.microedition.khronos.egl.EGLConfig;
@@ -72,7 +74,18 @@ public class CrazyLinkGLSurfaceView extends GLSurfaceView{
     @Override public boolean onTouchEvent(MotionEvent e) {
     	if(screenTouch != null)
     	{
-    		screenTouch.Touch(e);
+    		if (ControlCenter.mScene == E_SCENARIO.GAME)
+    		{
+    			screenTouch.touchGameView(e);
+    		}
+    		else if (ControlCenter.mScene == E_SCENARIO.MENU)
+    		{
+    			screenTouch.touchMenuView(e);
+    		}
+    		else if (ControlCenter.mScene == E_SCENARIO.RESULT)
+    		{
+    			screenTouch.touchResultView(e);
+    		}
     	}
         return true;
     }	
@@ -86,12 +99,26 @@ public class CrazyLinkGLSurfaceView extends GLSurfaceView{
         	gl.glMatrixMode(GL10.GL_MODELVIEW);		//���þ���Ϊģʽ����
         	gl.glLoadIdentity();					//���õ�ǰ����Ϊ��λ����
         	gl.glTranslatef(0f, 0f, -10f);			        	
+        
+        	if (ControlCenter.mScene == E_SCENARIO.GAME)
+        	{
+        		controlCenter.drawGameScene(gl);
+        	}
+        	else if (ControlCenter.mScene == E_SCENARIO.MENU)
+        	{
+        		controlCenter.drawMenuScene(gl);
+        	}
+        	else if (ControlCenter.mScene == E_SCENARIO.RESULT)
+        	{
+        		controlCenter.drawResultScene(gl);
+        	}
         	
-        	controlCenter.draw(gl);
         }  
         
         public void onSurfaceChanged(GL10 gl, int width, int height) {
        	
+        	CrazyLinkConstent.REAL_WIDTH = width;
+        	CrazyLinkConstent.REAL_HEIGHT = height;
            	CrazyLinkConstent.translateRatio = (float) width / height;
         	CrazyLinkConstent.screentRatio = (float) width / height;       //���ô˷����������͸��ͶӰ����
    			CrazyLinkConstent.ADP_SIZE = CrazyLinkConstent.UNIT_SIZE * CrazyLinkConstent.VIEW_HEIGHT/height * width/CrazyLinkConstent.VIEW_WIDTH;   			
@@ -123,10 +150,12 @@ public class CrazyLinkGLSurfaceView extends GLSurfaceView{
         	
             controlCenter.initTexture(gl);         
             controlCenter.initDraw(gl);
-            
-    		Message msg = new Message();
-    	    msg.what = ControlCenter.LOADING_START;
-    	    ControlCenter.mHandler.sendMessage(msg);
+            if (ControlCenter.mScene == E_SCENARIO.GAME)
+        	{
+	    		Message msg = new Message();
+	    	    msg.what = ControlCenter.LOADING_START;
+	    	    ControlCenter.mHandler.sendMessage(msg);
+        	}
 
         }
                 

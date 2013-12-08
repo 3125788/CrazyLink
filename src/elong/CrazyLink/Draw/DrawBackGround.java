@@ -2,11 +2,12 @@
  * 项目名称：山寨“爱消除”游戏7日教程
  * 作          者：郑敏新
  * 腾讯微博：SuperCube3D
- * 日          期：2013年10月
+ * 日          期：2013年11月
  * 声          明：版权所有   侵权必究
  * 本源代码供网友研究学习OpenGL ES开发Android应用用，
  * 请勿全部或部分用于商业用途
  ********************************************************/
+
 
 package elong.CrazyLink.Draw;
 
@@ -15,39 +16,36 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
-import javax.microedition.khronos.opengles.GL10;
 import elong.CrazyLink.CrazyLinkConstent;
-import elong.CrazyLink.Control.CtlLoading;
-import elong.CrazyLink.Interface.IControl;
+import javax.microedition.khronos.opengles.GL10;
 
-public class DrawLoading {
-
+public class DrawBackGround {
+	
 	private IntBuffer   mVertexBuffer;		//顶点坐标数据缓冲
     private FloatBuffer   mTextureBuffer;	//顶点纹理数据缓冲
     int vCount=0;							//顶点数量     
-    int[] textureId = new int[10];							//纹理索引
+    int textureId;							//纹理索引
     float textureRatio;						//为了准确获取纹理图片中的素材对象，需要设置纹理的变换率
-    
-    public IControl control;
-    
-    public DrawLoading(int[] textureId)
+    public DrawBackGround(int textureId)
     {
-    	this.textureId=textureId;
-    	initTextureBuffer();	//初始化纹理顶点数据    	
-    	control = new CtlLoading();
+    	this.textureId=textureId;    	
     }	
 	//顶点坐标数据的初始化
     private void initVertexBuffer()
     {
+    	    	
         vCount=6;//顶点的数量，一个正方形用两个三角形表示，共需要6个顶点   
+
+        int width = CrazyLinkConstent.REAL_WIDTH/2;
+        int height = CrazyLinkConstent.REAL_HEIGHT/2;
         int vertices[]=new int[]//顶点坐标数据数组
         {
-           	-140*CrazyLinkConstent.ADP_SIZE,75*CrazyLinkConstent.ADP_SIZE,0,
-        	-140*CrazyLinkConstent.ADP_SIZE,-75*CrazyLinkConstent.ADP_SIZE,0,
-        	140*CrazyLinkConstent.ADP_SIZE,-75*CrazyLinkConstent.ADP_SIZE,0,
-        	140*CrazyLinkConstent.ADP_SIZE,-75*CrazyLinkConstent.ADP_SIZE,0,
-        	140*CrazyLinkConstent.ADP_SIZE,75*CrazyLinkConstent.ADP_SIZE,0,
-        	-140*CrazyLinkConstent.ADP_SIZE,75*CrazyLinkConstent.ADP_SIZE,0
+           	-width*CrazyLinkConstent.ADP_SIZE,height*CrazyLinkConstent.ADP_SIZE,0,
+        	-width*CrazyLinkConstent.ADP_SIZE,-height*CrazyLinkConstent.ADP_SIZE,0,
+        	width*CrazyLinkConstent.ADP_SIZE,-height*CrazyLinkConstent.ADP_SIZE,0,
+        	width*CrazyLinkConstent.ADP_SIZE,-height*CrazyLinkConstent.ADP_SIZE,0,
+        	width*CrazyLinkConstent.ADP_SIZE,height*CrazyLinkConstent.ADP_SIZE,0,
+        	-width*CrazyLinkConstent.ADP_SIZE,height*CrazyLinkConstent.ADP_SIZE,0
         };
         //创建顶点坐标数据缓冲
         //int类型占用4个字节，因此转换为byte的数据时需要*4
@@ -88,10 +86,9 @@ public class DrawLoading {
 	
 
     public void draw(GL10 gl)
-    {
-    	CtlLoading ctl = (CtlLoading)control;
-    	if(!control.isRun()) return;
-    	initVertexBuffer();		
+    {   
+    	initVertexBuffer();	//根据col,row初始化顶点坐标
+    	initTextureBuffer();	//根据witch来初始化纹理顶点数据
         //顶点坐标，允许使用顶点数组
         gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
 		//为画笔指定顶点坐标数据
@@ -115,7 +112,7 @@ public class DrawLoading {
     		0, 					//连续纹理坐标数据之间的间隔
     		mTextureBuffer		//纹理坐标数据
         );        		
-        gl.glBindTexture(GL10.GL_TEXTURE_2D,textureId[ctl.getPicId()]);//为画笔绑定指定ID纹理   
+        gl.glBindTexture(GL10.GL_TEXTURE_2D,textureId);//为画笔绑定指定名称ID纹理   
         
         //绘制图形
         gl.glDrawArrays
@@ -127,4 +124,3 @@ public class DrawLoading {
         gl.glDisable(GL10.GL_TEXTURE_2D);//关闭纹理
     }
 }
-

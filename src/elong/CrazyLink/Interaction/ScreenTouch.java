@@ -11,6 +11,7 @@
 package elong.CrazyLink.Interaction;
 
 import elong.CrazyLink.CrazyLinkConstent;
+import elong.CrazyLink.CrazyLinkConstent.E_SCENARIO;
 import elong.CrazyLink.Core.ControlCenter;
 import android.content.Context;
 import android.os.Bundle;
@@ -52,8 +53,26 @@ public class ScreenTouch {
 		mYStart = (mHeight - mWidth) / 2;
 	}
 	
+	public boolean touchMenuView(MotionEvent e) {
+		switch (e.getAction()) {		
+			case MotionEvent.ACTION_UP:
+				raiseTouchMenuViewEvent();
+				break;
+		}
+		return true;
+	}
+	
+	public boolean touchResultView(MotionEvent e) {
+		switch (e.getAction()) {		
+		case MotionEvent.ACTION_UP:
+			raiseTouchResultViewEvent();
+			break;
+		}
+		return true;		
+	}
+	
 	//触摸动作
-	public boolean Touch(MotionEvent e) {
+	public boolean touchGameView(MotionEvent e) {
 
 		float y = e.getY();
 		float x = e.getX();
@@ -79,7 +98,7 @@ public class ScreenTouch {
 				else if(y >= mYStart + 6*mStep && y < mYStart + 7*mStep) mGridY = 0;
 				break;
 			case MotionEvent.ACTION_UP:
-				RaiseTouchEvent();
+				raiseTouchGameViewEvent();
 				break;
 			case MotionEvent.ACTION_MOVE:
 			    float dy = y - mPreviousY;//计算触控笔Y位移
@@ -149,9 +168,25 @@ public class ScreenTouch {
 		}
 		return true;
 	}
+	
+	void raiseTouchMenuViewEvent()
+	{
+		ControlCenter.mScore.init();
+		ControlCenter.mTimer.reset();
+		ControlCenter.mLife = CrazyLinkConstent.LIFE_NUM;
+		ControlCenter.init();
+		Message msg = new Message();
+		msg.what = ControlCenter.LOADING_START;
+	    ControlCenter.mHandler.sendMessage(msg);
+	}
+
+	void raiseTouchResultViewEvent()
+	{
+		ControlCenter.mScene = E_SCENARIO.MENU;
+	}
 
 	//产生有效的触摸事件，发消息给mHandler统一处理
-	void RaiseTouchEvent()
+	void raiseTouchGameViewEvent()
 	{
 		int token = ControlCenter.takeToken();
 		if(-1 == token) return;

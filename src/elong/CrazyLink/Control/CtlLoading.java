@@ -27,6 +27,7 @@ public class CtlLoading extends CtlBase{
 		if (mPicId >= 10) mPicId = 0;
 		if(mTimeCnt > 60)
 		{
+			mTimeCnt = 0;
 			mStop = true;
 			sendMsg();
 		}

@@ -13,9 +13,11 @@ package elong.CrazyLink;
 public class CrazyLinkConstent {
 	public static final float GRID_NUM = 7.0f;
 	public static int UNIT_SIZE = (int) (88 * CrazyLinkConstent.GRID_NUM);
-	public static int VIEW_WIDTH = 480;
-	public static int VIEW_HEIGHT = 800;
-	public static int ADP_SIZE = 0;
+	public static int VIEW_WIDTH = 480;		//主流适配宽度
+	public static int VIEW_HEIGHT = 800;	//主流适配高度
+	public static int REAL_WIDTH = 480;		//屏幕实际宽度
+	public static int REAL_HEIGHT = 800;	//屏幕实际高度
+	public static int ADP_SIZE = 0;			//适配后的尺寸
 	public static float screentRatio = 0;
 	public static float translateRatio = 0;
 	public static float denisty = 0;
@@ -34,7 +36,7 @@ public class CrazyLinkConstent {
 	public static int LIFE_UP = 9;			//消除数大于该值时增加生命值
 	public static int LIFE_TIMEOUT = 10;	//操作间隔超过这个值时失去一条生命
 	
-	public static int MAX_TIME = 100;		//一局游戏的时间，秒数
+	public static int MAX_TIME = 10;		//一局游戏的时间，秒数
 
 	
 	public enum E_SOUND
@@ -62,6 +64,14 @@ public class CrazyLinkConstent {
 		READYGO,
 		LEVELUP,
 		GAMEOVER,
+	}
+	
+	//游戏的场景
+	public enum E_SCENARIO
+	{
+		MENU,	/*菜单*/
+		GAME,	/*游戏主界面*/
+		RESULT,	/*游戏结果*/
 	}
 	
 

@@ -10,6 +10,10 @@
  ********************************************************/
 package elong.CrazyLink.Control;
 
+import android.os.Message;
+import elong.CrazyLink.Core.ControlCenter;
+import elong.CrazyLink.CrazyLinkConstent.E_TIP;
+
 public class CtlTip2 extends CtlBase{
 	
 	int mDeltaW = 0;
@@ -37,8 +41,13 @@ public class CtlTip2 extends CtlBase{
 			}
 			else if(1 == mStep)
 			{
+				int keep = 10;
+				if(E_TIP.GAMEOVER.ordinal() == mPicId)
+				{
+					keep = 40;
+				}
 				mKeep++;
-				if(mKeep >= 10)
+				if(mKeep >= keep)
 				{
 					mKeep = 0;
 					mStep = 2;
@@ -56,6 +65,7 @@ public class CtlTip2 extends CtlBase{
 			else if(3 == mStep)
 			{
 				mStop = true;
+				sendMsg();
 			}
 		}		
 	}
@@ -86,5 +96,15 @@ public class CtlTip2 extends CtlBase{
 	public int getPicId()
 	{
 		return mPicId;
+	}
+	
+	public void sendMsg()
+	{
+		if(E_TIP.GAMEOVER.ordinal() == mPicId)
+		{
+			Message msg = new Message();
+		    msg.what = ControlCenter.GAME_OVER_END;
+		    ControlCenter.mHandler.sendMessage(msg);
+		}
 	}
 }

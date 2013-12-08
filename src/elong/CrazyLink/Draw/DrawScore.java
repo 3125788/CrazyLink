@@ -31,14 +31,23 @@ public class DrawScore {
     	this.textureId=textureId;    	
     }	
 	//顶点坐标数据的初始化
-    private void initVertexBuffer(int col)
+    private void initVertexBuffer(int col, int flag)
     {
     	    	
-    	int w = 10;
+    	int w = 12;
     	int h = 16;
-        vCount=6;//顶点的数量，一个正方形用两个三角形表示，共需要6个顶点   
-        int deltaX = ((col-10)*2*w*CrazyLinkConstent.ADP_SIZE);
+        int deltaX = ((col-9)*2*w*CrazyLinkConstent.ADP_SIZE);
         int deltaY = 10*2*h*CrazyLinkConstent.ADP_SIZE;
+        
+        if(1 == flag)
+        {
+        	w = 16;
+        	h = 32;
+            deltaX = (int)((col-4.5)*2*w*CrazyLinkConstent.ADP_SIZE);
+            deltaY = (int)(-0.5*2*h*CrazyLinkConstent.ADP_SIZE);
+        }
+
+        vCount=6;//顶点的数量，一个正方形用两个三角形表示，共需要6个顶点   
         int vertices[]=new int[]//顶点坐标数据数组
         {
            	-w*CrazyLinkConstent.ADP_SIZE+deltaX,h*CrazyLinkConstent.ADP_SIZE+deltaY,0,
@@ -87,9 +96,9 @@ public class DrawScore {
     }
 	
 
-    void drawNumber(GL10 gl, int number, int col)
+    void drawNumber(GL10 gl, int number, int col, int flag)
     {   
-    	initVertexBuffer(col);	//根据col,row初始化顶点坐标
+    	initVertexBuffer(col, flag);	//根据col,row初始化顶点坐标
     	initTextureBuffer(number);	//根据witch来初始化纹理顶点数据
     	//gl.glTranslatef(col * textureRatio, row * textureRatio, 0);	//在x=col,y=row的位置绘制选定的素材对象        
         //顶点坐标，允许使用顶点数组
@@ -127,7 +136,7 @@ public class DrawScore {
         gl.glDisable(GL10.GL_TEXTURE_2D);//关闭纹理
     }
     
-    public void draw(GL10 gl, int score)
+    public void draw(GL10 gl, int score, int flag)
     {
     	String szScore = Integer.toString(score);
     	int len = szScore.length();
@@ -139,7 +148,7 @@ public class DrawScore {
 
     	for(int i = 0; i < szScore.length(); i++)
     	{
-    		drawNumber(gl, szScore.charAt(i) - '0', i);
+    		drawNumber(gl, szScore.charAt(i) - '0', i, flag);
     	}
     }
 }

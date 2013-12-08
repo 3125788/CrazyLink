@@ -27,8 +27,15 @@ public class Score {
 	
 	public Score()
 	{
+		init();
+	}
+	
+	public void init()
+	{
 		mTotalScore = 0;
 		mAwardScore = 0;
+		mAwardRatio = 0;
+		mContinueCnt = 0;
 	}
 	
 	//奖励规则，可以自己调整
@@ -171,7 +178,7 @@ public class Score {
 		if(0 == mLife)
 		{
 			Message msg = new Message();
-			msg.what = ControlCenter.GAME_OVER;
+			msg.what = ControlCenter.GAME_OVER_START;
 		    ControlCenter.mHandler.sendMessage(msg);				
 		}
 

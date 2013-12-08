@@ -13,9 +13,7 @@ package elong.CrazyLink.Core;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-
 import javax.microedition.khronos.opengles.GL10;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -24,6 +22,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import elong.CrazyLink.CrazyLinkConstent;
+import elong.CrazyLink.CrazyLinkConstent.E_SCENARIO;
 import elong.CrazyLink.R;
 import elong.CrazyLink.Control.CtlDisappear;
 import elong.CrazyLink.Control.CtlExchange;
@@ -37,6 +36,7 @@ import elong.CrazyLink.CrazyLinkConstent.E_TIP;
 import elong.CrazyLink.Draw.DrawAnimal;
 import elong.CrazyLink.Draw.DrawAutoTip;
 import elong.CrazyLink.Draw.DrawBomb;
+import elong.CrazyLink.Draw.DrawBackGround;
 import elong.CrazyLink.Draw.DrawExplosion;
 import elong.CrazyLink.Draw.DrawLife;
 import elong.CrazyLink.Draw.DrawLifeAdd;
@@ -58,6 +58,7 @@ import elong.CrazyLink.Interface.IControl;
 public class ControlCenter {
 
 	Context mContext;
+	public static E_SCENARIO mScene;
 	
 	static ActionTokenPool mToken;		//操作令牌，只有获取到令牌才能操作
 	
@@ -69,6 +70,8 @@ public class ControlCenter {
 	static int mSingleScoreW = 0;	//显示当次奖励的位置
 	static int mSingleScoreH = 0;
 	
+	int menuTextureId;
+	int resultTextureId;
     int animalTextureId;				//动物素材纹理id
     int[] loadingTextureId = new int[10];			//加载动画素材纹理id
     int gridTextureId;				//网格素材纹理id
@@ -86,6 +89,8 @@ public class ControlCenter {
     
     static int mAutoTipTimer = 0;			//自动提示计时器
     
+    static public DrawBackGround drawMenuBackGround;
+    static public DrawBackGround drawResultBackGround;
 	static public DrawAnimal drawAnimal;
 	static public DrawLoading drawLoading;
 	static public DrawGrid drawGrid;
@@ -93,6 +98,7 @@ public class ControlCenter {
 	static ArrayList<DrawDisappear> mDrawDisappearList = new ArrayList<DrawDisappear>();
 	static public DrawFill drawFill;
 	static public DrawScore drawScore;
+	static public DrawScore drawResultScore;
 	static public DrawLife drawLife;
 	static public DrawSingleScore drawSingleScore;
 	static public DrawTip1 drawTip1;
@@ -106,10 +112,10 @@ public class ControlCenter {
 	static public DrawTimeBar drawTimeBar;
 
 	
-	static Score mScore;	//计算分数
+	public static Score mScore;		//计算分数
 	public static Sound mSound;
 	public static Timer mTimer;
-	
+	public static int mLife;		//声明数	
 	
 	public static boolean mIsLoading = false;	//显示正在加载
 	public static boolean mIsAutoTip = false;	//处于自动提示状态
@@ -131,6 +137,7 @@ public class ControlCenter {
 
 	public ControlCenter(Context context)
 	{
+		mScene = E_SCENARIO.MENU;
 		mContext = context;
 		mScore = new Score();
 		mSound = new Sound(context);
@@ -144,7 +151,7 @@ public class ControlCenter {
 	}
 	
 	//初始化逻辑，保证初始化以后的状态没有处于消除状态的
-	void init()
+	public static void init()
 	{
 		for(int i = 0; i < (int)CrazyLinkConstent.GRID_NUM; i++)
 		{
@@ -776,65 +783,11 @@ public class ControlCenter {
 		}
 	}
 
-	
-	public void draw(GL10 gl)
-	{
-		if(mIsLoading)
-		{
-			drawLoading.draw(gl);
-			return;
-		}
-		drawScore.draw(gl,mScore.getScore());
-		drawLife.draw(gl, mScore.mLife);
-		drawSingleScore.draw(gl, mSingleScoreW, mSingleScoreH, mScore.getAward());
-		drawTip1.draw(gl);
-		drawTip2.draw(gl);
-		drawLifeAdd.draw(gl);
-		drawLifeDel.draw(gl);
-		drawTimeBar.draw(gl, mTimer.getLeftTime());
-		
-		for(int i = 0; i < (int)CrazyLinkConstent.GRID_NUM; i++)
-		{
-			for(int j = 0; j < (int)CrazyLinkConstent.GRID_NUM; j++)
-			{
-				switch (mEffect[i][j])
-				{
-				case EFT_NORMAL:	//正常显示
-					if(isMonster(i,j))
-						drawMonster.draw(gl, i, j);
-					else if(isBomb(i,j))
-						drawBomb.draw(gl, i, j);
-					else if(isLaser(i,j))
-						drawMonster.draw(gl, i, j);
-					else
-						drawAnimal.draw(gl,getPicId(i,j),i,j);
-					break;
-				case EFT_EXCHANGE:	//交换特效
-					drawExchangeRun(gl);							
-					break;
-				case EFT_FILL:	//跌落特效
-					drawFill.draw(gl, getPicId(i,j), i, j);
-					break;
-				case EFT_AUTOTIP:	//自动提示特效
-					drawAutoTip.draw(gl, i, j);
-					drawAnimal.draw(gl,getPicId(i,j),i,j);
-					break;
-				case EFT_DISAPPEAR:		//消除特效
-					drawExplosion.draw(gl, i, j);
-					drawDisappeareRun(gl, i, j);											
-					break;
-				default:
-					
-					break;
-				}				                  
-			}
-		}
-    	drawGrid.draw(gl);
-		
-	}
 	//初始化纹理对象
 	public void initTexture(GL10 gl)
 	{
+		menuTextureId = initTexture(gl, R.drawable.cover);
+		resultTextureId = initTexture(gl, R.drawable.result);
     	animalTextureId = initTexture(gl, R.drawable.animal);	//初始化纹理对象    	
     	for(int i = 0; i < 10; i++)
     	{
@@ -857,10 +810,13 @@ public class ControlCenter {
 	//初始化渲染对象
 	public void initDraw(GL10 gl)
 	{
+		drawMenuBackGround = new DrawBackGround(menuTextureId);
+		drawResultBackGround = new DrawBackGround(resultTextureId);
     	drawAnimal = new DrawAnimal(animalTextureId);			//创建动物素材对象    	
     	drawGrid = new DrawGrid(gridTextureId);					//创建棋盘素材对象
     	drawFill = new DrawFill(drawAnimal);
     	drawScore = new DrawScore(scoreTextureId);
+    	drawResultScore = new DrawScore(scoreTextureId);
     	drawLife = new DrawLife(gl, lifeTextureId);
     	drawSingleScore = new DrawSingleScore(gl);
     	drawTip1 = new DrawTip1(congratulationTextureId);
@@ -991,11 +947,12 @@ public class ControlCenter {
 	public static final int GEN_SPECIALANIMAL = 8;
 	public static final int READY_GO = 9;
 	public static final int LEVEL_UP = 10;
-	public static final int GAME_OVER = 11;
-	public static final int LIFEADD_START = 12;
-	public static final int LIFEADD_END = 13;
-	public static final int LIFEDEL_START = 14;
-	public static final int LIFEDEL_END = 15;
+	public static final int GAME_OVER_START = 11;
+	public static final int GAME_OVER_END = 12;
+	public static final int LIFEADD_START = 13;
+	public static final int LIFEADD_END = 14;
+	public static final int LIFEDEL_START = 15;
+	public static final int LIFEDEL_END = 16;
 
 
 	
@@ -1041,6 +998,7 @@ public class ControlCenter {
 					break;
 				}
 				case LOADING_START:	
+					mScene = E_SCENARIO.GAME;
 					mIsLoading = true;
 			    	drawLoading.control.start();
 			    	break;
@@ -1118,11 +1076,16 @@ public class ControlCenter {
 					mSound.play(E_SOUND.LEVELUP);
 					break;
 				}
-				case GAME_OVER:
+				case GAME_OVER_START:
 				{
 					CtlTip2 ctl = (CtlTip2) drawTip2.control;
 					ctl.init(E_TIP.GAMEOVER.ordinal());	//game over
 					mSound.play(E_SOUND.TIMEOVER);
+					break;
+				}
+				case GAME_OVER_END:
+				{
+					mScene = E_SCENARIO.RESULT;	
 					break;
 				}
 				case LIFEADD_START:
@@ -1150,6 +1113,7 @@ public class ControlCenter {
 			}
 		}
     };
+	
     
     
     //控制中心的动作执行
@@ -1170,5 +1134,77 @@ public class ControlCenter {
 			control.run();
 		}
     }
+    
+    //菜单场景渲染
+    public void drawMenuScene(GL10 gl)
+    {
+    	drawMenuBackGround.draw(gl);
+    }
+    
+    //游戏结果场景渲染
+    public void drawResultScene(GL10 gl)
+    {
+    	drawScore.draw(gl,mScore.getScore(), 1);
+    	drawResultBackGround.draw(gl);
+    }
+
+    
+	//游戏场景渲染
+	public void drawGameScene(GL10 gl)
+	{
+		if(mIsLoading)
+		{
+			drawLoading.draw(gl);
+			return;
+		}
+		drawScore.draw(gl,mScore.getScore(), 0);
+		drawLife.draw(gl, mScore.mLife);
+		drawSingleScore.draw(gl, mSingleScoreW, mSingleScoreH, mScore.getAward());
+		drawTip1.draw(gl);
+		drawTip2.draw(gl);
+		drawLifeAdd.draw(gl);
+		drawLifeDel.draw(gl);
+		drawTimeBar.draw(gl, mTimer.getLeftTime());
+		
+		for(int i = 0; i < (int)CrazyLinkConstent.GRID_NUM; i++)
+		{
+			for(int j = 0; j < (int)CrazyLinkConstent.GRID_NUM; j++)
+			{
+				switch (mEffect[i][j])
+				{
+				case EFT_NORMAL:	//正常显示
+					if(isMonster(i,j))
+						drawMonster.draw(gl, i, j);
+					else if(isBomb(i,j))
+						drawBomb.draw(gl, i, j);
+					else if(isLaser(i,j))
+						drawMonster.draw(gl, i, j);
+					else
+						drawAnimal.draw(gl,getPicId(i,j),i,j);
+					break;
+				case EFT_EXCHANGE:	//交换特效
+					drawExchangeRun(gl);							
+					break;
+				case EFT_FILL:	//跌落特效
+					drawFill.draw(gl, getPicId(i,j), i, j);
+					break;
+				case EFT_AUTOTIP:	//自动提示特效
+					drawAutoTip.draw(gl, i, j);
+					drawAnimal.draw(gl,getPicId(i,j),i,j);
+					break;
+				case EFT_DISAPPEAR:		//消除特效
+					drawExplosion.draw(gl, i, j);
+					drawDisappeareRun(gl, i, j);											
+					break;
+				default:
+					
+					break;
+				}				                  
+			}
+		}
+    	drawGrid.draw(gl);
+		
+	}
+
     
 }

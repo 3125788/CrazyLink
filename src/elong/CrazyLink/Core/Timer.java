@@ -27,6 +27,12 @@ public class Timer {
 		mStop = true;
 	}
 	
+	public void reset()
+	{
+		mLeftTime = mMaxTime;
+		mUsedTime = 0;
+	}
+	
 	public void start()
 	{
 		if(mLeftTime > 0)
@@ -60,11 +66,11 @@ public class Timer {
 		{
 			mUsedTime = System.currentTimeMillis()/1000 - mStartTime;
 			mLeftTime = mMaxTime - mUsedTime;
-			if(0 == mLeftTime)
+			if(mLeftTime <= 0)
 			{
 				mStop = true;
 				Message msg = new Message();
-				msg.what = ControlCenter.GAME_OVER;
+				msg.what = ControlCenter.GAME_OVER_START;
 			    ControlCenter.mHandler.sendMessage(msg);
 			}
 
