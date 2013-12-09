@@ -196,5 +196,10 @@ public class Score {
 	{
 		return mLife;
 	}
+	
+	public void setLife(int life)
+	{
+		mLife = life;
+	}
 
 }

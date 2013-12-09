@@ -114,8 +114,7 @@ public class ControlCenter {
 	
 	public static Score mScore;		//计算分数
 	public static Sound mSound;
-	public static Timer mTimer;
-	public static int mLife;		//声明数	
+	public static Timer mTimer;	
 	
 	public static boolean mIsLoading = false;	//显示正在加载
 	public static boolean mIsAutoTip = false;	//处于自动提示状态

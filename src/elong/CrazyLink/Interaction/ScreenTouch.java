@@ -172,8 +172,8 @@ public class ScreenTouch {
 	void raiseTouchMenuViewEvent()
 	{
 		ControlCenter.mScore.init();
+		ControlCenter.mScore.setLife(CrazyLinkConstent.LIFE_NUM);
 		ControlCenter.mTimer.reset();
-		ControlCenter.mLife = CrazyLinkConstent.LIFE_NUM;
 		ControlCenter.init();
 		Message msg = new Message();
 		msg.what = ControlCenter.LOADING_START;
