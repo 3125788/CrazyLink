@@ -1,11 +1,11 @@
 /**********************************************************
- * ÏîÄ¿Ãû³Æ£ºÉ½Õ¯¡°°®Ïû³ý¡±ÓÎÏ·7ÈÕ½Ì³Ì
- * ×÷          Õß£ºÖ£ÃôÐÂ
- * ÌÚÑ¶Î¢²©£ºSuperCube3D
- * ÈÕ          ÆÚ£º2013Äê10ÔÂ
- * Éù          Ã÷£º°æÈ¨ËùÓÐ   ÇÖÈ¨±Ø¾¿
- * ±¾Ô´´úÂë¹©ÍøÓÑÑÐ¾¿Ñ§Ï°OpenGL ES¿ª·¢AndroidÓ¦ÓÃÓÃ£¬
- * ÇëÎðÈ«²¿»ò²¿·ÖÓÃÓÚÉÌÒµÓÃÍ¾
+ * é¡¹ç›®åç§°ï¼šå±±å¯¨è…¾è®¯â€œçˆ±æ¶ˆé™¤â€æ¸¸æˆ7æ—¥æ•™ç¨‹
+ * ä½œ          è€…ï¼šéƒ‘æ•æ–°
+ * è…¾è®¯å¾®åšï¼šSuperCube3D
+ * æ—¥          æœŸï¼š2013å¹´12æœˆ
+ * å£°          æ˜Žï¼šç‰ˆæƒæ‰€æœ‰   ä¾µæƒå¿…ç©¶
+ * æœ¬æºä»£ç ä¾›ç½‘å‹ç ”ç©¶å­¦ä¹ OpenGL ESå¼€å‘Androidåº”ç”¨ç”¨ï¼Œ
+ * è¯·å‹¿å…¨éƒ¨æˆ–éƒ¨åˆ†ç”¨äºŽå•†ä¸šç”¨é€”
  ********************************************************/
 
 package elong.CrazyLink.Interaction;
@@ -38,7 +38,7 @@ public class ScreenTouch {
 		DOWN,
 		LEFT,
 		RIGHT,
-		INVALID		//·½ÏòÎÞÐ§
+		INVALID		//æ–¹å‘æ— æ•ˆ
 	}
 
 	
@@ -71,7 +71,7 @@ public class ScreenTouch {
 		return true;		
 	}
 	
-	//´¥Ãþ¶¯×÷
+	//è§¦æ‘¸åŠ¨ä½œ
 	public boolean touchGameView(MotionEvent e) {
 
 		float y = e.getY();
@@ -101,8 +101,8 @@ public class ScreenTouch {
 				raiseTouchGameViewEvent();
 				break;
 			case MotionEvent.ACTION_MOVE:
-			    float dy = y - mPreviousY;//¼ÆËã´¥¿Ø±ÊYÎ»ÒÆ
-			    float dx = x - mPreviousX;//¼ÆËã´¥¿Ø±ÊYÎ»ÒÆ
+			    float dy = y - mPreviousY;//è®¡ç®—è§¦æŽ§ç¬”Yä½ç§»
+			    float dx = x - mPreviousX;//è®¡ç®—è§¦æŽ§ç¬”Yä½ç§»
 			    if(Math.abs(dy) > Math.abs(dx))
 			    {
 			    	if(dy > CrazyLinkConstent.MOVE_THRESDHOLDER) mMoveDirection = TOUCH_DIRECTION.DOWN;
@@ -114,18 +114,18 @@ public class ScreenTouch {
 			    	else if(dx < -CrazyLinkConstent.MOVE_THRESDHOLDER) mMoveDirection = TOUCH_DIRECTION.LEFT; 	
 			    }
 		}
-		mPreviousY = y;//¼ÇÂ¼´¥¿Ø±ÊÎ»ÖÃ
-		mPreviousX = x;//¼ÇÂ¼´¥¿Ø±ÊÎ»ÖÃ
+		mPreviousY = y;//è®°å½•è§¦æŽ§ç¬”ä½ç½®
+		mPreviousX = x;//è®°å½•è§¦æŽ§ç¬”ä½ç½®
 		return true;
 	}	
 	
-	//»ñÈ¡²Ù×÷µÄ¸ñ×Ó
+	//èŽ·å–æ“ä½œçš„æ ¼å­
 	int getGridX()
 	{
 		return mGridX;
 	}
 	
-	//»ñÈ¡²Ù×÷µÄ¸ñ×Ó
+	//èŽ·å–æ“ä½œçš„æ ¼å­
 	int getGridY()
 	{
 		return mGridY;
@@ -136,7 +136,7 @@ public class ScreenTouch {
 		return mMoveDirection;
 	}
 	
-	//¸ù¾Ý·½ÏòÐÅÏ¢»ñÈ¡¶ÔÓ¦µÄÁÚ¾Ó
+	//æ ¹æ®æ–¹å‘ä¿¡æ¯èŽ·å–å¯¹åº”çš„é‚»å±…
 	int getNeighborX()
 	{
 		int neighborX = mGridX;
@@ -145,7 +145,7 @@ public class ScreenTouch {
 		return neighborX;
 	}
 
-	//¸ù¾Ý·½ÏòÐÅÏ¢»ñÈ¡¶ÔÓ¦µÄÁÚ¾Ó
+	//æ ¹æ®æ–¹å‘ä¿¡æ¯èŽ·å–å¯¹åº”çš„é‚»å±…
 	int getNeighborY()
 	{
 		int neighborY = mGridY;
@@ -156,7 +156,7 @@ public class ScreenTouch {
 	
 	boolean isValidTouchMove()
 	{		
-		//Ð£Ñé´¥Ãþ²Ù×÷ÊÇ·ñÓÐÐ§
+		//æ ¡éªŒè§¦æ‘¸æ“ä½œæ˜¯å¦æœ‰æ•ˆ
 		if(-1 == mGridX || -1 == mGridY) return false;			
 		if((0 == mGridX && mMoveDirection == TOUCH_DIRECTION.LEFT)
 				|| (6 == mGridX && mMoveDirection == TOUCH_DIRECTION.RIGHT)
@@ -185,7 +185,7 @@ public class ScreenTouch {
 		ControlCenter.mScene = E_SCENARIO.MENU;
 	}
 
-	//²úÉúÓÐÐ§µÄ´¥ÃþÊÂ¼þ£¬·¢ÏûÏ¢¸ømHandlerÍ³Ò»´¦Àí
+	//äº§ç”Ÿæœ‰æ•ˆçš„è§¦æ‘¸äº‹ä»¶ï¼Œå‘æ¶ˆæ¯ç»™mHandlerç»Ÿä¸€å¤„ç†
 	void raiseTouchGameViewEvent()
 	{
 		int token = ControlCenter.takeToken();
@@ -199,7 +199,7 @@ public class ScreenTouch {
 		b.putInt("token", token);
 		b.putInt("col1", x);
 		b.putInt("row1", y);
-		if(isValidTouchMove())	//Ð£Ñé¶¯×÷ÊÇ·ñºÏ·¨
+		if(isValidTouchMove())	//æ ¡éªŒåŠ¨ä½œæ˜¯å¦åˆæ³•
 		{		
 			b.putInt("col2", getNeighborX());
 			b.putInt("row2", getNeighborY());	

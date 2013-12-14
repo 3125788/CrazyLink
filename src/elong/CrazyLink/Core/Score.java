@@ -1,11 +1,11 @@
 /**********************************************************
- * ÏîÄ¿Ãû³Æ£ºÉ½Õ¯¡°°®Ïû³ı¡±ÓÎÏ·7ÈÕ½Ì³Ì
- * ×÷          Õß£ºÖ£ÃôĞÂ
- * ÌÚÑ¶Î¢²©£ºSuperCube3D
- * ÈÕ          ÆÚ£º2013Äê10ÔÂ
- * Éù          Ã÷£º°æÈ¨ËùÓĞ   ÇÖÈ¨±Ø¾¿
- * ±¾Ô´´úÂë¹©ÍøÓÑÑĞ¾¿Ñ§Ï°OpenGL ES¿ª·¢AndroidÓ¦ÓÃÓÃ£¬
- * ÇëÎğÈ«²¿»ò²¿·ÖÓÃÓÚÉÌÒµÓÃÍ¾
+ * é¡¹ç›®åç§°ï¼šå±±å¯¨è…¾è®¯â€œçˆ±æ¶ˆé™¤â€æ¸¸æˆ7æ—¥æ•™ç¨‹
+ * ä½œ          è€…ï¼šéƒ‘æ•æ–°
+ * è…¾è®¯å¾®åšï¼šSuperCube3D
+ * æ—¥          æœŸï¼š2013å¹´12æœˆ
+ * å£°          æ˜ï¼šç‰ˆæƒæ‰€æœ‰   ä¾µæƒå¿…ç©¶
+ * æœ¬æºä»£ç ä¾›ç½‘å‹ç ”ç©¶å­¦ä¹ OpenGL ESå¼€å‘Androidåº”ç”¨ç”¨ï¼Œ
+ * è¯·å‹¿å…¨éƒ¨æˆ–éƒ¨åˆ†ç”¨äºå•†ä¸šç”¨é€”
  ********************************************************/
 
 package elong.CrazyLink.Core;
@@ -15,13 +15,13 @@ import elong.CrazyLink.CrazyLinkConstent.E_SOUND;
 import android.os.Message;
 
 public class Score {
-	int mTotalScore = 0;	//×Ü³É¼¨
-	int mAwardScore = 0;	//µ±´ÎµÄ½±Àø
-	float mAwardRatio = 0;	//½±Àø±¶Êı
-	int mContinueCnt = 0;	//Á¬ĞøÏû³ı´ÎÊı
+	int mTotalScore = 0;	//æ€»æˆç»©
+	int mAwardScore = 0;	//å½“æ¬¡çš„å¥–åŠ±
+	float mAwardRatio = 0;	//å¥–åŠ±å€æ•°
+	int mContinueCnt = 0;	//è¿ç»­æ¶ˆé™¤æ¬¡æ•°
 	
-	int mOver3 = 0;			//³¬¹ı3¸ö
-	int mJust3 = 0;			//µÈÓÚ3¸ö
+	int mOver3 = 0;			//è¶…è¿‡3ä¸ª
+	int mJust3 = 0;			//ç­‰äº3ä¸ª
 	
 	int mLife = CrazyLinkConstent.LIFE_NUM;
 	
@@ -38,7 +38,7 @@ public class Score {
 		mContinueCnt = 0;
 	}
 	
-	//½±Àø¹æÔò£¬¿ÉÒÔ×Ô¼ºµ÷Õû
+	//å¥–åŠ±è§„åˆ™ï¼Œå¯ä»¥è‡ªå·±è°ƒæ•´
 	public void award(int clearNum)
 	{
 		int award = 0;
@@ -81,32 +81,32 @@ public class Score {
 		awardScore(mAwardRatio*award);
 	}
 	
-	//±¾´Î½±ÀøµÄ·ÖÊı
+	//æœ¬æ¬¡å¥–åŠ±çš„åˆ†æ•°
 	public void awardScore(float score)
 	{
 		mAwardScore = (int)score;
 		mTotalScore += (int)score;
 	}
 	
-	//»ñÈ¡ÀÛ¼Æ·ÖÊı
+	//è·å–ç´¯è®¡åˆ†æ•°
 	public int getScore()
 	{
 		return mTotalScore;
 	}
 	
-	//»ñÈ¡±¾´ÎµÃ·Ö
+	//è·å–æœ¬æ¬¡å¾—åˆ†
 	public int getAward()
 	{
 		return mAwardScore;
 	}
 	
-	//»ñÈ¡Á¬ĞøÏû³ıµÄ´ÎÊı
+	//è·å–è¿ç»­æ¶ˆé™¤çš„æ¬¡æ•°
 	public int getContinueCnt()
 	{
 		return mContinueCnt;
 	}
 	
-	//¸´Î»·ÖÊıÏµÊı
+	//å¤ä½åˆ†æ•°ç³»æ•°
 	public void reset()
 	{
 		mAwardRatio = 0;
@@ -114,20 +114,20 @@ public class Score {
 		lifeDelMsg();
 	}
 	
-	//µİÔö·ÖÊıÏµÊı
+	//é€’å¢åˆ†æ•°ç³»æ•°
 	public void increase()
 	{
 		mAwardRatio++;
 		mContinueCnt++;
 	}
 	
-	//¸ù¾İÒ»´ÎĞÔÏû³ıµÄ¸öÊıÔö¼Ó·ÖÊıÏµÊı
+	//æ ¹æ®ä¸€æ¬¡æ€§æ¶ˆé™¤çš„ä¸ªæ•°å¢åŠ åˆ†æ•°ç³»æ•°
 	public void increase(int clearNum)
 	{
 		mAwardRatio += (float)clearNum / 5;
 		if (clearNum > CrazyLinkConstent.LIFE_UP)
 		{
-			lifeAddMsg();	//Ôö¼ÓÉúÃü
+			lifeAddMsg();	//å¢åŠ ç”Ÿå‘½
 		}
 	}
 	
@@ -138,7 +138,7 @@ public class Score {
 			mOver3++;
 			if(1 == mOver3 % CrazyLinkConstent.MONSTER_APPEAR)
 			{
-				//Éú³ÉÒ»¸öMONSTER
+				//ç”Ÿæˆä¸€ä¸ªMONSTER
 				Message msg = new Message();
 				msg.what = ControlCenter.GEN_SPECIALANIMAL;
 			    ControlCenter.mHandler.sendMessage(msg);	
@@ -149,7 +149,7 @@ public class Score {
 			mJust3++;
 			if((CrazyLinkConstent.MONSTER_APPEAR * 3 - 1) == mJust3 % (CrazyLinkConstent.MONSTER_APPEAR * 3))
 			{
-				//Éú³ÉÒ»¸öMONSTER
+				//ç”Ÿæˆä¸€ä¸ªMONSTER
 				Message msg = new Message();
 				msg.what = ControlCenter.GEN_SPECIALANIMAL;
 			    ControlCenter.mHandler.sendMessage(msg);	

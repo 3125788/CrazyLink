@@ -1,11 +1,11 @@
 /**********************************************************
- * ÏîÄ¿Ãû³Æ£ºÉ½Õ¯¡°°®Ïû³ı¡±ÓÎÏ·7ÈÕ½Ì³Ì
- * ×÷          Õß£ºÖ£ÃôĞÂ
- * ÌÚÑ¶Î¢²©£ºSuperCube3D
- * ÈÕ          ÆÚ£º2013Äê11ÔÂ
- * Éù          Ã÷£º°æÈ¨ËùÓĞ   ÇÖÈ¨±Ø¾¿
- * ±¾Ô´´úÂë¹©ÍøÓÑÑĞ¾¿Ñ§Ï°OpenGL ES¿ª·¢AndroidÓ¦ÓÃÓÃ£¬
- * ÇëÎğÈ«²¿»ò²¿·ÖÓÃÓÚÉÌÒµÓÃÍ¾
+ * é¡¹ç›®åç§°ï¼šå±±å¯¨è…¾è®¯â€œçˆ±æ¶ˆé™¤â€æ¸¸æˆ7æ—¥æ•™ç¨‹
+ * ä½œ          è€…ï¼šéƒ‘æ•æ–°
+ * è…¾è®¯å¾®åšï¼šSuperCube3D
+ * æ—¥          æœŸï¼š2013å¹´12æœˆ
+ * å£°          æ˜ï¼šç‰ˆæƒæ‰€æœ‰   ä¾µæƒå¿…ç©¶
+ * æœ¬æºä»£ç ä¾›ç½‘å‹ç ”ç©¶å­¦ä¹ OpenGL ESå¼€å‘Androidåº”ç”¨ç”¨ï¼Œ
+ * è¯·å‹¿å…¨éƒ¨æˆ–éƒ¨åˆ†ç”¨äºå•†ä¸šç”¨é€”
  ********************************************************/
 
 package elong.CrazyLink.Draw;
@@ -32,19 +32,19 @@ public class DrawTimeBar {
 	int mMaxTime = 0;
 
 	
-	private IntBuffer   mVertexBuffer;		//¶¥µã×ø±êÊı¾İ»º³å
-	private IntBuffer   mNumVertexBuffer;		//¶¥µã×ø±êÊı¾İ»º³å
-    private FloatBuffer   mTextureBuffer;	//¶¥µãÎÆÀíÊı¾İ»º³å
-    private FloatBuffer   mNumTextureBuffer;	//¶¥µãÎÆÀíÊı¾İ»º³å
-    int vCount=0;							//¶¥µãÊıÁ¿     
-    int textureId;							//ÎÆÀíË÷Òı
+	private IntBuffer   mVertexBuffer;		//é¡¶ç‚¹åæ ‡æ•°æ®ç¼“å†²
+	private IntBuffer   mNumVertexBuffer;		//é¡¶ç‚¹åæ ‡æ•°æ®ç¼“å†²
+    private FloatBuffer   mTextureBuffer;	//é¡¶ç‚¹çº¹ç†æ•°æ®ç¼“å†²
+    private FloatBuffer   mNumTextureBuffer;	//é¡¶ç‚¹çº¹ç†æ•°æ®ç¼“å†²
+    int vCount=0;							//é¡¶ç‚¹æ•°é‡     
+    int textureId;							//çº¹ç†ç´¢å¼•
     int numTextureId;
     
     final int mBitmapW = 64;
     final int mBitmapH = 32;
-    final int mFontSize = 24;	//×ÖÌå´óĞ¡
+    final int mFontSize = 24;	//å­—ä½“å¤§å°
     
-    float textureRatio;						//ÎªÁË×¼È·»ñÈ¡ÎÆÀíÍ¼Æ¬ÖĞµÄËØ²Ä¶ÔÏó£¬ĞèÒªÉèÖÃÎÆÀíµÄ±ä»»ÂÊ
+    float textureRatio;						//ä¸ºäº†å‡†ç¡®è·å–çº¹ç†å›¾ç‰‡ä¸­çš„ç´ æå¯¹è±¡ï¼Œéœ€è¦è®¾ç½®çº¹ç†çš„å˜æ¢ç‡
     public DrawTimeBar(GL10 gl, int textureId, int maxTime)
     {
     	this.textureId=textureId;
@@ -54,16 +54,16 @@ public class DrawTimeBar {
 		gl.glGenTextures(1, textures, 0);
 		this.numTextureId = textures[0];
     }	
-	//¶¥µã×ø±êÊı¾İµÄ³õÊ¼»¯
+	//é¡¶ç‚¹åæ ‡æ•°æ®çš„åˆå§‹åŒ–
     private void initVertexBuffer(float percent)
     {
     	    	
     	float w = 64 * 2.5f;
     	int h = 24;
-        vCount=6;//¶¥µãµÄÊıÁ¿£¬Ò»¸öÕı·½ĞÎÓÃÁ½¸öÈı½ÇĞÎ±íÊ¾£¬¹²ĞèÒª6¸ö¶¥µã   
+        vCount=6;//é¡¶ç‚¹çš„æ•°é‡ï¼Œä¸€ä¸ªæ­£æ–¹å½¢ç”¨ä¸¤ä¸ªä¸‰è§’å½¢è¡¨ç¤ºï¼Œå…±éœ€è¦6ä¸ªé¡¶ç‚¹   
         float deltaX = 2*w*CrazyLinkConstent.ADP_SIZE * percent;
         float deltaY = -64 * 4.5f * CrazyLinkConstent.ADP_SIZE;
-        int vertices[]=new int[]//¶¥µã×ø±êÊı¾İÊı×é
+        int vertices[]=new int[]//é¡¶ç‚¹åæ ‡æ•°æ®æ•°ç»„
         {
            	(int)(-w*CrazyLinkConstent.ADP_SIZE),h*CrazyLinkConstent.ADP_SIZE+(int)deltaY,0,
         	(int)(-w*CrazyLinkConstent.ADP_SIZE),-h*CrazyLinkConstent.ADP_SIZE+(int)deltaY,0,
@@ -72,24 +72,24 @@ public class DrawTimeBar {
         	(int)(-w*CrazyLinkConstent.ADP_SIZE+deltaX),h*CrazyLinkConstent.ADP_SIZE+(int)deltaY,0,
         	(int)(-w*CrazyLinkConstent.ADP_SIZE),h*CrazyLinkConstent.ADP_SIZE+(int)deltaY,0
         };
-        //´´½¨¶¥µã×ø±êÊı¾İ»º³å
-        //intÀàĞÍÕ¼ÓÃ4¸ö×Ö½Ú£¬Òò´Ë×ª»»ÎªbyteµÄÊı¾İÊ±ĞèÒª*4
+        //åˆ›å»ºé¡¶ç‚¹åæ ‡æ•°æ®ç¼“å†²
+        //intç±»å‹å ç”¨4ä¸ªå­—èŠ‚ï¼Œå› æ­¤è½¬æ¢ä¸ºbyteçš„æ•°æ®æ—¶éœ€è¦*4
         ByteBuffer vbb = ByteBuffer.allocateDirect(vertices.length*4);
-        vbb.order(ByteOrder.nativeOrder());		//ÉèÖÃ±¾µØµÄ×Ö½ÚË³Ğò
-        //ÌØ±ğÌáÊ¾£ºÓÉÓÚ²»Í¬Æ½Ì¨×Ö½ÚË³Ğò²»Í¬Êı¾İµ¥Ôª²»ÊÇ×Ö½ÚµÄÒ»¶¨Òª¾­¹ıByteBuffer
-        //×ª»»£¬¹Ø¼üÊÇÒªÍ¨¹ıByteOrderÉèÖÃnativeOrder()£¬·ñÔòÓĞ¿ÉÄÜ»á³öÎÊÌâ    	        
-        mVertexBuffer = vbb.asIntBuffer();		//×ª»»ÎªintĞÍ»º³å
-        mVertexBuffer.put(vertices);			//Ïò»º³åÇøÖĞ·ÅÈë¶¥µã×ø±êÊı¾İ
-        mVertexBuffer.position(0);				//ÉèÖÃ»º³åÇøÆğÊ¼Î»ÖÃ
+        vbb.order(ByteOrder.nativeOrder());		//è®¾ç½®æœ¬åœ°çš„å­—èŠ‚é¡ºåº
+        //ç‰¹åˆ«æç¤ºï¼šç”±äºä¸åŒå¹³å°å­—èŠ‚é¡ºåºä¸åŒæ•°æ®å•å…ƒä¸æ˜¯å­—èŠ‚çš„ä¸€å®šè¦ç»è¿‡ByteBuffer
+        //è½¬æ¢ï¼Œå…³é”®æ˜¯è¦é€šè¿‡ByteOrderè®¾ç½®nativeOrder()ï¼Œå¦åˆ™æœ‰å¯èƒ½ä¼šå‡ºé—®é¢˜    	        
+        mVertexBuffer = vbb.asIntBuffer();		//è½¬æ¢ä¸ºintå‹ç¼“å†²
+        mVertexBuffer.put(vertices);			//å‘ç¼“å†²åŒºä¸­æ”¾å…¥é¡¶ç‚¹åæ ‡æ•°æ®
+        mVertexBuffer.position(0);				//è®¾ç½®ç¼“å†²åŒºèµ·å§‹ä½ç½®
         return;
     }
     
     private void initNumVertexBuffer()
     {
-        vCount=6;//¶¥µãµÄÊıÁ¿£¬Ò»¸öÕı·½ĞÎÓÃÁ½¸öÈı½ÇĞÎ±íÊ¾£¬¹²ĞèÒª6¸ö¶¥µã
+        vCount=6;//é¡¶ç‚¹çš„æ•°é‡ï¼Œä¸€ä¸ªæ­£æ–¹å½¢ç”¨ä¸¤ä¸ªä¸‰è§’å½¢è¡¨ç¤ºï¼Œå…±éœ€è¦6ä¸ªé¡¶ç‚¹
         float deltaX = 0*CrazyLinkConstent.ADP_SIZE;
         float deltaY = -64 * 4.5f *CrazyLinkConstent.ADP_SIZE;
-        int vertices[]=new int[]//¶¥µã×ø±êÊı¾İÊı×é
+        int vertices[]=new int[]//é¡¶ç‚¹åæ ‡æ•°æ®æ•°ç»„
         {
            	-mBitmapW/2*CrazyLinkConstent.ADP_SIZE+(int)deltaX,mBitmapH/2*CrazyLinkConstent.ADP_SIZE+(int)deltaY,0,
         	-mBitmapW/2*CrazyLinkConstent.ADP_SIZE+(int)deltaX,-mBitmapH/2*CrazyLinkConstent.ADP_SIZE+(int)deltaY,0,
@@ -98,24 +98,24 @@ public class DrawTimeBar {
         	mBitmapW/2*CrazyLinkConstent.ADP_SIZE+(int)deltaX,mBitmapH/2*CrazyLinkConstent.ADP_SIZE+(int)deltaY,0,
         	-mBitmapW/2*CrazyLinkConstent.ADP_SIZE+(int)deltaX,mBitmapH/2*CrazyLinkConstent.ADP_SIZE+(int)deltaY,0
         };
-        //´´½¨¶¥µã×ø±êÊı¾İ»º³å
-        //intÀàĞÍÕ¼ÓÃ4¸ö×Ö½Ú£¬Òò´Ë×ª»»ÎªbyteµÄÊı¾İÊ±ĞèÒª*4
+        //åˆ›å»ºé¡¶ç‚¹åæ ‡æ•°æ®ç¼“å†²
+        //intç±»å‹å ç”¨4ä¸ªå­—èŠ‚ï¼Œå› æ­¤è½¬æ¢ä¸ºbyteçš„æ•°æ®æ—¶éœ€è¦*4
         ByteBuffer vbb = ByteBuffer.allocateDirect(vertices.length*4);
-        vbb.order(ByteOrder.nativeOrder());		//ÉèÖÃ±¾µØµÄ×Ö½ÚË³Ğò
-        //ÌØ±ğÌáÊ¾£ºÓÉÓÚ²»Í¬Æ½Ì¨×Ö½ÚË³Ğò²»Í¬Êı¾İµ¥Ôª²»ÊÇ×Ö½ÚµÄÒ»¶¨Òª¾­¹ıByteBuffer
-        //×ª»»£¬¹Ø¼üÊÇÒªÍ¨¹ıByteOrderÉèÖÃnativeOrder()£¬·ñÔòÓĞ¿ÉÄÜ»á³öÎÊÌâ    	        
-        mNumVertexBuffer = vbb.asIntBuffer();		//×ª»»ÎªintĞÍ»º³å
-        mNumVertexBuffer.put(vertices);			//Ïò»º³åÇøÖĞ·ÅÈë¶¥µã×ø±êÊı¾İ
-        mNumVertexBuffer.position(0);				//ÉèÖÃ»º³åÇøÆğÊ¼Î»ÖÃ
+        vbb.order(ByteOrder.nativeOrder());		//è®¾ç½®æœ¬åœ°çš„å­—èŠ‚é¡ºåº
+        //ç‰¹åˆ«æç¤ºï¼šç”±äºä¸åŒå¹³å°å­—èŠ‚é¡ºåºä¸åŒæ•°æ®å•å…ƒä¸æ˜¯å­—èŠ‚çš„ä¸€å®šè¦ç»è¿‡ByteBuffer
+        //è½¬æ¢ï¼Œå…³é”®æ˜¯è¦é€šè¿‡ByteOrderè®¾ç½®nativeOrder()ï¼Œå¦åˆ™æœ‰å¯èƒ½ä¼šå‡ºé—®é¢˜    	        
+        mNumVertexBuffer = vbb.asIntBuffer();		//è½¬æ¢ä¸ºintå‹ç¼“å†²
+        mNumVertexBuffer.put(vertices);			//å‘ç¼“å†²åŒºä¸­æ”¾å…¥é¡¶ç‚¹åæ ‡æ•°æ®
+        mNumVertexBuffer.position(0);				//è®¾ç½®ç¼“å†²åŒºèµ·å§‹ä½ç½®
         return;
     }
 
     
-    //¶¥µãÎÆÀíÊı¾İµÄ³õÊ¼»¯    
+    //é¡¶ç‚¹çº¹ç†æ•°æ®çš„åˆå§‹åŒ–    
     private void initTextureBuffer(int witch)
     {
-        textureRatio = (float)(1/4.0f);		//Í¼Æ¬ÊÇ4¸ö¶ÀÁ¢µÄËØ²Ä¶ÔÏó×é³É£¬Ã¿´ÎĞèÒª¸ù¾İwitch×¼È·µØ»ñÈ¡¶ÔÓ¦µÄËØ²Ä
-        float textureCoors[]=new float[]	//¶¥µãÎÆÀíS¡¢T×ø±êÖµÊı×é
+        textureRatio = (float)(1/4.0f);		//å›¾ç‰‡æ˜¯4ä¸ªç‹¬ç«‹çš„ç´ æå¯¹è±¡ç»„æˆï¼Œæ¯æ¬¡éœ€è¦æ ¹æ®witchå‡†ç¡®åœ°è·å–å¯¹åº”çš„ç´ æ
+        float textureCoors[]=new float[]	//é¡¶ç‚¹çº¹ç†Sã€Tåæ ‡å€¼æ•°ç»„
 	    {
         	witch * textureRatio,0,
         	witch * textureRatio,1,
@@ -125,21 +125,21 @@ public class DrawTimeBar {
         	witch * textureRatio,0
 	    };        
         
-        //´´½¨¶¥µãÎÆÀíÊı¾İ»º³å
-        //intÀàĞÍÕ¼ÓÃ4¸ö×Ö½Ú£¬Òò´Ë×ª»»ÎªbyteµÄÊı¾İÊ±ĞèÒª*4
+        //åˆ›å»ºé¡¶ç‚¹çº¹ç†æ•°æ®ç¼“å†²
+        //intç±»å‹å ç”¨4ä¸ªå­—èŠ‚ï¼Œå› æ­¤è½¬æ¢ä¸ºbyteçš„æ•°æ®æ—¶éœ€è¦*4
         ByteBuffer cbb = ByteBuffer.allocateDirect(textureCoors.length*4);
-        cbb.order(ByteOrder.nativeOrder());//ÉèÖÃ±¾µØ×Ö½ÚË³Ğò
-        //ÌØ±ğÌáÊ¾£ºÓÉÓÚ²»Í¬Æ½Ì¨×Ö½ÚË³Ğò²»Í¬Êı¾İµ¥Ôª²»ÊÇ×Ö½ÚµÄÒ»¶¨Òª¾­¹ıByteBuffer
-        //×ª»»£¬¹Ø¼üÊÇÒªÍ¨¹ıByteOrderÉèÖÃnativeOrder()£¬·ñÔòÓĞ¿ÉÄÜ»á³öÎÊÌâ
-        mTextureBuffer = cbb.asFloatBuffer();//×ª»»ÎªintĞÍ»º³å
-        mTextureBuffer.put(textureCoors);//Ïò»º³åÇøÖĞ·ÅÈë¶¥µã×ÅÉ«Êı¾İ
-        mTextureBuffer.position(0);//ÉèÖÃ»º³åÇøÆğÊ¼Î»ÖÃ
+        cbb.order(ByteOrder.nativeOrder());//è®¾ç½®æœ¬åœ°å­—èŠ‚é¡ºåº
+        //ç‰¹åˆ«æç¤ºï¼šç”±äºä¸åŒå¹³å°å­—èŠ‚é¡ºåºä¸åŒæ•°æ®å•å…ƒä¸æ˜¯å­—èŠ‚çš„ä¸€å®šè¦ç»è¿‡ByteBuffer
+        //è½¬æ¢ï¼Œå…³é”®æ˜¯è¦é€šè¿‡ByteOrderè®¾ç½®nativeOrder()ï¼Œå¦åˆ™æœ‰å¯èƒ½ä¼šå‡ºé—®é¢˜
+        mTextureBuffer = cbb.asFloatBuffer();//è½¬æ¢ä¸ºintå‹ç¼“å†²
+        mTextureBuffer.put(textureCoors);//å‘ç¼“å†²åŒºä¸­æ”¾å…¥é¡¶ç‚¹ç€è‰²æ•°æ®
+        mTextureBuffer.position(0);//è®¾ç½®ç¼“å†²åŒºèµ·å§‹ä½ç½®
     	return;
     }
     
     private void initNumTextureBuffer()
     {
-        float textureCoors[]=new float[]	//¶¥µãÎÆÀíS¡¢T×ø±êÖµÊı×é
+        float textureCoors[]=new float[]	//é¡¶ç‚¹çº¹ç†Sã€Tåæ ‡å€¼æ•°ç»„
 	    {
         	0,0,
         	0,1,
@@ -149,25 +149,25 @@ public class DrawTimeBar {
         	0,0
 	    };        
         
-        //´´½¨¶¥µãÎÆÀíÊı¾İ»º³å
-        //intÀàĞÍÕ¼ÓÃ4¸ö×Ö½Ú£¬Òò´Ë×ª»»ÎªbyteµÄÊı¾İÊ±ĞèÒª*4
+        //åˆ›å»ºé¡¶ç‚¹çº¹ç†æ•°æ®ç¼“å†²
+        //intç±»å‹å ç”¨4ä¸ªå­—èŠ‚ï¼Œå› æ­¤è½¬æ¢ä¸ºbyteçš„æ•°æ®æ—¶éœ€è¦*4
         ByteBuffer cbb = ByteBuffer.allocateDirect(textureCoors.length*4);
-        cbb.order(ByteOrder.nativeOrder());//ÉèÖÃ±¾µØ×Ö½ÚË³Ğò
-        //ÌØ±ğÌáÊ¾£ºÓÉÓÚ²»Í¬Æ½Ì¨×Ö½ÚË³Ğò²»Í¬Êı¾İµ¥Ôª²»ÊÇ×Ö½ÚµÄÒ»¶¨Òª¾­¹ıByteBuffer
-        //×ª»»£¬¹Ø¼üÊÇÒªÍ¨¹ıByteOrderÉèÖÃnativeOrder()£¬·ñÔòÓĞ¿ÉÄÜ»á³öÎÊÌâ
-        mNumTextureBuffer = cbb.asFloatBuffer();//×ª»»ÎªintĞÍ»º³å
-        mNumTextureBuffer.put(textureCoors);//Ïò»º³åÇøÖĞ·ÅÈë¶¥µã×ÅÉ«Êı¾İ
-        mNumTextureBuffer.position(0);//ÉèÖÃ»º³åÇøÆğÊ¼Î»ÖÃ
+        cbb.order(ByteOrder.nativeOrder());//è®¾ç½®æœ¬åœ°å­—èŠ‚é¡ºåº
+        //ç‰¹åˆ«æç¤ºï¼šç”±äºä¸åŒå¹³å°å­—èŠ‚é¡ºåºä¸åŒæ•°æ®å•å…ƒä¸æ˜¯å­—èŠ‚çš„ä¸€å®šè¦ç»è¿‡ByteBuffer
+        //è½¬æ¢ï¼Œå…³é”®æ˜¯è¦é€šè¿‡ByteOrderè®¾ç½®nativeOrder()ï¼Œå¦åˆ™æœ‰å¯èƒ½ä¼šå‡ºé—®é¢˜
+        mNumTextureBuffer = cbb.asFloatBuffer();//è½¬æ¢ä¸ºintå‹ç¼“å†²
+        mNumTextureBuffer.put(textureCoors);//å‘ç¼“å†²åŒºä¸­æ”¾å…¥é¡¶ç‚¹ç€è‰²æ•°æ®
+        mNumTextureBuffer.position(0);//è®¾ç½®ç¼“å†²åŒºèµ·å§‹ä½ç½®
     	return;
     }
     
 	private void bindTexture(GL10 gl, Bitmap bmp)
 	{
 		gl.glBindTexture(GL10.GL_TEXTURE_2D, numTextureId);
-		gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER, GL10.GL_NEAREST);//Ö¸¶¨ËõĞ¡¹ıÂË·½·¨
-		gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER, GL10.GL_LINEAR);//Ö¸¶¨·Å´ó¹ıÂË·½·¨
-		gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_S, GL10.GL_CLAMP_TO_EDGE);//Ö¸¶¨S×ø±êÖáÌùÍ¼Ä£Ê½
-		gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_T, GL10.GL_CLAMP_TO_EDGE);//Ö¸¶¨T×ø±êÖáÌùÍ¼Ä£Ê½
+		gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER, GL10.GL_NEAREST);//æŒ‡å®šç¼©å°è¿‡æ»¤æ–¹æ³•
+		gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER, GL10.GL_LINEAR);//æŒ‡å®šæ”¾å¤§è¿‡æ»¤æ–¹æ³•
+		gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_S, GL10.GL_CLAMP_TO_EDGE);//æŒ‡å®šSåæ ‡è½´è´´å›¾æ¨¡å¼
+		gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_T, GL10.GL_CLAMP_TO_EDGE);//æŒ‡å®šTåæ ‡è½´è´´å›¾æ¨¡å¼
 		GLUtils.texImage2D(GL10.GL_TEXTURE_2D, 0, bmp, 0);
 		bmp.recycle();
 	}
@@ -175,7 +175,7 @@ public class DrawTimeBar {
 
 	Bitmap genBitmap(int life)
 	{
-		//Éú³ÉµÄÎ»Í¼Òª´øALPHAÍ¨µÀĞÅÏ¢£¬·ñÔòÎŞ·¨½øĞĞÍ¸Ã÷»¯´¦Àí
+		//ç”Ÿæˆçš„ä½å›¾è¦å¸¦ALPHAé€šé“ä¿¡æ¯ï¼Œå¦åˆ™æ— æ³•è¿›è¡Œé€æ˜åŒ–å¤„ç†
 		Bitmap bitmap = Bitmap.createBitmap(mBitmapW, mBitmapH, Config.ARGB_4444);
 		Canvas canvas = new Canvas(bitmap);
 
@@ -185,7 +185,7 @@ public class DrawTimeBar {
 		paint.setTextSize(mFontSize);	
 		paint.setColor(Color.WHITE);
 		String str = Integer.toString(life);			
-		canvas.drawText(str, 20, 24, paint);	//ÊéĞ´µÄÎ»ÖÃ£¬¸ù¾İ¾ßÌåÇé¿ö¿ÉÒÔµ÷ÕûÒ»ÏÂ			
+		canvas.drawText(str, 20, 24, paint);	//ä¹¦å†™çš„ä½ç½®ï¼Œæ ¹æ®å…·ä½“æƒ…å†µå¯ä»¥è°ƒæ•´ä¸€ä¸‹			
 
 		return bitmap;
 	}
@@ -195,41 +195,41 @@ public class DrawTimeBar {
 		if (life < 0) return;
     	Bitmap bmp = genBitmap(life);
     	bindTexture(gl, bmp);
-    	initNumVertexBuffer();	//¸ù¾İcol,row³õÊ¼»¯¶¥µã×ø±ê
+    	initNumVertexBuffer();	//æ ¹æ®col,rowåˆå§‹åŒ–é¡¶ç‚¹åæ ‡
 
-    	//¶¥µã×ø±ê£¬ÔÊĞíÊ¹ÓÃ¶¥µãÊı×é
+    	//é¡¶ç‚¹åæ ‡ï¼Œå…è®¸ä½¿ç”¨é¡¶ç‚¹æ•°ç»„
         gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
-		//Îª»­±ÊÖ¸¶¨¶¥µã×ø±êÊı¾İ
+		//ä¸ºç”»ç¬”æŒ‡å®šé¡¶ç‚¹åæ ‡æ•°æ®
         gl.glVertexPointer
         (
-    		3,				//Ã¿¸ö¶¥µãµÄ×ø±êÊıÁ¿Îª3  xyz 
-    		GL10.GL_FIXED,	//¶¥µã×ø±êÖµµÄÀàĞÍÎª GL_FIXED
-    		0, 				//Á¬Ğø¶¥µã×ø±êÊı¾İÖ®¼äµÄ¼ä¸ô
-    		mNumVertexBuffer	//¶¥µã×ø±êÊı¾İ
+    		3,				//æ¯ä¸ªé¡¶ç‚¹çš„åæ ‡æ•°é‡ä¸º3  xyz 
+    		GL10.GL_FIXED,	//é¡¶ç‚¹åæ ‡å€¼çš„ç±»å‹ä¸º GL_FIXED
+    		0, 				//è¿ç»­é¡¶ç‚¹åæ ‡æ•°æ®ä¹‹é—´çš„é—´éš”
+    		mNumVertexBuffer	//é¡¶ç‚¹åæ ‡æ•°æ®
         );
         
-        //ÎÆÀí×ø±ê£¬¿ªÆôÎÆÀí
+        //çº¹ç†åæ ‡ï¼Œå¼€å¯çº¹ç†
         gl.glEnable(GL10.GL_TEXTURE_2D);   
-        //ÔÊĞíÊ¹ÓÃÎÆÀíÊı×é
+        //å…è®¸ä½¿ç”¨çº¹ç†æ•°ç»„
         gl.glEnableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
-        //Îª»­±ÊÖ¸¶¨ÎÆÀíuv×ø±êÊı¾İ
+        //ä¸ºç”»ç¬”æŒ‡å®šçº¹ç†uvåæ ‡æ•°æ®
         gl.glTexCoordPointer
         (
-    		2, 					//Ã¿¸ö¶¥µãÁ½¸öÎÆÀí×ø±êÊı¾İ S¡¢T
-    		GL10.GL_FLOAT, 		//Êı¾İÀàĞÍ
-    		0, 					//Á¬ĞøÎÆÀí×ø±êÊı¾İÖ®¼äµÄ¼ä¸ô
-    		mNumTextureBuffer		//ÎÆÀí×ø±êÊı¾İ
+    		2, 					//æ¯ä¸ªé¡¶ç‚¹ä¸¤ä¸ªçº¹ç†åæ ‡æ•°æ® Sã€T
+    		GL10.GL_FLOAT, 		//æ•°æ®ç±»å‹
+    		0, 					//è¿ç»­çº¹ç†åæ ‡æ•°æ®ä¹‹é—´çš„é—´éš”
+    		mNumTextureBuffer		//çº¹ç†åæ ‡æ•°æ®
         );        		
-        gl.glBindTexture(GL10.GL_TEXTURE_2D,numTextureId);//Îª»­±Ê°ó¶¨Ö¸¶¨Ãû³ÆIDÎÆÀí   
+        gl.glBindTexture(GL10.GL_TEXTURE_2D,numTextureId);//ä¸ºç”»ç¬”ç»‘å®šæŒ‡å®šåç§°IDçº¹ç†   
         
-        //»æÖÆÍ¼ĞÎ
+        //ç»˜åˆ¶å›¾å½¢
         gl.glDrawArrays
         (
     		GL10.GL_TRIANGLES, 
     		0, 
     		vCount
         );
-        gl.glDisable(GL10.GL_TEXTURE_2D);//¹Ø±ÕÎÆÀí
+        gl.glDisable(GL10.GL_TEXTURE_2D);//å…³é—­çº¹ç†
     	
     }
 
@@ -237,87 +237,87 @@ public class DrawTimeBar {
 
     void drawTimeBackground(GL10 gl)
     {   
-    	initVertexBuffer(1.0f);	//¸ù¾İcol,row³õÊ¼»¯¶¥µã×ø±ê
-    	initTextureBuffer(0);	//¸ù¾İwitchÀ´³õÊ¼»¯ÎÆÀí¶¥µãÊı¾İ        
-        //¶¥µã×ø±ê£¬ÔÊĞíÊ¹ÓÃ¶¥µãÊı×é
+    	initVertexBuffer(1.0f);	//æ ¹æ®col,rowåˆå§‹åŒ–é¡¶ç‚¹åæ ‡
+    	initTextureBuffer(0);	//æ ¹æ®witchæ¥åˆå§‹åŒ–çº¹ç†é¡¶ç‚¹æ•°æ®        
+        //é¡¶ç‚¹åæ ‡ï¼Œå…è®¸ä½¿ç”¨é¡¶ç‚¹æ•°ç»„
         gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
-		//Îª»­±ÊÖ¸¶¨¶¥µã×ø±êÊı¾İ
+		//ä¸ºç”»ç¬”æŒ‡å®šé¡¶ç‚¹åæ ‡æ•°æ®
         gl.glVertexPointer
         (
-    		3,				//Ã¿¸ö¶¥µãµÄ×ø±êÊıÁ¿Îª3  xyz 
-    		GL10.GL_FIXED,	//¶¥µã×ø±êÖµµÄÀàĞÍÎª GL_FIXED
-    		0, 				//Á¬Ğø¶¥µã×ø±êÊı¾İÖ®¼äµÄ¼ä¸ô
-    		mVertexBuffer	//¶¥µã×ø±êÊı¾İ
+    		3,				//æ¯ä¸ªé¡¶ç‚¹çš„åæ ‡æ•°é‡ä¸º3  xyz 
+    		GL10.GL_FIXED,	//é¡¶ç‚¹åæ ‡å€¼çš„ç±»å‹ä¸º GL_FIXED
+    		0, 				//è¿ç»­é¡¶ç‚¹åæ ‡æ•°æ®ä¹‹é—´çš„é—´éš”
+    		mVertexBuffer	//é¡¶ç‚¹åæ ‡æ•°æ®
         );
         
-        //ÎÆÀí×ø±ê£¬¿ªÆôÎÆÀí
+        //çº¹ç†åæ ‡ï¼Œå¼€å¯çº¹ç†
         gl.glEnable(GL10.GL_TEXTURE_2D);   
-        //ÔÊĞíÊ¹ÓÃÎÆÀíÊı×é
+        //å…è®¸ä½¿ç”¨çº¹ç†æ•°ç»„
         gl.glEnableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
-        //Îª»­±ÊÖ¸¶¨ÎÆÀíuv×ø±êÊı¾İ
+        //ä¸ºç”»ç¬”æŒ‡å®šçº¹ç†uvåæ ‡æ•°æ®
         gl.glTexCoordPointer
         (
-    		2, 					//Ã¿¸ö¶¥µãÁ½¸öÎÆÀí×ø±êÊı¾İ S¡¢T
-    		GL10.GL_FLOAT, 		//Êı¾İÀàĞÍ
-    		0, 					//Á¬ĞøÎÆÀí×ø±êÊı¾İÖ®¼äµÄ¼ä¸ô
-    		mTextureBuffer		//ÎÆÀí×ø±êÊı¾İ
+    		2, 					//æ¯ä¸ªé¡¶ç‚¹ä¸¤ä¸ªçº¹ç†åæ ‡æ•°æ® Sã€T
+    		GL10.GL_FLOAT, 		//æ•°æ®ç±»å‹
+    		0, 					//è¿ç»­çº¹ç†åæ ‡æ•°æ®ä¹‹é—´çš„é—´éš”
+    		mTextureBuffer		//çº¹ç†åæ ‡æ•°æ®
         );        		
-        gl.glBindTexture(GL10.GL_TEXTURE_2D,textureId);//Îª»­±Ê°ó¶¨Ö¸¶¨Ãû³ÆIDÎÆÀí   
+        gl.glBindTexture(GL10.GL_TEXTURE_2D,textureId);//ä¸ºç”»ç¬”ç»‘å®šæŒ‡å®šåç§°IDçº¹ç†   
         
-        //»æÖÆÍ¼ĞÎ
+        //ç»˜åˆ¶å›¾å½¢
         gl.glDrawArrays
         (
     		GL10.GL_TRIANGLES, 
     		0, 
     		vCount
         );
-        gl.glDisable(GL10.GL_TEXTURE_2D);//¹Ø±ÕÎÆÀí
+        gl.glDisable(GL10.GL_TEXTURE_2D);//å…³é—­çº¹ç†
     }
     
     void drawTimeProgressBar(GL10 gl, int leftTime)
     {   
     	if(leftTime > mMaxTime) leftTime = mMaxTime;
     	float percent = (float)leftTime / (float)mMaxTime;
-    	initVertexBuffer(percent);	//¸ù¾İcol,row³õÊ¼»¯¶¥µã×ø±ê
+    	initVertexBuffer(percent);	//æ ¹æ®col,rowåˆå§‹åŒ–é¡¶ç‚¹åæ ‡
     	int picId = 1;
     	if(percent > 0.2f) picId = 1;
     	else if(percent > 0.1f) picId = 2;
     	else picId = 3;
     		
-    	initTextureBuffer(picId);	//¸ù¾İwitchÀ´³õÊ¼»¯ÎÆÀí¶¥µãÊı¾İ        
-        //¶¥µã×ø±ê£¬ÔÊĞíÊ¹ÓÃ¶¥µãÊı×é
+    	initTextureBuffer(picId);	//æ ¹æ®witchæ¥åˆå§‹åŒ–çº¹ç†é¡¶ç‚¹æ•°æ®        
+        //é¡¶ç‚¹åæ ‡ï¼Œå…è®¸ä½¿ç”¨é¡¶ç‚¹æ•°ç»„
         gl.glEnableClientState(GL10.GL_VERTEX_ARRAY);
-		//Îª»­±ÊÖ¸¶¨¶¥µã×ø±êÊı¾İ
+		//ä¸ºç”»ç¬”æŒ‡å®šé¡¶ç‚¹åæ ‡æ•°æ®
         gl.glVertexPointer
         (
-    		3,				//Ã¿¸ö¶¥µãµÄ×ø±êÊıÁ¿Îª3  xyz 
-    		GL10.GL_FIXED,	//¶¥µã×ø±êÖµµÄÀàĞÍÎª GL_FIXED
-    		0, 				//Á¬Ğø¶¥µã×ø±êÊı¾İÖ®¼äµÄ¼ä¸ô
-    		mVertexBuffer	//¶¥µã×ø±êÊı¾İ
+    		3,				//æ¯ä¸ªé¡¶ç‚¹çš„åæ ‡æ•°é‡ä¸º3  xyz 
+    		GL10.GL_FIXED,	//é¡¶ç‚¹åæ ‡å€¼çš„ç±»å‹ä¸º GL_FIXED
+    		0, 				//è¿ç»­é¡¶ç‚¹åæ ‡æ•°æ®ä¹‹é—´çš„é—´éš”
+    		mVertexBuffer	//é¡¶ç‚¹åæ ‡æ•°æ®
         );
         
-        //ÎÆÀí×ø±ê£¬¿ªÆôÎÆÀí
+        //çº¹ç†åæ ‡ï¼Œå¼€å¯çº¹ç†
         gl.glEnable(GL10.GL_TEXTURE_2D);   
-        //ÔÊĞíÊ¹ÓÃÎÆÀíÊı×é
+        //å…è®¸ä½¿ç”¨çº¹ç†æ•°ç»„
         gl.glEnableClientState(GL10.GL_TEXTURE_COORD_ARRAY);
-        //Îª»­±ÊÖ¸¶¨ÎÆÀíuv×ø±êÊı¾İ
+        //ä¸ºç”»ç¬”æŒ‡å®šçº¹ç†uvåæ ‡æ•°æ®
         gl.glTexCoordPointer
         (
-    		2, 					//Ã¿¸ö¶¥µãÁ½¸öÎÆÀí×ø±êÊı¾İ S¡¢T
-    		GL10.GL_FLOAT, 		//Êı¾İÀàĞÍ
-    		0, 					//Á¬ĞøÎÆÀí×ø±êÊı¾İÖ®¼äµÄ¼ä¸ô
-    		mTextureBuffer		//ÎÆÀí×ø±êÊı¾İ
+    		2, 					//æ¯ä¸ªé¡¶ç‚¹ä¸¤ä¸ªçº¹ç†åæ ‡æ•°æ® Sã€T
+    		GL10.GL_FLOAT, 		//æ•°æ®ç±»å‹
+    		0, 					//è¿ç»­çº¹ç†åæ ‡æ•°æ®ä¹‹é—´çš„é—´éš”
+    		mTextureBuffer		//çº¹ç†åæ ‡æ•°æ®
         );        		
-        gl.glBindTexture(GL10.GL_TEXTURE_2D,textureId);//Îª»­±Ê°ó¶¨Ö¸¶¨Ãû³ÆIDÎÆÀí   
+        gl.glBindTexture(GL10.GL_TEXTURE_2D,textureId);//ä¸ºç”»ç¬”ç»‘å®šæŒ‡å®šåç§°IDçº¹ç†   
         
-        //»æÖÆÍ¼ĞÎ
+        //ç»˜åˆ¶å›¾å½¢
         gl.glDrawArrays
         (
     		GL10.GL_TRIANGLES, 
     		0, 
     		vCount
         );
-        gl.glDisable(GL10.GL_TEXTURE_2D);//¹Ø±ÕÎÆÀí
+        gl.glDisable(GL10.GL_TEXTURE_2D);//å…³é—­çº¹ç†
     }
     
     

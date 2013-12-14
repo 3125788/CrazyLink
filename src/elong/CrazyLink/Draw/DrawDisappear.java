@@ -1,13 +1,12 @@
 /**********************************************************
- * ÏîÄ¿Ãû³Æ£ºÉ½Õ¯¡°°®Ïû³ı¡±ÓÎÏ·7ÈÕ½Ì³Ì
- * ×÷          Õß£ºÖ£ÃôĞÂ
- * ÌÚÑ¶Î¢²©£ºSuperCube3D
- * ÈÕ          ÆÚ£º2013Äê10ÔÂ
- * Éù          Ã÷£º°æÈ¨ËùÓĞ   ÇÖÈ¨±Ø¾¿
- * ±¾Ô´´úÂë¹©ÍøÓÑÑĞ¾¿Ñ§Ï°OpenGL ES¿ª·¢AndroidÓ¦ÓÃÓÃ£¬
- * ÇëÎğÈ«²¿»ò²¿·ÖÓÃÓÚÉÌÒµÓÃÍ¾
+ * é¡¹ç›®åç§°ï¼šå±±å¯¨è…¾è®¯â€œçˆ±æ¶ˆé™¤â€æ¸¸æˆ7æ—¥æ•™ç¨‹
+ * ä½œ          è€…ï¼šéƒ‘æ•æ–°
+ * è…¾è®¯å¾®åšï¼šSuperCube3D
+ * æ—¥          æœŸï¼š2013å¹´12æœˆ
+ * å£°          æ˜ï¼šç‰ˆæƒæ‰€æœ‰   ä¾µæƒå¿…ç©¶
+ * æœ¬æºä»£ç ä¾›ç½‘å‹ç ”ç©¶å­¦ä¹ OpenGL ESå¼€å‘Androidåº”ç”¨ç”¨ï¼Œ
+ * è¯·å‹¿å…¨éƒ¨æˆ–éƒ¨åˆ†ç”¨äºå•†ä¸šç”¨é€”
  ********************************************************/
-
 
 package elong.CrazyLink.Draw;
 import javax.microedition.khronos.opengles.GL10;
@@ -31,7 +30,7 @@ public class DrawDisappear {
 	public void draw(GL10 gl, int witch, int col, int row)
 	{
 		if(!control.isRun()) return;
-		if(0 == ((CtlDisappear)control).getCount() % 2)	//ÕâÀïÊµÏÖÉÁ¶¯	
+		if(0 == ((CtlDisappear)control).getCount() % 2)	//è¿™é‡Œå®ç°é—ªåŠ¨	
 		{
 			gl.glPushMatrix();
 			drawAnimal.draw(gl, witch, col, row);

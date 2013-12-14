@@ -1,11 +1,11 @@
 /**********************************************************
- * ÏîÄ¿Ãû³Æ£ºÉ½Õ¯¡°°®Ïû³ı¡±ÓÎÏ·7ÈÕ½Ì³Ì
- * ×÷          Õß£ºÖ£ÃôĞÂ
- * ÌÚÑ¶Î¢²©£ºSuperCube3D
- * ÈÕ          ÆÚ£º2013Äê10ÔÂ
- * Éù          Ã÷£º°æÈ¨ËùÓĞ   ÇÖÈ¨±Ø¾¿
- * ±¾Ô´´úÂë¹©ÍøÓÑÑĞ¾¿Ñ§Ï°OpenGL ES¿ª·¢AndroidÓ¦ÓÃÓÃ£¬
- * ÇëÎğÈ«²¿»ò²¿·ÖÓÃÓÚÉÌÒµÓÃÍ¾
+ * é¡¹ç›®åç§°ï¼šå±±å¯¨è…¾è®¯â€œçˆ±æ¶ˆé™¤â€æ¸¸æˆ7æ—¥æ•™ç¨‹
+ * ä½œ          è€…ï¼šéƒ‘æ•æ–°
+ * è…¾è®¯å¾®åšï¼šSuperCube3D
+ * æ—¥          æœŸï¼š2013å¹´12æœˆ
+ * å£°          æ˜ï¼šç‰ˆæƒæ‰€æœ‰   ä¾µæƒå¿…ç©¶
+ * æœ¬æºä»£ç ä¾›ç½‘å‹ç ”ç©¶å­¦ä¹ OpenGL ESå¼€å‘Androidåº”ç”¨ç”¨ï¼Œ
+ * è¯·å‹¿å…¨éƒ¨æˆ–éƒ¨åˆ†ç”¨äºå•†ä¸šç”¨é€”
  ********************************************************/
 
 
@@ -28,7 +28,7 @@ public class CrazyLinkActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);	//ÉèÖÃÎªÖ±ÆÁ
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);	//ï¿½ï¿½ï¿½ï¿½ÎªÖ±ï¿½ï¿½
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);		
 		getWindow().setFormat(PixelFormat.TRANSLUCENT);
@@ -44,7 +44,7 @@ public class CrazyLinkActivity extends Activity {
 		super.onStart();
 		if(mp==null){
 
-			// R.raw.mmpÊÇ×ÊÔ´ÎÄ¼ş£¬MP3¸ñÊ½µÄ
+			// R.raw.mmpï¿½ï¿½ï¿½ï¿½Ô´ï¿½Ä¼ï¿½ï¿½ï¿½MP3ï¿½ï¿½Ê½ï¿½ï¿½
 			mp = MediaPlayer.create(this, R.raw.s_background);
 			mp.setLooping(true);
 			mp.start();

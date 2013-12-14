@@ -1,11 +1,11 @@
 /**********************************************************
- * ÏîÄ¿Ãû³Æ£ºÉ½Õ¯¡°°®Ïû³ı¡±ÓÎÏ·7ÈÕ½Ì³Ì
- * ×÷          Õß£ºÖ£ÃôĞÂ
- * ÌÚÑ¶Î¢²©£ºSuperCube3D
- * ÈÕ          ÆÚ£º2013Äê10ÔÂ
- * Éù          Ã÷£º°æÈ¨ËùÓĞ   ÇÖÈ¨±Ø¾¿
- * ±¾Ô´´úÂë¹©ÍøÓÑÑĞ¾¿Ñ§Ï°OpenGL ES¿ª·¢AndroidÓ¦ÓÃÓÃ£¬
- * ÇëÎğÈ«²¿»ò²¿·ÖÓÃÓÚÉÌÒµÓÃÍ¾
+ * é¡¹ç›®åç§°ï¼šå±±å¯¨è…¾è®¯â€œçˆ±æ¶ˆé™¤â€æ¸¸æˆ7æ—¥æ•™ç¨‹
+ * ä½œ          è€…ï¼šéƒ‘æ•æ–°
+ * è…¾è®¯å¾®åšï¼šSuperCube3D
+ * æ—¥          æœŸï¼š2013å¹´12æœˆ
+ * å£°          æ˜ï¼šç‰ˆæƒæ‰€æœ‰   ä¾µæƒå¿…ç©¶
+ * æœ¬æºä»£ç ä¾›ç½‘å‹ç ”ç©¶å­¦ä¹ OpenGL ESå¼€å‘Androidåº”ç”¨ç”¨ï¼Œ
+ * è¯·å‹¿å…¨éƒ¨æˆ–éƒ¨åˆ†ç”¨äºå•†ä¸šç”¨é€”
  ********************************************************/
 
 package elong.CrazyLink;
@@ -13,30 +13,30 @@ package elong.CrazyLink;
 public class CrazyLinkConstent {
 	public static final float GRID_NUM = 7.0f;
 	public static int UNIT_SIZE = (int) (88 * CrazyLinkConstent.GRID_NUM);
-	public static int VIEW_WIDTH = 480;		//Ö÷Á÷ÊÊÅä¿í¶È
-	public static int VIEW_HEIGHT = 800;	//Ö÷Á÷ÊÊÅä¸ß¶È
-	public static int REAL_WIDTH = 480;		//ÆÁÄ»Êµ¼Ê¿í¶È
-	public static int REAL_HEIGHT = 800;	//ÆÁÄ»Êµ¼Ê¸ß¶È
-	public static int ADP_SIZE = 0;			//ÊÊÅäºóµÄ³ß´ç
+	public static int VIEW_WIDTH = 480;		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+	public static int VIEW_HEIGHT = 800;	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ß¶ï¿½
+	public static int REAL_WIDTH = 480;		//ï¿½ï¿½Ä»Êµï¿½Ê¿ï¿½ï¿½
+	public static int REAL_HEIGHT = 800;	//ï¿½ï¿½Ä»Êµï¿½Ê¸ß¶ï¿½
+	public static int ADP_SIZE = 0;			//ï¿½ï¿½ï¿½ï¿½ï¿½Ä³ß´ï¿½
 	public static float screentRatio = 0;
 	public static float translateRatio = 0;
 	public static float denisty = 0;
 	public static float widthPixel = 0;
 	
-	public static int DELAY_MS = 50;	//ÑÓ³Ù50MS
-	public static int AUTOTIP_DELAY = 5 * 1000 / DELAY_MS;	//×Ô¶¯ÌáÊ¾ÑÓ³Ù5Ãë
-	public static int MONSTER_APPEAR = 5;	//MONSTER³öÏÖµÄÊ±»ú
+	public static int DELAY_MS = 50;	//ï¿½Ó³ï¿½50MS
+	public static int AUTOTIP_DELAY = 5 * 1000 / DELAY_MS;	//ï¿½Ô¶ï¿½ï¿½ï¿½Ê¾ï¿½Ó³ï¿½5ï¿½ï¿½
+	public static int MONSTER_APPEAR = 5;	//MONSTERï¿½ï¿½ï¿½Öµï¿½Ê±ï¿½ï¿½
 	
-	public static int MAX_TOKEN = 6;		//×î´óÁîÅÆÊı
+	public static int MAX_TOKEN = 6;		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	
-	public static int MOVE_THRESDHOLDER = 5;  //´¥·¢ÒÆ¶¯µÄÃÅÏŞ£¬±ÜÃâÎó²Ù×÷
+	public static int MOVE_THRESDHOLDER = 5;  //ï¿½ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ş£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	
-	public static int LIFE_NUM = 3;			//ÉúÃüÊı
+	public static int LIFE_NUM = 3;			//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	
-	public static int LIFE_UP = 9;			//Ïû³ıÊı´óÓÚ¸ÃÖµÊ±Ôö¼ÓÉúÃüÖµ
-	public static int LIFE_TIMEOUT = 10;	//²Ù×÷¼ä¸ô³¬¹ıÕâ¸öÖµÊ±Ê§È¥Ò»ÌõÉúÃü
+	public static int LIFE_UP = 9;			//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú¸ï¿½ÖµÊ±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Öµ
+	public static int LIFE_TIMEOUT = 10;	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÖµÊ±Ê§È¥Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	
-	public static int MAX_TIME = 100;		//Ò»¾ÖÓÎÏ·µÄÊ±¼ä£¬ÃëÊı
+	public static int MAX_TIME = 100;		//Ò»ï¿½ï¿½ï¿½ï¿½Ï·ï¿½ï¿½Ê±ï¿½ä£¬ï¿½ï¿½ï¿½ï¿½
 
 	
 	public enum E_SOUND
@@ -66,12 +66,12 @@ public class CrazyLinkConstent {
 		GAMEOVER,
 	}
 	
-	//ÓÎÏ·µÄ³¡¾°
+	//ï¿½ï¿½Ï·ï¿½Ä³ï¿½ï¿½ï¿½
 	public enum E_SCENARIO
 	{
-		MENU,	/*²Ëµ¥*/
-		GAME,	/*ÓÎÏ·Ö÷½çÃæ*/
-		RESULT,	/*ÓÎÏ·½á¹û*/
+		MENU,	/*ï¿½Ëµï¿½*/
+		GAME,	/*ï¿½ï¿½Ï·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
+		RESULT,	/*ï¿½ï¿½Ï·ï¿½ï¿½ï¿½*/
 	}
 	
 

@@ -1,11 +1,11 @@
 /**********************************************************
- * ÏîÄ¿Ãû³Æ£ºÉ½Õ¯¡°°®Ïû³ý¡±ÓÎÏ·7ÈÕ½Ì³Ì
- * ×÷          Õß£ºÖ£ÃôÐÂ
- * ÌÚÑ¶Î¢²©£ºSuperCube3D
- * ÈÕ          ÆÚ£º2013Äê10ÔÂ
- * Éù          Ã÷£º°æÈ¨ËùÓÐ   ÇÖÈ¨±Ø¾¿
- * ±¾Ô´´úÂë¹©ÍøÓÑÑÐ¾¿Ñ§Ï°OpenGL ES¿ª·¢AndroidÓ¦ÓÃÓÃ£¬
- * ÇëÎðÈ«²¿»ò²¿·ÖÓÃÓÚÉÌÒµÓÃÍ¾
+ * é¡¹ç›®åç§°ï¼šå±±å¯¨è…¾è®¯â€œçˆ±æ¶ˆé™¤â€æ¸¸æˆ7æ—¥æ•™ç¨‹
+ * ä½œ          è€…ï¼šéƒ‘æ•æ–°
+ * è…¾è®¯å¾®åšï¼šSuperCube3D
+ * æ—¥          æœŸï¼š2013å¹´12æœˆ
+ * å£°          æ˜Žï¼šç‰ˆæƒæ‰€æœ‰   ä¾µæƒå¿…ç©¶
+ * æœ¬æºä»£ç ä¾›ç½‘å‹ç ”ç©¶å­¦ä¹ OpenGL ESå¼€å‘Androidåº”ç”¨ç”¨ï¼Œ
+ * è¯·å‹¿å…¨éƒ¨æˆ–éƒ¨åˆ†ç”¨äºŽå•†ä¸šç”¨é€”
  ********************************************************/
 
 package elong.CrazyLink.Control;
@@ -15,20 +15,20 @@ import android.os.Message;
 import elong.CrazyLink.Core.ControlCenter;
 
 public class CtlExchange extends CtlBase{
-	int mCol1 = 0;					//×ø±êÖµ
+	int mCol1 = 0;					//åæ ‡å€¼
 	int mCol2 = 0;
 	int mRow1 = 0;
 	int mRow2 = 0;
 	
-	int mDeltaX1 = 0;				//Æ«ÒÆÁ¿
+	int mDeltaX1 = 0;				//åç§»é‡
 	int mDeltaY1 = 0;
 	int mDeltaX2 = 0;
 	int mDeltaY2 = 0;
 	
-	int mStep = 10;				//Æ«ÒÆ²½³¤
-	boolean mDirectionX = true;   //ÔË¶¯·½Ïò¿ØÖÆ
+	int mStep = 10;				//åç§»æ­¥é•¿
+	boolean mDirectionX = true;   //è¿åŠ¨æ–¹å‘æŽ§åˆ¶
 	boolean mDirectionY = true;
-	boolean mNeedMoveX = false;	//ÊÇ·ñÐèÒªÆ«ÒÆ
+	boolean mNeedMoveX = false;	//æ˜¯å¦éœ€è¦åç§»
 	boolean mNeedMoveY = false;	
 
 	public void init(int token, int col1, int row1, int col2, int row2)
@@ -48,7 +48,7 @@ public class CtlExchange extends CtlBase{
 		}
 		else
 		{
-			//¸ù¾Ý×ø±êÎ»ÖÃÀ´¾ö¶¨ÔË¶¯µÄ³õÊ¼·½Ïò
+			//æ ¹æ®åæ ‡ä½ç½®æ¥å†³å®šè¿åŠ¨çš„åˆå§‹æ–¹å‘
 			mNeedMoveX = true;
 			if(col1 >  col2)
 			{
@@ -68,7 +68,7 @@ public class CtlExchange extends CtlBase{
 		}
 		else
 		{
-			//¸ù¾Ý×ø±êÎ»ÖÃÀ´¾ö¶¨ÔË¶¯µÄ³õÊ¼·½Ïò			
+			//æ ¹æ®åæ ‡ä½ç½®æ¥å†³å®šè¿åŠ¨çš„åˆå§‹æ–¹å‘			
 			mNeedMoveY = true;
 			if(row1 >  row2)
 			{
@@ -87,7 +87,7 @@ public class CtlExchange extends CtlBase{
 	public void run()
 	{
 		if(mStop) return;
-		//½«Æ«ÒÆ·¶Î§ÏÞ¶¨ÔÚ-0.5~0.5¼ä£¬³¬³öÖ¸¶¨Çø¼ä¼´µôÍ·
+		//å°†åç§»èŒƒå›´é™å®šåœ¨-0.5~0.5é—´ï¼Œè¶…å‡ºæŒ‡å®šåŒºé—´å³æŽ‰å¤´
 		if(mNeedMoveX)
 		{
 			if(mDeltaX1 >= 50)
@@ -146,7 +146,7 @@ public class CtlExchange extends CtlBase{
 	public float getX1()
 	{
 		float delta = 0;
-		//¸ù¾Ý¸ø¶¨×ø±êÉèÖÃ³õÊ¼Æ«ÒÆÁ¿£¬½«ÔË¶¯·¶Î§¿ØÖÆÔÚ0~1»ò0~-1Çø¼ä
+		//æ ¹æ®ç»™å®šåæ ‡è®¾ç½®åˆå§‹åç§»é‡ï¼Œå°†è¿åŠ¨èŒƒå›´æŽ§åˆ¶åœ¨0~1æˆ–0~-1åŒºé—´
 		if(mCol1 > mCol2)
 		{
 			delta = -0.5f; 
@@ -161,7 +161,7 @@ public class CtlExchange extends CtlBase{
 	public float getX2()
 	{
 		float delta = 0;
-		//¸ù¾Ý¸ø¶¨×ø±êÉèÖÃ³õÊ¼Æ«ÒÆÁ¿£¬½«ÔË¶¯·¶Î§¿ØÖÆÔÚ0~1»ò0~-1Çø¼ä
+		//æ ¹æ®ç»™å®šåæ ‡è®¾ç½®åˆå§‹åç§»é‡ï¼Œå°†è¿åŠ¨èŒƒå›´æŽ§åˆ¶åœ¨0~1æˆ–0~-1åŒºé—´
 		if(mCol1 > mCol2)
 		{
 			delta = 0.5f; 
@@ -176,7 +176,7 @@ public class CtlExchange extends CtlBase{
 	public float getY1()
 	{
 		float delta = 0;
-		//¸ù¾Ý¸ø¶¨×ø±êÉèÖÃ³õÊ¼Æ«ÒÆÁ¿£¬½«ÔË¶¯·¶Î§¿ØÖÆÔÚ0~1»ò0~-1Çø¼ä
+		//æ ¹æ®ç»™å®šåæ ‡è®¾ç½®åˆå§‹åç§»é‡ï¼Œå°†è¿åŠ¨èŒƒå›´æŽ§åˆ¶åœ¨0~1æˆ–0~-1åŒºé—´
 		if(mRow1 > mRow2)
 		{
 			delta = -0.5f; 
@@ -191,7 +191,7 @@ public class CtlExchange extends CtlBase{
 	public float getY2()
 	{
 		float delta = 0;
-		//¸ù¾Ý¸ø¶¨×ø±êÉèÖÃ³õÊ¼Æ«ÒÆÁ¿£¬½«ÔË¶¯·¶Î§¿ØÖÆÔÚ0~1»ò0~-1Çø¼ä
+		//æ ¹æ®ç»™å®šåæ ‡è®¾ç½®åˆå§‹åç§»é‡ï¼Œå°†è¿åŠ¨èŒƒå›´æŽ§åˆ¶åœ¨0~1æˆ–0~-1åŒºé—´
 		if(mRow1 > mRow2)
 		{
 			delta = 0.5f; 

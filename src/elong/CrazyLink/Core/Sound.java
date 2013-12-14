@@ -1,3 +1,13 @@
+/**********************************************************
+ * é¡¹ç›®åç§°ï¼šå±±å¯¨è…¾è®¯â€œçˆ±æ¶ˆé™¤â€æ¸¸æˆ7æ—¥æ•™ç¨‹
+ * ä½œ          è€…ï¼šéƒ‘æ•æ–°
+ * è…¾è®¯å¾®åšï¼šSuperCube3D
+ * æ—¥          æœŸï¼š2013å¹´12æœˆ
+ * å£°          æ˜ï¼šç‰ˆæƒæ‰€æœ‰   ä¾µæƒå¿…ç©¶
+ * æœ¬æºä»£ç ä¾›ç½‘å‹ç ”ç©¶å­¦ä¹ OpenGL ESå¼€å‘Androidåº”ç”¨ç”¨ï¼Œ
+ * è¯·å‹¿å…¨éƒ¨æˆ–éƒ¨åˆ†ç”¨äºå•†ä¸šç”¨é€”
+ ********************************************************/
+
 package elong.CrazyLink.Core;
 
 
@@ -14,13 +24,13 @@ public class Sound {
 	
 
 	
-	//ÒôĞ§µÄÒôÁ¿   
+	//éŸ³æ•ˆçš„éŸ³é‡   
 	int streamVolume;   
 	  
-	//¶¨ÒåSoundPool ¶ÔÏó   
+	//å®šä¹‰SoundPool å¯¹è±¡   
 	public SoundPool mSoundPool;    
 	  
-	//¶¨ÒåHASH±í   
+	//å®šä¹‰HASHè¡¨   
 	public HashMap<Integer, Integer> mSoundPoolMap;
 	
 	Context mContext;
@@ -39,13 +49,13 @@ public class Sound {
 
 	private void initSounds() 
 	{    
-		//³õÊ¼»¯soundPool ¶ÔÏó,µÚÒ»¸ö²ÎÊıÊÇÔÊĞíÓĞ¶àÉÙ¸öÉùÒôÁ÷Í¬Ê±²¥·Å,µÚ2¸ö²ÎÊıÊÇÉùÒôÀàĞÍ,µÚÈı¸ö²ÎÊıÊÇÉùÒôµÄÆ·ÖÊ   
+		//åˆå§‹åŒ–soundPool å¯¹è±¡,ç¬¬ä¸€ä¸ªå‚æ•°æ˜¯å…è®¸æœ‰å¤šå°‘ä¸ªå£°éŸ³æµåŒæ—¶æ’­æ”¾,ç¬¬2ä¸ªå‚æ•°æ˜¯å£°éŸ³ç±»å‹,ç¬¬ä¸‰ä¸ªå‚æ•°æ˜¯å£°éŸ³çš„å“è´¨   
 		mSoundPool = new SoundPool(100, AudioManager.STREAM_MUSIC, 100);    
 		  
-		//³õÊ¼»¯HASH±í   
+		//åˆå§‹åŒ–HASHè¡¨   
 		mSoundPoolMap = new HashMap<Integer, Integer>();    
 		      
-		//»ñµÃÉùÒôÉè±¸ºÍÉè±¸ÒôÁ¿   
+		//è·å¾—å£°éŸ³è®¾å¤‡å’Œè®¾å¤‡éŸ³é‡   
 		AudioManager mgr = (AudioManager)mContext.getSystemService(Context.AUDIO_SERVICE);   
 		streamVolume = mgr.getStreamVolume(AudioManager.STREAM_MUSIC);
 		
@@ -67,13 +77,13 @@ public class Sound {
 		loadSfx(R.raw.s_lifedel, E_SOUND.LIFEDEL.ordinal());
 	}   
 	     
-	//¼ÓÔØÒôĞ§×ÊÔ´  
+	//åŠ è½½éŸ³æ•ˆèµ„æº  
 	private void loadSfx(int raw, int id) {   
-	   //°Ñ×ÊÔ´ÖĞµÄÒôĞ§¼ÓÔØµ½Ö¸¶¨µÄID(²¥·ÅµÄÊ±ºò¾Í¶ÔÓ¦µ½Õâ¸öID²¥·Å¾ÍĞĞÁË)   
+	   //æŠŠèµ„æºä¸­çš„éŸ³æ•ˆåŠ è½½åˆ°æŒ‡å®šçš„ID(æ’­æ”¾çš„æ—¶å€™å°±å¯¹åº”åˆ°è¿™ä¸ªIDæ’­æ”¾å°±è¡Œäº†)   
 		mSoundPoolMap.put(id, mSoundPool.load(mContext, raw, id));    
 	}       
 	  
-	//sound:Òª²¥·ÅµÄÒôĞ§µÄID, loop:Ñ­»·´ÎÊı  
+	//sound:è¦æ’­æ”¾çš„éŸ³æ•ˆçš„ID, loop:å¾ªç¯æ¬¡æ•°  
 	private void play(E_SOUND sound, int loop) {
 		int id = sound.ordinal();
 		mSoundPool.play(mSoundPoolMap.get(id), streamVolume, streamVolume, 1, loop, 1f);    

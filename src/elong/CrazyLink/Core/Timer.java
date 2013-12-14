@@ -1,21 +1,22 @@
 /**********************************************************
- * ��Ŀ���ƣ�ɽկ������������Ϸ7�ս̳�
- * ��          �ߣ�֣����
- * ��Ѷ΢����SuperCube3D
- * ��          �ڣ�2013��11��
- * ��          ������Ȩ����   ��Ȩ�ؾ�
- * ��Դ���빩�����о�ѧϰOpenGL ES����AndroidӦ���ã�
- * ����ȫ���򲿷�������ҵ��;
+ * 项目名称：山寨腾讯“爱消除”游戏7日教程
+ * 作          者：郑敏新
+ * 腾讯微博：SuperCube3D
+ * 日          期：2013年12月
+ * 声          明：版权所有   侵权必究
+ * 本源代码供网友研究学习OpenGL ES开发Android应用用，
+ * 请勿全部或部分用于商业用途
  ********************************************************/
+
 package elong.CrazyLink.Core;
 
 import android.os.Message;
 
 public class Timer {
 	
-	long mMaxTime = 0;	//���ʱ��
-	long mLeftTime = 0;	//ʣ�µ�ʱ��
-	long mUsedTime = 0;	//�Ѿ�ʹ�õ�ʱ��
+	long mMaxTime = 0;	//最大时间
+	long mLeftTime = 0;	//剩下的时间
+	long mUsedTime = 0;	//已经使用的时间
 	long mStartTime;
 	boolean mStop = true;
 	

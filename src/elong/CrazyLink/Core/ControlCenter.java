@@ -1,11 +1,11 @@
 /**********************************************************
- * ÏîÄ¿Ãû³Æ£ºÉ½Õ¯¡°°®Ïû³ı¡±ÓÎÏ·7ÈÕ½Ì³Ì
- * ×÷          Õß£ºÖ£ÃôĞÂ
- * ÌÚÑ¶Î¢²©£ºSuperCube3D
- * ÈÕ          ÆÚ£º2013Äê10ÔÂ
- * Éù          Ã÷£º°æÈ¨ËùÓĞ   ÇÖÈ¨±Ø¾¿
- * ±¾Ô´´úÂë¹©ÍøÓÑÑĞ¾¿Ñ§Ï°OpenGL ES¿ª·¢AndroidÓ¦ÓÃÓÃ£¬
- * ÇëÎğÈ«²¿»ò²¿·ÖÓÃÓÚÉÌÒµÓÃÍ¾
+ * é¡¹ç›®åç§°ï¼šå±±å¯¨è…¾è®¯â€œçˆ±æ¶ˆé™¤â€æ¸¸æˆ7æ—¥æ•™ç¨‹
+ * ä½œ          è€…ï¼šéƒ‘æ•æ–°
+ * è…¾è®¯å¾®åšï¼šSuperCube3D
+ * æ—¥          æœŸï¼š2013å¹´12æœˆ
+ * å£°          æ˜ï¼šç‰ˆæƒæ‰€æœ‰   ä¾µæƒå¿…ç©¶
+ * æœ¬æºä»£ç ä¾›ç½‘å‹ç ”ç©¶å­¦ä¹ OpenGL ESå¼€å‘Androidåº”ç”¨ç”¨ï¼Œ
+ * è¯·å‹¿å…¨éƒ¨æˆ–éƒ¨åˆ†ç”¨äºå•†ä¸šç”¨é€”
  ********************************************************/
 
 package elong.CrazyLink.Core;
@@ -60,21 +60,21 @@ public class ControlCenter {
 	Context mContext;
 	public static E_SCENARIO mScene;
 	
-	static ActionTokenPool mToken;		//²Ù×÷ÁîÅÆ£¬Ö»ÓĞ»ñÈ¡µ½ÁîÅÆ²ÅÄÜ²Ù×÷
+	static ActionTokenPool mToken;		//æ“ä½œä»¤ç‰Œï¼Œåªæœ‰è·å–åˆ°ä»¤ç‰Œæ‰èƒ½æ“ä½œ
 	
-	static int mAnimalPic[][];			//¶ÔÓ¦¸ñ×ÓÏÔÊ¾µÄÍ¼Æ¬£¬µ÷ÓÃDrawAnimaläÖÈ¾
-	static int mPicBak[][];				//mPicµÄ¸±±¾£¬ÓÃÓÚautotip¼ÆËã
-	static int mEffect[][];				//0£º²»ÏÔÊ¾£»1£ºÏÔÊ¾¶¯Îï£»2:ÏÔÊ¾½»»»ÌØĞ§£»3:µøÂäÌØĞ§£»4:Ïû³ıÌØĞ§
-	static int mDisappearToken[][];		//Ïû³ıÌØĞ§»ñÈ¡µÄTOKEN
+	static int mAnimalPic[][];			//å¯¹åº”æ ¼å­æ˜¾ç¤ºçš„å›¾ç‰‡ï¼Œè°ƒç”¨DrawAnimalæ¸²æŸ“
+	static int mPicBak[][];				//mPicçš„å‰¯æœ¬ï¼Œç”¨äºautotipè®¡ç®—
+	static int mEffect[][];				//0ï¼šä¸æ˜¾ç¤ºï¼›1ï¼šæ˜¾ç¤ºåŠ¨ç‰©ï¼›2:æ˜¾ç¤ºäº¤æ¢ç‰¹æ•ˆï¼›3:è·Œè½ç‰¹æ•ˆï¼›4:æ¶ˆé™¤ç‰¹æ•ˆ
+	static int mDisappearToken[][];		//æ¶ˆé™¤ç‰¹æ•ˆè·å–çš„TOKEN
 	
-	static int mSingleScoreW = 0;	//ÏÔÊ¾µ±´Î½±ÀøµÄÎ»ÖÃ
+	static int mSingleScoreW = 0;	//æ˜¾ç¤ºå½“æ¬¡å¥–åŠ±çš„ä½ç½®
 	static int mSingleScoreH = 0;
 	
 	int menuTextureId;
 	int resultTextureId;
-    int animalTextureId;				//¶¯ÎïËØ²ÄÎÆÀíid
-    int[] loadingTextureId = new int[10];			//¼ÓÔØ¶¯»­ËØ²ÄÎÆÀíid
-    int gridTextureId;				//Íø¸ñËØ²ÄÎÆÀíid
+    int animalTextureId;				//åŠ¨ç‰©ç´ æçº¹ç†id
+    int[] loadingTextureId = new int[10];			//åŠ è½½åŠ¨ç”»ç´ æçº¹ç†id
+    int gridTextureId;				//ç½‘æ ¼ç´ æçº¹ç†id
     int scoreTextureId;
     int lifeTextureId;
     int congratulationTextureId;
@@ -87,7 +87,7 @@ public class ControlCenter {
     int monsterTextureId;
     int bombTextureId;
     
-    static int mAutoTipTimer = 0;			//×Ô¶¯ÌáÊ¾¼ÆÊ±Æ÷
+    static int mAutoTipTimer = 0;			//è‡ªåŠ¨æç¤ºè®¡æ—¶å™¨
     
     static public DrawBackGround drawMenuBackGround;
     static public DrawBackGround drawResultBackGround;
@@ -112,25 +112,25 @@ public class ControlCenter {
 	static public DrawTimeBar drawTimeBar;
 
 	
-	public static Score mScore;		//¼ÆËã·ÖÊı
+	public static Score mScore;		//è®¡ç®—åˆ†æ•°
 	public static Sound mSound;
 	public static Timer mTimer;	
 	
-	public static boolean mIsLoading = false;	//ÏÔÊ¾ÕıÔÚ¼ÓÔØ
-	public static boolean mIsAutoTip = false;	//´¦ÓÚ×Ô¶¯ÌáÊ¾×´Ì¬
+	public static boolean mIsLoading = false;	//æ˜¾ç¤ºæ­£åœ¨åŠ è½½
+	public static boolean mIsAutoTip = false;	//å¤„äºè‡ªåŠ¨æç¤ºçŠ¶æ€
 	
-	ArrayList<IControl> mControlList = new ArrayList<IControl>();	//äÖÈ¾ÀàµÄ¿ØÖÆÁĞ±í
+	ArrayList<IControl> mControlList = new ArrayList<IControl>();	//æ¸²æŸ“ç±»çš„æ§åˆ¶åˆ—è¡¨
 	
-	static final int EFT_NONE  = 0;			//¿Õ°×
-	static final int EFT_NORMAL  = 1;		//Õı³££¬ÎŞÌØÊâĞ§¹û
-	static final int EFT_EXCHANGE  = 2;		//½»»»Ğ§¹û
-	static final int EFT_FILL  = 3;			//µøÂäĞ§¹û	
-	static final int EFT_AUTOTIP  = 4;		//×Ô¶¯ÌáÊ¾Ğ§¹û
-	static final int EFT_DISAPPEAR  = 5;	//Ïû³ıĞ§¹û
+	static final int EFT_NONE  = 0;			//ç©ºç™½
+	static final int EFT_NORMAL  = 1;		//æ­£å¸¸ï¼Œæ— ç‰¹æ®Šæ•ˆæœ
+	static final int EFT_EXCHANGE  = 2;		//äº¤æ¢æ•ˆæœ
+	static final int EFT_FILL  = 3;			//è·Œè½æ•ˆæœ	
+	static final int EFT_AUTOTIP  = 4;		//è‡ªåŠ¨æç¤ºæ•ˆæœ
+	static final int EFT_DISAPPEAR  = 5;	//æ¶ˆé™¤æ•ˆæœ
 	
-	static final int ANIMAL_BOMB = 8;		//Õ¨µ¯
-	static final int ANIMAL_LASER = 9;		//¼¤¹â
-	static final int ANIMAL_MONSTER = 10;	//¹ÖÊŞ	
+	static final int ANIMAL_BOMB = 8;		//ç‚¸å¼¹
+	static final int ANIMAL_LASER = 9;		//æ¿€å…‰
+	static final int ANIMAL_MONSTER = 10;	//æ€ªå…½	
 
 
 
@@ -149,7 +149,7 @@ public class ControlCenter {
 		init();
 	}
 	
-	//³õÊ¼»¯Âß¼­£¬±£Ö¤³õÊ¼»¯ÒÔºóµÄ×´Ì¬Ã»ÓĞ´¦ÓÚÏû³ı×´Ì¬µÄ
+	//åˆå§‹åŒ–é€»è¾‘ï¼Œä¿è¯åˆå§‹åŒ–ä»¥åçš„çŠ¶æ€æ²¡æœ‰å¤„äºæ¶ˆé™¤çŠ¶æ€çš„
 	public static void init()
 	{
 		for(int i = 0; i < (int)CrazyLinkConstent.GRID_NUM; i++)
@@ -178,14 +178,14 @@ public class ControlCenter {
 		mToken.freeToken(token);
 	}
 
-	//²úÉú1~7µÄËæ»úÊı
+	//äº§ç”Ÿ1~7çš„éšæœºæ•°
 	static int getRandom()
 	{
 		int data = (int) (Math.random()*100);
 		return (data % 7) + 1;
 	}
 	
-	//Ö¸¶¨×ø±ê(col,row)ÔÚX·½ÏòÊÇ·ñÒÑ¾­³ÉĞĞ
+	//æŒ‡å®šåæ ‡(col,row)åœ¨Xæ–¹å‘æ˜¯å¦å·²ç»æˆè¡Œ
 	static boolean isInLineX(int pic[][], int col, int row)
 	{
 		int picId = pic[col][row];
@@ -231,7 +231,7 @@ public class ControlCenter {
 		return false;
 	}
 	
-	//Ö¸¶¨×ø±ê(col,row)ÔÚY·½ÏòÊÇ·ñÒÑ¾­³ÉĞĞ
+	//æŒ‡å®šåæ ‡(col,row)åœ¨Yæ–¹å‘æ˜¯å¦å·²ç»æˆè¡Œ
 	static boolean isInLineY(int pic[][], int col, int row)
 	{
 		int picId = pic[col][row];
@@ -277,13 +277,13 @@ public class ControlCenter {
 		return false;
 	}
 
-	//Ïû³ı¼ì²âËã·¨£¬Ö»ÒªX»òY·½ÏòÓĞÒ»¸ö·½Ïò³ÉĞĞ£¬¾ÍÈÏÎªÂú×ãÏû³ıÌõ¼ş
+	//æ¶ˆé™¤æ£€æµ‹ç®—æ³•ï¼Œåªè¦Xæˆ–Yæ–¹å‘æœ‰ä¸€ä¸ªæ–¹å‘æˆè¡Œï¼Œå°±è®¤ä¸ºæ»¡è¶³æ¶ˆé™¤æ¡ä»¶
 	static boolean isInLine(int pic[][], int col, int row)
 	{
 		return isInLineX(pic, col, row) || isInLineY(pic, col, row);
 	}
 
-	//½«³ÉĞĞµÄ¶¯Îï±ê¼Ç³öÀ´
+	//å°†æˆè¡Œçš„åŠ¨ç‰©æ ‡è®°å‡ºæ¥
 	static void markDisappear(int token)
 	{
 		if(-1 == token) return;
@@ -328,7 +328,7 @@ public class ControlCenter {
 	}
 	
 
-	//Ïû³ıÍê³Éºó£¬Òª½«¶ÔÓ¦µÄ¸ñ×ÓÖÃÎªEFT_NORMAL
+	//æ¶ˆé™¤å®Œæˆåï¼Œè¦å°†å¯¹åº”çš„æ ¼å­ç½®ä¸ºEFT_NORMAL
 	static int clearPic(int token)
 	{
 		int clearCount = 0;
@@ -349,7 +349,7 @@ public class ControlCenter {
 		return clearCount;
 	}
 	
-	//ÅĞ¶ÏÊÇ·ñĞèÒª´¥·¢Ïû³ıÌØĞ§
+	//åˆ¤æ–­æ˜¯å¦éœ€è¦è§¦å‘æ¶ˆé™¤ç‰¹æ•ˆ
 	static boolean isNeedClear()
 	{
 		for(int i = 0; i < (int)CrazyLinkConstent.GRID_NUM; i++)
@@ -365,7 +365,7 @@ public class ControlCenter {
 		return false;
 	}
 	
-	//±ê¼ÇµøÂäÌØĞ§
+	//æ ‡è®°è·Œè½ç‰¹æ•ˆ
 	static void fillGrid(int col, int row)
 	{
 		if(0 == mAnimalPic[col][row])
@@ -377,7 +377,7 @@ public class ControlCenter {
 		}
 	}
 	
-	//Ñ­»·±ê¼ÇÒªÌî³ä£¨µøÂä£©µÄ¸ñ×Ó
+	//å¾ªç¯æ ‡è®°è¦å¡«å……ï¼ˆè·Œè½ï¼‰çš„æ ¼å­
 	static void markFill()
 	{
 		for(int i = 0; i < (int)CrazyLinkConstent.GRID_NUM; i++)
@@ -423,7 +423,7 @@ public class ControlCenter {
 	}
 
 	
-	//ÊÇ·ñĞèÒªÌî³ä£¨µøÂä£©
+	//æ˜¯å¦éœ€è¦å¡«å……ï¼ˆè·Œè½ï¼‰
 	static boolean isNeedFill()
 	{
 		for(int i = 0; i < (int)CrazyLinkConstent.GRID_NUM; i++)
@@ -439,24 +439,24 @@ public class ControlCenter {
 		return false;
 	}
 	
-	//µøÂäËã·¨
+	//è·Œè½ç®—æ³•
 	static void fillMethod()
 	{
 		for(int i = 0; i < (int)CrazyLinkConstent.GRID_NUM; i++)
 		{
 			for(int j = 0; j < (int)CrazyLinkConstent.GRID_NUM; j++) 
 			{
-				if(0 == mAnimalPic[i][j])		//0´ú±í¸Ã¸ñ×ÓÊÇ¿ÕµÄ£¬ĞèÒªµøÂä
+				if(0 == mAnimalPic[i][j])		//0ä»£è¡¨è¯¥æ ¼å­æ˜¯ç©ºçš„ï¼Œéœ€è¦è·Œè½
 				{
 					if(j < (int)CrazyLinkConstent.GRID_NUM - 1)
 					{
-						//´ÓÉÏÒ»ĞĞÖĞµøÂä
+						//ä»ä¸Šä¸€è¡Œä¸­è·Œè½
 						mAnimalPic[i][j] = mAnimalPic[i][j + 1];
 						mAnimalPic[i][j + 1] = 0;
 					}
 					else
 					{
-						//Èç¹ûÏû³ıµÄÊÇ×î¸ßµÄÒ»ĞĞ£¬ÔòËæ»ú²úÉúµøÂä¶¯Îï
+						//å¦‚æœæ¶ˆé™¤çš„æ˜¯æœ€é«˜çš„ä¸€è¡Œï¼Œåˆ™éšæœºäº§ç”Ÿè·Œè½åŠ¨ç‰©
 						mAnimalPic[i][j] = getRandom();	
 					}
 				}
@@ -467,7 +467,7 @@ public class ControlCenter {
 	
 	static void exchange(int pic[][], int col1, int row1, int col2, int row2)
 	{
-		//¶Ô½»»»µÄ×ø±ê½øĞĞÓĞĞ§ĞÔĞ£Ñé£¬Èç¹ûÊÇÎŞĞ§µÄ£¬Ôò²»½øĞĞ½»»»
+		//å¯¹äº¤æ¢çš„åæ ‡è¿›è¡Œæœ‰æ•ˆæ€§æ ¡éªŒï¼Œå¦‚æœæ˜¯æ— æ•ˆçš„ï¼Œåˆ™ä¸è¿›è¡Œäº¤æ¢
 		if(col1 < 0 || col1 > 6) return;
 		if(col2 < 0 || col2 > 6) return;
 		if(row1 < 0 || row1 > 6) return;
@@ -484,14 +484,14 @@ public class ControlCenter {
     	mSingleScoreH = row;
     }
     
-    //×¢²áäÖÈ¾ÀàµÄ¿ØÖÆ¶ÔÏóµ½¿ØÖÆÖĞĞÄµÄ¿ØÖÆÁĞ±í
+    //æ³¨å†Œæ¸²æŸ“ç±»çš„æ§åˆ¶å¯¹è±¡åˆ°æ§åˆ¶ä¸­å¿ƒçš„æ§åˆ¶åˆ—è¡¨
     void controlRegister(IControl control)
     {
     	if(control != null)	mControlList.add(control);
     }
     
-    //×Ô¶¯ÌáÊ¾Ê¶±ğËã·¨
-    //Ö»ĞèÒª½»»»Ò»²½¾ÍÄÜ³ÉĞĞµÄ£¬ÈÏÎªÂú×ã×Ô¶¯ÌáÊ¾Ìõ¼ş
+    //è‡ªåŠ¨æç¤ºè¯†åˆ«ç®—æ³•
+    //åªéœ€è¦äº¤æ¢ä¸€æ­¥å°±èƒ½æˆè¡Œçš„ï¼Œè®¤ä¸ºæ»¡è¶³è‡ªåŠ¨æç¤ºæ¡ä»¶
     boolean autoTipMethod(int col, int row)
     {
 		for(int i = 0; i < (int)CrazyLinkConstent.GRID_NUM; i++)
@@ -518,7 +518,7 @@ public class ControlCenter {
     	return false;
     }
 
-    //×Ô¶¯ÌáÊ¾
+    //è‡ªåŠ¨æç¤º
     void autoTip()
     {	
 		for(int i = 0; i < (int)CrazyLinkConstent.GRID_NUM; i++)
@@ -542,7 +542,7 @@ public class ControlCenter {
 		}
     }
     
-	//½«¿ÉÒÔ×Ô¶¯ÌáÊ¾µÄ¶¯Îï±êÊ¶³öÀ´
+	//å°†å¯ä»¥è‡ªåŠ¨æç¤ºçš„åŠ¨ç‰©æ ‡è¯†å‡ºæ¥
 	static void markAutoTip()
 	{
 		boolean isAutoTip = false;
@@ -560,7 +560,7 @@ public class ControlCenter {
 		if(isAutoTip) drawAutoTip.control.start();
 	}
     
-	//½«×Ô¶¯ÌáÊ¾±êÊ¶Çå³ı
+	//å°†è‡ªåŠ¨æç¤ºæ ‡è¯†æ¸…é™¤
 	static void clearAutoTip()
 	{
 		unMark(EFT_AUTOTIP);
@@ -589,7 +589,7 @@ public class ControlCenter {
 		return pic;
 	}
 	
-	//Õı³£µÄäÖÈ¾Ğ§¹û
+	//æ­£å¸¸çš„æ¸²æŸ“æ•ˆæœ
 	static boolean isNormalEFT(int col, int row)
 	{
 		if(EFT_NORMAL == mEffect[col][row]) return true;
@@ -637,7 +637,7 @@ public class ControlCenter {
 		}
 	}
 
-	//±ê¼Ç¹ÖÊŞ¿ÉÏû³ıµÄ¸ñ×Ó
+	//æ ‡è®°æ€ªå…½å¯æ¶ˆé™¤çš„æ ¼å­
 	static void markMonster(int token, int col, int row)
 	{
 		if(-1 == token) return;
@@ -672,7 +672,7 @@ public class ControlCenter {
 		}
 	}
 	
-	//±ê¼ÇÕ¨µ¯¿ÉÏû³ıµÄ¸ñ×Ó
+	//æ ‡è®°ç‚¸å¼¹å¯æ¶ˆé™¤çš„æ ¼å­
 	static void markBomb(int token, int col, int row)
 	{
 		if(-1 == token) return;
@@ -710,7 +710,7 @@ public class ControlCenter {
 		}
 	}
 
-	//±ê¼Ç¼¤¹â¿ÉÏû³ıµÄ¸ñ×Ó
+	//æ ‡è®°æ¿€å…‰å¯æ¶ˆé™¤çš„æ ¼å­
 	static void markLaser(int token, int col, int row)
 	{
 		if(-1 == token) return;
@@ -746,7 +746,7 @@ public class ControlCenter {
 	}
 
 	
-	//Éú³ÉÌØÊâ¶¯Îï
+	//ç”Ÿæˆç‰¹æ®ŠåŠ¨ç‰©
 	static void genSpecialAnimal()
 	{
 		int cnt = 0;
@@ -763,7 +763,7 @@ public class ControlCenter {
 			x = data / (int)CrazyLinkConstent.GRID_NUM;
 			y = data % (int)CrazyLinkConstent.GRID_NUM;
 			cnt++;
-			if(cnt>10) break;     	//Ô¤·ÀÎŞ·¨Õı³£ÍË³ö
+			if(cnt>10) break;     	//é¢„é˜²æ— æ³•æ­£å¸¸é€€å‡º
 		}
 		int animal = data % 2;
 		switch (animal)
@@ -782,12 +782,12 @@ public class ControlCenter {
 		}
 	}
 
-	//³õÊ¼»¯ÎÆÀí¶ÔÏó
+	//åˆå§‹åŒ–çº¹ç†å¯¹è±¡
 	public void initTexture(GL10 gl)
 	{
 		menuTextureId = initTexture(gl, R.drawable.cover);
 		resultTextureId = initTexture(gl, R.drawable.result);
-    	animalTextureId = initTexture(gl, R.drawable.animal);	//³õÊ¼»¯ÎÆÀí¶ÔÏó    	
+    	animalTextureId = initTexture(gl, R.drawable.animal);	//åˆå§‹åŒ–çº¹ç†å¯¹è±¡    	
     	for(int i = 0; i < 10; i++)
     	{
     		loadingTextureId[i] = initTexture(gl, R.drawable.loading_01 + i);
@@ -806,13 +806,13 @@ public class ControlCenter {
     	timeBarTextureId = initTexture(gl, R.drawable.time);
 	}
 	
-	//³õÊ¼»¯äÖÈ¾¶ÔÏó
+	//åˆå§‹åŒ–æ¸²æŸ“å¯¹è±¡
 	public void initDraw(GL10 gl)
 	{
 		drawMenuBackGround = new DrawBackGround(menuTextureId);
 		drawResultBackGround = new DrawBackGround(resultTextureId);
-    	drawAnimal = new DrawAnimal(animalTextureId);			//´´½¨¶¯ÎïËØ²Ä¶ÔÏó    	
-    	drawGrid = new DrawGrid(gridTextureId);					//´´½¨ÆåÅÌËØ²Ä¶ÔÏó
+    	drawAnimal = new DrawAnimal(animalTextureId);			//åˆ›å»ºåŠ¨ç‰©ç´ æå¯¹è±¡    	
+    	drawGrid = new DrawGrid(gridTextureId);					//åˆ›å»ºæ£‹ç›˜ç´ æå¯¹è±¡
     	drawFill = new DrawFill(drawAnimal);
     	drawScore = new DrawScore(scoreTextureId);
     	drawResultScore = new DrawScore(scoreTextureId);
@@ -824,13 +824,13 @@ public class ControlCenter {
     	drawLifeDel = new DrawLifeDel(lifeDelTextureId);
     	drawTimeBar = new DrawTimeBar(gl, timeBarTextureId, CrazyLinkConstent.MAX_TIME);
 
-    	drawLoading = new DrawLoading(loadingTextureId);		//´´½¨¼ÓÔØ¶¯»­ËØ²Ä    	
+    	drawLoading = new DrawLoading(loadingTextureId);		//åˆ›å»ºåŠ è½½åŠ¨ç”»ç´ æ    	
     	drawAutoTip = new DrawAutoTip(fireTextureId);
     	drawExplosion = new DrawExplosion(explosionTextureId);
     	drawMonster = new DrawMonster(monsterTextureId);
     	drawBomb = new DrawBomb(bombTextureId);
     
-    	//½«äÖÈ¾ÀàµÄ¿ØÖÆ¶ÔÏó×¢²áµ½¿ØÖÆÖĞĞÄÁĞ±í    	
+    	//å°†æ¸²æŸ“ç±»çš„æ§åˆ¶å¯¹è±¡æ³¨å†Œåˆ°æ§åˆ¶ä¸­å¿ƒåˆ—è¡¨    	
     	controlRegister(drawFill.control);
     	controlRegister(drawLoading.control);
     	controlRegister(drawSingleScore.control);
@@ -905,17 +905,17 @@ public class ControlCenter {
 		}
 	}
 	
-	//³õÊ¼»¯ÎÆÀíµÄ·½·¨
+	//åˆå§‹åŒ–çº¹ç†çš„æ–¹æ³•
 	private int initTexture(GL10 gl, int drawableId)
 	{
 		int[] textures = new int[1];
 		gl.glGenTextures(1, textures, 0);
 		int currTextureId = textures[0];
 		gl.glBindTexture(GL10.GL_TEXTURE_2D, currTextureId);
-		gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER, GL10.GL_NEAREST);//Ö¸¶¨ËõĞ¡¹ıÂË·½·¨
-		gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER, GL10.GL_LINEAR);//Ö¸¶¨·Å´ó¹ıÂË·½·¨
-		gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_S, GL10.GL_CLAMP_TO_EDGE);//Ö¸¶¨S×ø±êÖáÌùÍ¼Ä£Ê½
-		gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_T, GL10.GL_CLAMP_TO_EDGE);//Ö¸¶¨T×ø±êÖáÌùÍ¼Ä£Ê½
+		gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MIN_FILTER, GL10.GL_NEAREST);//Ö¸ï¿½ï¿½ï¿½ï¿½Ğ¡ï¿½ï¿½ï¿½Ë·ï¿½ï¿½ï¿½
+		gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_MAG_FILTER, GL10.GL_LINEAR);//Ö¸ï¿½ï¿½ï¿½Å´ï¿½ï¿½ï¿½Ë·ï¿½ï¿½ï¿½
+		gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_S, GL10.GL_CLAMP_TO_EDGE);//Ö¸ï¿½ï¿½Sï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¼Ä£Ê½
+		gl.glTexParameterf(GL10.GL_TEXTURE_2D, GL10.GL_TEXTURE_WRAP_T, GL10.GL_CLAMP_TO_EDGE);//Ö¸ï¿½ï¿½Tï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¼Ä£Ê½
 		InputStream is = mContext.getResources().openRawResource(drawableId);
 		Bitmap bitmapTmp;
 		try{
@@ -935,7 +935,7 @@ public class ControlCenter {
 	}
 
 	
-	//ÏûÏ¢ÀàĞÍ
+	//æ¶ˆæ¯ç±»å‹
 	public static final int EXCHANGE_START = 1;
 	public static final int EXCHANGE_END = 2;
 	public static final int LOADING_START = 3;
@@ -955,7 +955,7 @@ public class ControlCenter {
 
 
 	
-	//ÏûÏ¢´¦Àí
+	//æ¶ˆæ¯å¤„ç†
     public static Handler mHandler = new Handler(){   
         @Override  
 		public void handleMessage(Message msg) 
@@ -973,7 +973,7 @@ public class ControlCenter {
 					int col2 = b.getInt("col2");
 					int row1 = b.getInt("row1");
 					int row2 = b.getInt("row2");				
-			    	mEffect[col1][row1] = EFT_EXCHANGE;			//´¦ÓÚ½»»»×´Ì¬
+			    	mEffect[col1][row1] = EFT_EXCHANGE;			//å¤„äºäº¤æ¢çŠ¶æ€
 			    	mEffect[col2][row2] = EFT_NONE;
 			    	setSingleScorePosition(col1, row1);
 			    	int pic1 = getPicId(col1, row1);
@@ -991,7 +991,7 @@ public class ControlCenter {
 					int row1 = b.getInt("row1");
 					int row2 = b.getInt("row2");
 					exchange(mAnimalPic, col1, row1, col2, row2);
-			    	mEffect[col1][row1] = EFT_NORMAL;			//½»»»×´Ì¬½â³ı
+			    	mEffect[col1][row1] = EFT_NORMAL;			//äº¤æ¢çŠ¶æ€è§£é™¤
 			    	mEffect[col2][row2] = EFT_NORMAL;
 					markDisappear(token);				
 					break;
@@ -1115,7 +1115,7 @@ public class ControlCenter {
 	
     
     
-    //¿ØÖÆÖĞĞÄµÄ¶¯×÷Ö´ĞĞ
+    //æ§åˆ¶ä¸­å¿ƒçš„åŠ¨ä½œæ‰§è¡Œ
     public void run()
     {
     	mAutoTipTimer++;
@@ -1134,13 +1134,13 @@ public class ControlCenter {
 		}
     }
     
-    //²Ëµ¥³¡¾°äÖÈ¾
+    //èœå•åœºæ™¯æ¸²æŸ“
     public void drawMenuScene(GL10 gl)
     {
     	drawMenuBackGround.draw(gl);
     }
     
-    //ÓÎÏ·½á¹û³¡¾°äÖÈ¾
+    //æ¸¸æˆç»“æœåœºæ™¯æ¸²æŸ“
     public void drawResultScene(GL10 gl)
     {
     	drawScore.draw(gl,mScore.getScore(), 1);
@@ -1148,7 +1148,7 @@ public class ControlCenter {
     }
 
     
-	//ÓÎÏ·³¡¾°äÖÈ¾
+	//æ¸¸æˆåœºæ™¯æ¸²æŸ“
 	public void drawGameScene(GL10 gl)
 	{
 		if(mIsLoading)
@@ -1171,7 +1171,7 @@ public class ControlCenter {
 			{
 				switch (mEffect[i][j])
 				{
-				case EFT_NORMAL:	//Õı³£ÏÔÊ¾
+				case EFT_NORMAL:	//æ­£å¸¸æ˜¾ç¤º
 					if(isMonster(i,j))
 						drawMonster.draw(gl, i, j);
 					else if(isBomb(i,j))
@@ -1181,17 +1181,17 @@ public class ControlCenter {
 					else
 						drawAnimal.draw(gl,getPicId(i,j),i,j);
 					break;
-				case EFT_EXCHANGE:	//½»»»ÌØĞ§
+				case EFT_EXCHANGE:	//äº¤æ¢ç‰¹æ•ˆ
 					drawExchangeRun(gl);							
 					break;
-				case EFT_FILL:	//µøÂäÌØĞ§
+				case EFT_FILL:	//è·Œè½ç‰¹æ•ˆ
 					drawFill.draw(gl, getPicId(i,j), i, j);
 					break;
-				case EFT_AUTOTIP:	//×Ô¶¯ÌáÊ¾ÌØĞ§
+				case EFT_AUTOTIP:	//è‡ªåŠ¨æç¤ºç‰¹æ•ˆ
 					drawAutoTip.draw(gl, i, j);
 					drawAnimal.draw(gl,getPicId(i,j),i,j);
 					break;
-				case EFT_DISAPPEAR:		//Ïû³ıÌØĞ§
+				case EFT_DISAPPEAR:		//æ¶ˆé™¤ç‰¹æ•ˆ
 					drawExplosion.draw(gl, i, j);
 					drawDisappeareRun(gl, i, j);											
 					break;
