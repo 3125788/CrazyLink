@@ -35,16 +35,16 @@ public class DrawBackGround {
     	    	
         vCount=6;//顶点的数量，一个正方形用两个三角形表示，共需要6个顶点   
 
-        int width = CrazyLinkConstent.REAL_WIDTH/2;
-        int height = CrazyLinkConstent.REAL_HEIGHT/2;
+        int w = (CrazyLinkConstent.REAL_WIDTH/2)*CrazyLinkConstent.ADP_SIZE;
+        int h = (CrazyLinkConstent.REAL_HEIGHT/2)*CrazyLinkConstent.ADP_SIZE;
         int vertices[]=new int[]//顶点坐标数据数组
         {
-           	-width*CrazyLinkConstent.ADP_SIZE,height*CrazyLinkConstent.ADP_SIZE,0,
-        	-width*CrazyLinkConstent.ADP_SIZE,-height*CrazyLinkConstent.ADP_SIZE,0,
-        	width*CrazyLinkConstent.ADP_SIZE,-height*CrazyLinkConstent.ADP_SIZE,0,
-        	width*CrazyLinkConstent.ADP_SIZE,-height*CrazyLinkConstent.ADP_SIZE,0,
-        	width*CrazyLinkConstent.ADP_SIZE,height*CrazyLinkConstent.ADP_SIZE,0,
-        	-width*CrazyLinkConstent.ADP_SIZE,height*CrazyLinkConstent.ADP_SIZE,0
+           	-w,h,0,
+        	-w,-h,0,
+        	w,-h,0,
+        	w,-h,0,
+        	w,h,0,
+        	-w,h,0
         };
         //创建顶点坐标数据缓冲
         //int类型占用4个字节，因此转换为byte的数据时需要*4

@@ -39,16 +39,19 @@ public class DrawLoading {
 	//顶点坐标数据的初始化
     private void initVertexBuffer()
     {
-        vCount=6;//顶点的数量，一个正方形用两个三角形表示，共需要6个顶点   
+    	vCount=6;//顶点的数量，一个正方形用两个三角形表示，共需要6个顶点
+        int w = 128*CrazyLinkConstent.ADP_SIZE;
+        int h = 64*CrazyLinkConstent.ADP_SIZE;
         int vertices[]=new int[]//顶点坐标数据数组
         {
-           	-140*CrazyLinkConstent.ADP_SIZE,75*CrazyLinkConstent.ADP_SIZE,0,
-        	-140*CrazyLinkConstent.ADP_SIZE,-75*CrazyLinkConstent.ADP_SIZE,0,
-        	140*CrazyLinkConstent.ADP_SIZE,-75*CrazyLinkConstent.ADP_SIZE,0,
-        	140*CrazyLinkConstent.ADP_SIZE,-75*CrazyLinkConstent.ADP_SIZE,0,
-        	140*CrazyLinkConstent.ADP_SIZE,75*CrazyLinkConstent.ADP_SIZE,0,
-        	-140*CrazyLinkConstent.ADP_SIZE,75*CrazyLinkConstent.ADP_SIZE,0
-        };
+           	-w,h,0,
+        	-w,-h,0,
+        	w,-h,0,
+        	w,-h,0,
+        	w,h,0,
+        	-w,h,0
+        };    	
+           
         //创建顶点坐标数据缓冲
         //int类型占用4个字节，因此转换为byte的数据时需要*4
         ByteBuffer vbb = ByteBuffer.allocateDirect(vertices.length*4);

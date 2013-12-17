@@ -53,20 +53,19 @@ public class DrawLife {
 	//顶点坐标数据的初始化
     private void initVertexBuffer(int col)
     {
-    	    	
-    	int w = 16;
-    	int h = 16;
-        vCount=6;//顶点的数量，一个正方形用两个三角形表示，共需要6个顶点   
-        int deltaX = ((col + 2)*2*w*CrazyLinkConstent.ADP_SIZE);
-        int deltaY = 10*2*h*CrazyLinkConstent.ADP_SIZE;
+        vCount=6;//顶点的数量，一个正方形用两个三角形表示，共需要6个顶点       	    	
+    	int w = 16*CrazyLinkConstent.ADP_SIZE;
+    	int h = 16*CrazyLinkConstent.ADP_SIZE;
+        int deltaX = ((col + 2)*2*w);
+        int deltaY = 10*2*h;
         int vertices[]=new int[]//顶点坐标数据数组
         {
-           	-w*CrazyLinkConstent.ADP_SIZE+deltaX,h*CrazyLinkConstent.ADP_SIZE+deltaY,0,
-        	-w*CrazyLinkConstent.ADP_SIZE+deltaX,-h*CrazyLinkConstent.ADP_SIZE+deltaY,0,
-        	w*CrazyLinkConstent.ADP_SIZE+deltaX,-h*CrazyLinkConstent.ADP_SIZE+deltaY,0,
-        	w*CrazyLinkConstent.ADP_SIZE+deltaX,-h*CrazyLinkConstent.ADP_SIZE+deltaY,0,
-        	w*CrazyLinkConstent.ADP_SIZE+deltaX,h*CrazyLinkConstent.ADP_SIZE+deltaY,0,
-        	-w*CrazyLinkConstent.ADP_SIZE+deltaX,h*CrazyLinkConstent.ADP_SIZE+deltaY,0
+           	-w+deltaX,h+deltaY,0,
+        	-w+deltaX,-h+deltaY,0,
+        	w+deltaX,-h+deltaY,0,
+        	w+deltaX,-h+deltaY,0,
+        	w+deltaX,h+deltaY,0,
+        	-w+deltaX,h+deltaY,0
         };
         //创建顶点坐标数据缓冲
         //int类型占用4个字节，因此转换为byte的数据时需要*4
